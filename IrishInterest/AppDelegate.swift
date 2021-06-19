@@ -17,15 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabsController = TabViewController()
         
         let home = HomeViewController()
-        home.tabBarItem = TabBarItem.create(title: "Home", iconName: "book", selectedIconName: "book.fill")
+        home.tabBarItem = BarItem.create(title: "Home", iconName: "book", selectedIconName: "book.fill")
         
         let authors = UIViewController()
-        authors.tabBarItem = TabBarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
+        authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
+        
+        let categories = UIViewController()
+        categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
         
         let search = SearchViewController()
-        search.tabBarItem = TabBarItem.create(systemIcon: .search, tag: 1)
+        search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
         
-        tabsController.viewControllers = [home, authors, search]
+        tabsController.viewControllers = [home, search, authors, categories]
         
         let navController = UINavigationController(rootViewController: tabsController)
         window.rootViewController = navController

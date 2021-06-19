@@ -9,7 +9,10 @@ final class TabViewController: UITabBarController {
         super.viewDidLoad()
         title = "Irish Interest"
         view.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: ActionButton(type: .infoLight))
+        let burgerImage = UIImage(systemName: "line.horizontal.3")
+        let barButton = UIBarButtonItem(image: burgerImage, style: .plain, target: nil, action: nil)
+        barButton.tintColor = Brand.colorTabSelected
+        navigationItem.rightBarButtonItem = barButton
         
         tabBar.backgroundColor = Brand.colorTabBarBackground
         tabBar.unselectedItemTintColor = Brand.colorTabUnselected

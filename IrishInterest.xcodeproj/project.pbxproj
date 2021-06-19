@@ -19,7 +19,7 @@
 		98A67382267E189D001F643E /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737D267E189D001F643E /* VStack.swift */; };
 		98A67383267E189D001F643E /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737E267E189D001F643E /* UI.swift */; };
 		98A67385267E1920001F643E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67384267E1920001F643E /* SearchViewController.swift */; };
-		98A67387267E1D2C001F643E /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67386267E1D2C001F643E /* TabBarItem.swift */; };
+		98A67387267E1D2C001F643E /* BarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67386267E1D2C001F643E /* BarItem.swift */; };
 		98A67389267E26E8001F643E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +59,7 @@
 		98A6737D267E189D001F643E /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
 		98A6737E267E189D001F643E /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		98A67384267E1920001F643E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		98A67386267E1D2C001F643E /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
+		98A67386267E1D2C001F643E /* BarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItem.swift; sourceTree = "<group>"; };
 		98A67388267E26E8001F643E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,7 +149,7 @@
 				98A6737E267E189D001F643E /* UI.swift */,
 				98A6737C267E189D001F643E /* UIColorExt.swift */,
 				98A6737D267E189D001F643E /* VStack.swift */,
-				98A67386267E1D2C001F643E /* TabBarItem.swift */,
+				98A67386267E1D2C001F643E /* BarItem.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -286,7 +286,7 @@
 				98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */,
 				98A67383267E189D001F643E /* UI.swift in Sources */,
 				98A67385267E1920001F643E /* SearchViewController.swift in Sources */,
-				98A67387267E1D2C001F643E /* TabBarItem.swift in Sources */,
+				98A67387267E1D2C001F643E /* BarItem.swift in Sources */,
 				98A6737F267E189D001F643E /* Brand.swift in Sources */,
 				98A67389267E26E8001F643E /* HomeViewController.swift in Sources */,
 				98A67376267E124C001F643E /* TabViewController.swift in Sources */,
