@@ -10,8 +10,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        let home = HomeViewController()
-        let navController = UINavigationController(rootViewController: home)
+        let homeTabs = HomeTabViewController()
+        let search = SearchViewController()
+        search.tabBarItem = TabBarItem.create(systemIcon: .search, tag: 0)
+        homeTabs.viewControllers = [search]
+        
+        let navController = UINavigationController(rootViewController: homeTabs)
         window.rootViewController = navController
         window.makeKeyAndVisible()
         self.window = window

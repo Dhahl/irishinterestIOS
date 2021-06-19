@@ -3,10 +3,13 @@
 import Foundation
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
     }
+    
+    
 }
