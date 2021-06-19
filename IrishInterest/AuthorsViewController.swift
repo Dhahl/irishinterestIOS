@@ -5,18 +5,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LatestViewController: UIViewController {
+final class AuthorsViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("LatestViewController")
+        print("AuthorsViewController")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("LatestViewController")
+        print("AuthorsViewController.viewDidAppear")
         tabBarController?.navigationItem.searchController?.searchBar.rx.text
             .subscribe(on: MainScheduler.instance)
             .distinctUntilChanged()
@@ -26,7 +26,7 @@ final class LatestViewController: UIViewController {
                     //clear search result
                     return
                 }
-                print("searching for Latest: \(value)")
+                print("searching for Author: \(value)")
             })
             .disposed(by: disposeBag)
     }

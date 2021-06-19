@@ -21,10 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let latest = LatestViewController()
         latest.tabBarItem = BarItem.create(title: "Latest", iconName: "book", selectedIconName: "book.fill")
         
-        let authors = UIViewController()
+        let authors = AuthorsViewController()
         authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
         
-        let categories = UIViewController()
+        let categories = CategoriesViewController()
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
         
         tabsController.viewControllers = [latest, authors, categories]
