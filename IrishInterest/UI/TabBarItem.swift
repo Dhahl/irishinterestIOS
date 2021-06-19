@@ -5,10 +5,14 @@ import UIKit
 
 struct TabBarItem {
     
-    public static func create(systemIcon: UITabBarItem.SystemItem, tag: Int) -> UITabBarItem {
-        let item = UITabBarItem(tabBarSystemItem: systemIcon, tag: tag)
-        item.badgeColor = Brand.colorPrimary
-        return item
+    public static func create(systemIcon: UITabBarItem.SystemItem, tag: Int, title: String? = nil) -> UITabBarItem {
+        return UITabBarItem(tabBarSystemItem: systemIcon, tag: tag)
+    }
+    
+    public static func create(title: String, iconName: String, selectedIconName: String) -> UITabBarItem {
+        return UITabBarItem(title: title,
+                            image: UIImage(systemName: iconName),
+                            selectedImage: UIImage(systemName: selectedIconName))
     }
     
 }

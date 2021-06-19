@@ -12,7 +12,7 @@
 		98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A67350267E0B7B001F643E /* LaunchScreen.storyboard */; };
 		98A6735D267E0B7B001F643E /* IrishInterestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6735C267E0B7B001F643E /* IrishInterestTests.swift */; };
 		98A67368267E0B7B001F643E /* IrishInterestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67367267E0B7B001F643E /* IrishInterestUITests.swift */; };
-		98A67376267E124C001F643E /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67375267E124C001F643E /* HomeTabViewController.swift */; };
+		98A67376267E124C001F643E /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67375267E124C001F643E /* TabViewController.swift */; };
 		98A6737F267E189D001F643E /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737A267E189D001F643E /* Brand.swift */; };
 		98A67380267E189D001F643E /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737B267E189D001F643E /* ActionButton.swift */; };
 		98A67381267E189D001F643E /* UIColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737C267E189D001F643E /* UIColorExt.swift */; };
@@ -20,6 +20,7 @@
 		98A67383267E189D001F643E /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737E267E189D001F643E /* UI.swift */; };
 		98A67385267E1920001F643E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67384267E1920001F643E /* SearchViewController.swift */; };
 		98A67387267E1D2C001F643E /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67386267E1D2C001F643E /* TabBarItem.swift */; };
+		98A67389267E26E8001F643E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +52,7 @@
 		98A67363267E0B7B001F643E /* IrishInterestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IrishInterestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67367267E0B7B001F643E /* IrishInterestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrishInterestUITests.swift; sourceTree = "<group>"; };
 		98A67369267E0B7B001F643E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		98A67375267E124C001F643E /* HomeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabViewController.swift; sourceTree = "<group>"; };
+		98A67375267E124C001F643E /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		98A6737A267E189D001F643E /* Brand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		98A6737B267E189D001F643E /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		98A6737C267E189D001F643E /* UIColorExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExt.swift; sourceTree = "<group>"; };
@@ -59,6 +60,7 @@
 		98A6737E267E189D001F643E /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		98A67384267E1920001F643E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		98A67386267E1D2C001F643E /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
+		98A67388267E26E8001F643E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,8 +116,9 @@
 				98A6734E267E0B7B001F643E /* Assets.xcassets */,
 				98A67350267E0B7B001F643E /* LaunchScreen.storyboard */,
 				98A67353267E0B7B001F643E /* Info.plist */,
-				98A67375267E124C001F643E /* HomeTabViewController.swift */,
+				98A67375267E124C001F643E /* TabViewController.swift */,
 				98A67384267E1920001F643E /* SearchViewController.swift */,
+				98A67388267E26E8001F643E /* HomeViewController.swift */,
 			);
 			path = IrishInterest;
 			sourceTree = "<group>";
@@ -285,7 +288,8 @@
 				98A67385267E1920001F643E /* SearchViewController.swift in Sources */,
 				98A67387267E1D2C001F643E /* TabBarItem.swift in Sources */,
 				98A6737F267E189D001F643E /* Brand.swift in Sources */,
-				98A67376267E124C001F643E /* HomeTabViewController.swift in Sources */,
+				98A67389267E26E8001F643E /* HomeViewController.swift in Sources */,
+				98A67376267E124C001F643E /* TabViewController.swift in Sources */,
 				98A67381267E189D001F643E /* UIColorExt.swift in Sources */,
 				98A67380267E189D001F643E /* ActionButton.swift in Sources */,
 				98A67382267E189D001F643E /* VStack.swift in Sources */,

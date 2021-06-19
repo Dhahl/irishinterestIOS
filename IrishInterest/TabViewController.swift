@@ -3,12 +3,16 @@
 import Foundation
 import UIKit
 
-final class HomeTabViewController: UITabBarController {
+final class TabViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         title = "Irish Interest"
+        view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: ActionButton(type: .infoLight))
+        
+        tabBar.backgroundColor = Brand.colorTabBarBackground
+        tabBar.unselectedItemTintColor = Brand.colorTabUnselected
+        tabBar.tintColor = Brand.colorTabSelected
     }
 }

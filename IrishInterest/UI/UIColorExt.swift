@@ -10,6 +10,7 @@ extension UIColor {
         let saturation = lightness > 0 ? 2 * offset / brightness : 0
         self.init(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
+    
     var lighter: UIColor? {
         return applying(lightness: 1.25)
     }
