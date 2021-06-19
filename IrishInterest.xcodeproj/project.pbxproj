@@ -8,13 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67345267E0B7A001F643E /* AppDelegate.swift */; };
-		98A67348267E0B7A001F643E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67347267E0B7A001F643E /* SceneDelegate.swift */; };
 		98A6734A267E0B7A001F643E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67349267E0B7A001F643E /* ViewController.swift */; };
-		98A6734D267E0B7A001F643E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A6734B267E0B7A001F643E /* Main.storyboard */; };
 		98A6734F267E0B7B001F643E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6734E267E0B7B001F643E /* Assets.xcassets */; };
 		98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A67350267E0B7B001F643E /* LaunchScreen.storyboard */; };
 		98A6735D267E0B7B001F643E /* IrishInterestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6735C267E0B7B001F643E /* IrishInterestTests.swift */; };
 		98A67368267E0B7B001F643E /* IrishInterestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67367267E0B7B001F643E /* IrishInterestUITests.swift */; };
+		98A67376267E124C001F643E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67375267E124C001F643E /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,9 +36,7 @@
 /* Begin PBXFileReference section */
 		98A67342267E0B7A001F643E /* IrishInterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IrishInterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67345267E0B7A001F643E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		98A67347267E0B7A001F643E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		98A67349267E0B7A001F643E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		98A6734C267E0B7A001F643E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		98A6734E267E0B7B001F643E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98A67351267E0B7B001F643E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		98A67353267E0B7B001F643E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +46,7 @@
 		98A67363267E0B7B001F643E /* IrishInterestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IrishInterestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67367267E0B7B001F643E /* IrishInterestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrishInterestUITests.swift; sourceTree = "<group>"; };
 		98A67369267E0B7B001F643E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A67375267E124C001F643E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +98,11 @@
 			isa = PBXGroup;
 			children = (
 				98A67345267E0B7A001F643E /* AppDelegate.swift */,
-				98A67347267E0B7A001F643E /* SceneDelegate.swift */,
 				98A67349267E0B7A001F643E /* ViewController.swift */,
-				98A6734B267E0B7A001F643E /* Main.storyboard */,
 				98A6734E267E0B7B001F643E /* Assets.xcassets */,
 				98A67350267E0B7B001F643E /* LaunchScreen.storyboard */,
 				98A67353267E0B7B001F643E /* Info.plist */,
+				98A67375267E124C001F643E /* HomeViewController.swift */,
 			);
 			path = IrishInterest;
 			sourceTree = "<group>";
@@ -233,7 +230,6 @@
 			files = (
 				98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */,
 				98A6734F267E0B7B001F643E /* Assets.xcassets in Resources */,
-				98A6734D267E0B7A001F643E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +256,7 @@
 			files = (
 				98A6734A267E0B7A001F643E /* ViewController.swift in Sources */,
 				98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */,
-				98A67348267E0B7A001F643E /* SceneDelegate.swift in Sources */,
+				98A67376267E124C001F643E /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,14 +292,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		98A6734B267E0B7A001F643E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				98A6734C267E0B7A001F643E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		98A67350267E0B7B001F643E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -366,13 +354,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -421,12 +410,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -436,15 +426,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FX92B544S7;
 				INFOPLIST_FILE = IrishInterest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.irishinterest.IrishInterest;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.irishinterest.irishinterest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -455,15 +449,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FX92B544S7;
 				INFOPLIST_FILE = IrishInterest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.irishinterest.IrishInterest;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.irishinterest.irishinterest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
