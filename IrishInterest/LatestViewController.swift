@@ -3,7 +3,7 @@
 import Foundation
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class LatestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
