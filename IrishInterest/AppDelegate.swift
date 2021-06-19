@@ -1,9 +1,4 @@
-//
-//  AppDelegate.swift
-//  IrishInterest
-//
-//  Created by Balazs Perlaki-Horvath on 19/06/2021.
-//
+// Copyright © 2021 Balazs Perlaki-Horvath, PerlakiDigital. All rights reserved.
 
 import UIKit
 
