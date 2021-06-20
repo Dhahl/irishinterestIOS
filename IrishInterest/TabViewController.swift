@@ -14,7 +14,7 @@ final class TabViewController: UITabBarController {
         let burgerImage = UIImage(systemName: "line.horizontal.3")
         let barButton = UIBarButtonItem(image: burgerImage, style: .plain, target: nil, action: nil)
         barButton.tintColor = Brand.colorTabSelected
-        navigationItem.leftBarButtonItem = barButton
+        navigationItem.rightBarButtonItem = barButton
         
         navigationItem.searchController = UISearchController()
         
