@@ -2,12 +2,27 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
-final class TabViewController: UITabBarController {
+protocol SearchResultsObservable {
+    var searchTextObservable: Observable<String?>? { get }
+}
+
+final class TabViewController: UITabBarController, SearchResultsObservable {
+    
+    var searchTextObservable: Observable<String?>? {
+        get {
+            navigationItem.searchController?.searchBar.rx.text
+                .subscribe(on: MainScheduler.instance)
+                .distinctUntilChanged()
+                .debounce( RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "IrishInterest"
+
         view.backgroundColor = .white
         
         // NAV LEFT
@@ -15,8 +30,6 @@ final class TabViewController: UITabBarController {
         let barButton = UIBarButtonItem(image: burgerImage, style: .plain, target: nil, action: nil)
         barButton.tintColor = Brand.colorTabSelected
         navigationItem.rightBarButtonItem = barButton
-        
-        navigationItem.searchController = UISearchController()
         
         // TAB BAR
         tabBar.backgroundColor = Brand.colorTabBarBackground

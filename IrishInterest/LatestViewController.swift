@@ -17,13 +17,11 @@ final class LatestViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("LatestViewController")
-        tabBarController?.navigationItem.searchController?.searchBar.rx.text
-            .subscribe(on: MainScheduler.instance)
-            .distinctUntilChanged()
-            .debounce( RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
+        (tabBarController as? SearchResultsObservable)?.searchTextObservable?
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {
                     //clear search result
+                    print("clear")
                     return
                 }
                 print("searching for Latest: \(value)")

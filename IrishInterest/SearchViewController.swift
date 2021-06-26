@@ -3,20 +3,18 @@
 import Foundation
 import UIKit
 import RxSwift
-import RxCocoa
 
-final class AuthorsViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AuthorsViewController")
+        navigationItem.searchController = UISearchController()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("AuthorsViewController.viewDidAppear")
         (tabBarController as? SearchResultsObservable)?.searchTextObservable?
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {
@@ -27,7 +25,7 @@ final class AuthorsViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
+  
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
