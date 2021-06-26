@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         
         tabsController.viewControllers = [search, authors, categories, latest, published, topSearches, commingSoon, favourites]
-        tabsController.customizableViewControllers = []
+//        tabsController.customizableViewControllers = [] //do not allow to re-arrange
         
         let navController = UINavigationController(rootViewController: tabsController)
         window.rootViewController = navController
