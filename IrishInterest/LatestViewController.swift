@@ -16,7 +16,6 @@ final class LatestViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("LatestViewController")
         (tabBarController as? SearchResultsObservable)?.searchTextObservable?
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {

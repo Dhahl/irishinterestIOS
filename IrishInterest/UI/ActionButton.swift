@@ -10,8 +10,8 @@ final class ActionButton: UIButton {
         let button = ActionButton(type: .custom)
         button.clipsToBounds = true
         button.setTitle(title, for: .normal)
-        button.tintColor = .white
-        button.setTitleColor(.white, for: .normal)
+//        button.tintColor = .white
+//        button.setTitleColor(.white, for: .normal)
         button.setBackgroundColor(Brand.colorPrimary, for: .normal)
         button.setBackgroundColor(Brand.colorPrimary.lighter!, for: .highlighted)
         button.layer.cornerRadius = 15.0

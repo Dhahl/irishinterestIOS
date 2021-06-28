@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "ii_logo_text.pdf",
+      "filename" : "ii_logo_text_dark_mode.pdf",
       "idiom" : "universal"
     }
   ],
@@ -10,6 +10,6 @@
     "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true
+    "auto-scaling" : "auto"
   }
 }

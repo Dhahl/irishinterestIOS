@@ -21,19 +21,17 @@ final class TabViewController: UITabBarController, SearchResultsObservable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "IrishInterest"
-
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
+        let logoView = UIImageView(image: UIImage(named: "logo"))
+        logoView.contentMode = .scaleAspectFit
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width * 0.65, height: 22))
+        logoView.frame = view.frame
+        view.addSubview(logoView)
+        navigationItem.titleView = view
         
         // NAV LEFT
         let burgerImage = UIImage(systemName: "line.horizontal.3")
         let barButton = UIBarButtonItem(image: burgerImage, style: .plain, target: nil, action: nil)
-        barButton.tintColor = Brand.colorTabSelected
         navigationItem.rightBarButtonItem = barButton
-        
-        // TAB BAR
-        tabBar.backgroundColor = Brand.colorTabBarBackground
-        tabBar.unselectedItemTintColor = Brand.colorTabUnselected
-        tabBar.tintColor = Brand.colorTabSelected
     }
 }

@@ -35,19 +35,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
         latest.restorationIdentifier = "latest"
         
-        let published = UIViewController()
+        let published = PublishedBooksViewController()
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
         published.restorationIdentifier = "published"
 
-        let topSearches = UIViewController()
+        let topSearches = TopSearchesViewController()
         topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
         topSearches.restorationIdentifier = "topSearches"
         
-        let comingSoon = UIViewController()
+        let comingSoon = ComingSoonViewController()
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
         comingSoon.restorationIdentifier = "comingSoon"
         
-        let favourites = UIViewController()
+        let favourites = FavouritesViewController()
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         favourites.restorationIdentifier = "favourites"
         
@@ -91,6 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedString.Key.foregroundColor: Brand.colorPrimary,
             NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
         ]
-        UINavigationBar.appearance().titleTextAttributes = navBarAttributes
+//        UINavigationBar.appearance().titleTextAttributes = navBarAttributes
+//        UITabBar.appearance().barTintColor = Brand.colorTabBarBackground
+//        UITabBar.appearance().tintColor = Brand.colorTabSelected
+//        UITabBar.appearance().unselectedItemTintColor = Brand.colorTabUnselected
     }
 }
