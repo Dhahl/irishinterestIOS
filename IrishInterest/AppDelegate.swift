@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         
-        customizeApplication()
-        
         // tabs:
         tabsController.restorationIdentifier = "tabsController"
         let search = SearchViewController()
@@ -86,16 +84,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
             try? store.write(restoreIds)
         }
-    }
-    
-    private func customizeApplication() {
-//        let navBarAttributes = [
-//            NSAttributedString.Key.foregroundColor: Brand.colorPrimary,
-//            NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
-//        ]
-//        UINavigationBar.appearance().titleTextAttributes = navBarAttributes
-//        UITabBar.appearance().barTintColor = Brand.colorTabBarBackground
-//        UITabBar.appearance().tintColor = Brand.colorTabSelected
-//        UITabBar.appearance().unselectedItemTintColor = Brand.colorTabUnselected
     }
 }
