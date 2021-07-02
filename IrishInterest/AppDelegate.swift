@@ -9,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.portrait
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
+    let webService: WebService = WebServiceLocal()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -24,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         search.restorationIdentifier = "search"
         
         let authors = AuthorsViewController()
+        authors.setup(webService: webService)
         authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
         authors.restorationIdentifier = "authors"
         

@@ -8,10 +8,17 @@ import RxCocoa
 final class AuthorsViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
+    private var webService: WebService!
+    private var tableView: UITableView = UITableView()
+    
+    func setup(webService: WebService) {
+        self.webService = webService
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AuthorsViewController")
+        UI.fit(tableView, to: view)
     }
     
     override func viewDidAppear(_ animated: Bool) {
