@@ -89,10 +89,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func customizeApplication() {
-        let navBarAttributes = [
-            NSAttributedString.Key.foregroundColor: Brand.colorPrimary,
-            NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
-        ]
+//        let navBarAttributes = [
+//            NSAttributedString.Key.foregroundColor: Brand.colorPrimary,
+//            NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
+//        ]
 //        UINavigationBar.appearance().titleTextAttributes = navBarAttributes
 //        UITabBar.appearance().barTintColor = Brand.colorTabBarBackground
 //        UITabBar.appearance().tintColor = Brand.colorTabSelected

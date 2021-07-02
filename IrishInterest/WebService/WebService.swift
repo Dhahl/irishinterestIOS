@@ -31,7 +31,7 @@ struct WebServiceRemote {
     
     func authors(session: URLSession = .shared,
                  completionHandler: @escaping (Result<ResponseAuthors, ErrorAuthors>) -> Void) -> Void {
-        let url = Const.baseURL
+//        let url = Const.baseURL
 //        session.decodable(with: Const.baseURL,
 //                          method: .get,
 //                          parameters: nil, //FIX THIS ?value=categories&apiKey=testApiKey
