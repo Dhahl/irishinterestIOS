@@ -16,6 +16,7 @@
 		98052C09268F9C6800F3FB45 /* WebServiceLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C08268F9C6800F3FB45 /* WebServiceLocal.swift */; };
 		98052C0C268FB2BF00F3FB45 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C0B268FB2BF00F3FB45 /* Differentiator */; };
 		98052C0E268FB2BF00F3FB45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C0D268FB2BF00F3FB45 /* RxDataSources */; };
+		98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */; };
 		98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67345267E0B7A001F643E /* AppDelegate.swift */; };
 		98A6734F267E0B7B001F643E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6734E267E0B7B001F643E /* Assets.xcassets */; };
 		98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A67350267E0B7B001F643E /* LaunchScreen.storyboard */; };
@@ -62,6 +63,7 @@
 		98052C01268A79D100F3FB45 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
 		98052C06268C08F600F3FB45 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		98052C08268F9C6800F3FB45 /* WebServiceLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceLocal.swift; sourceTree = "<group>"; };
+		98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceRemote.swift; sourceTree = "<group>"; };
 		98A67342267E0B7A001F643E /* IrishInterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IrishInterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67345267E0B7A001F643E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98A6734E267E0B7B001F643E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			children = (
 				98052C06268C08F600F3FB45 /* WebService.swift */,
 				98052C08268F9C6800F3FB45 /* WebServiceLocal.swift */,
+				98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */,
 			);
 			path = WebService;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */,
+				98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */,
 				98BCFF06268800B500555587 /* LocalStore.swift in Sources */,
 				98052BFE268A798400F3FB45 /* TopSearchesViewController.swift in Sources */,
 				98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */,
