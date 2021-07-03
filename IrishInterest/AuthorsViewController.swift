@@ -20,23 +20,18 @@ final class AuthorsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AuthorsViewController")
-        layout.sectionInset = UIEdgeInsets(top: 24, left: 8, bottom: 24, right: 8)
-        layout.minimumLineSpacing = 14
+        layout.sectionInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 8)
+        layout.minimumLineSpacing = 0
         let itemWidth = UIScreen.main.bounds.smallestSide - 16
-        layout.itemSize = CGSize(width: itemWidth, height: 32.0)
+        layout.itemSize = CGSize(width: itemWidth, height: 48.0)
 
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collectionView.backgroundColor = view.backgroundColor
+        collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
-        webService.authors()
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
-                cell.update(title: model.fullName)
-            }
-            .disposed(by: disposeBag)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,6 +45,12 @@ final class AuthorsViewController: UIViewController {
                 }
                 print("searching for Author: \(value)")
             })
+            .disposed(by: disposeBag)
+        
+        webService.authors()
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
+                cell.update(title: model.fullName)
+            }
             .disposed(by: disposeBag)
     }
     
