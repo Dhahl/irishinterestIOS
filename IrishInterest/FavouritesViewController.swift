@@ -12,7 +12,8 @@ final class FavouritesViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let searchController = (tabBarController as! SearchResultsObservable)
-        searchController.hideSearchBar()
+        navigationItem.title = "Favourites"
+        let searchController = (tabBarController as? SearchResultsObservable)
+        searchController?.hideSearchBar()
     }
 }

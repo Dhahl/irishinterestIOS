@@ -13,7 +13,7 @@ final class ComingSoonViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.title = "Coming soon"
-        let searchController = (tabBarController as! SearchResultsObservable)
-        searchController.hideSearchBar()
+        let searchController = (tabBarController as? SearchResultsObservable)
+        searchController?.hideSearchBar()
     }
 }

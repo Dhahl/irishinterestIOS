@@ -38,8 +38,8 @@ final class AuthorsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("AuthorsViewController.viewDidAppear")
-        let searchController = (tabBarController as! SearchResultsObservable)
-        searchController.showSearchBar(withPlaceholder: "Authors")
+        let searchController = (tabBarController as? SearchResultsObservable)
+        searchController?.showSearchBar(withPlaceholder: "Authors")
         webService.authors().bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
             cell.update(title: model.fullName)
         }

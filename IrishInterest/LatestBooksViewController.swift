@@ -16,8 +16,8 @@ final class LatestBooksViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let searchController = (tabBarController as! SearchResultsObservable)
-        searchController.hideSearchBar()
+        let searchController = (tabBarController as? SearchResultsObservable)
+        searchController?.hideSearchBar()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
