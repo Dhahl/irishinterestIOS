@@ -1,30 +1,44 @@
 // Copyright © 2021 Balazs Perlaki-Horvath, PerlakiDigital. All rights reserved.
 
 import Foundation
+import RxSwift
+import URLSessionDecodable
 
-struct WebServiceRemote {
+struct WebServiceRemote: WebService {
+    
+    let decoder = JSONDecoder()
+    let session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     private enum Const {
         static let baseURL: URL = URL(string: "https://irishinterest.ie/API/rest/request.php")!
-        static let decoder = JSONDecoder()
+        static func url(params: String) -> URL {
+            URL(string: params, relativeTo: baseURL)!
+        }
     }
     
-    func authors(session: URLSession = .shared,
-                 completionHandler: @escaping (Result<ResponseAuthors, ErrorAuthors>) -> Void) -> Void {
-//        let url = Const.baseURL
-//        session.decodable(with: Const.baseURL,
-//                          method: .get,
-//                          parameters: nil, //FIX THIS ?value=categories&apiKey=testApiKey
-//                          headers: nil,
-//                          decoder: Const.decoder,
-//                          completionHandler: { result in
-//                            switch result {
-//                            case .success(let authors):
-//                                completionHandler(.success(authors))
-//                            case .failure(let error):
-//                                completionHandler(.failure(ErrorAuthors()))
-//                            }
-//                          }
-//        )
+    func authors() -> Observable<[Author]> {
+        let params: String = "?value=authors&type=getAll&apiKey=testApiKey&offset=0"
+        let request: URLRequest = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) in
+            let response: ResponseAuthors = try decode(data: data)
+            return response.responseSorted
+        }.catchAndReturn([])
+    }
+    
+    func authors(searching: Observable<String?>) -> Observable<[Author]> {
+        .just([])
+    }
+    
+    func categories() -> Observable<[Category]> {
+        let params: String = "?value=categories&apiKey=testApiKey"
+        let request: URLRequest = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) in
+            let response: ResponseCategories = try decode(data: data)
+            return response.responseSorted
+        }.catchAndReturn([])
     }
 }

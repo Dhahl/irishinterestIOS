@@ -23,7 +23,7 @@ final class TextViewCell: UICollectionViewCell {
         let selectionView = UIView(frame: .zero)
         selectionView.isUserInteractionEnabled = false
         selectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        selectionView.backgroundColor = .secondarySystemFill
+        selectionView.backgroundColor = .systemFill
         selectedBackgroundView = selectionView
     }
     

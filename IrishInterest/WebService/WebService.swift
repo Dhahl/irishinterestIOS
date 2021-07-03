@@ -6,14 +6,24 @@ import URLSessionDecodable
 import UIKit
 
 protocol WebService {
-    func authors(searching: Observable<String?>) -> Observable<[Author]>
+    var decoder: JSONDecoder { get }
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
-    func decode<T: Decodable>(data: Data) throws -> T
+}
+
+extension WebService {
+    func decode<T: Decodable>(data: Data) throws -> T {
+        try decoder.decode(T.self, from: data)
+    }
 }
 
 struct ResponseAuthors: Decodable {
     let response: [Author]
+    var responseSorted: [Author] {
+        response.sorted { (a: Author, b: Author) in
+            a.fullName <= b.fullName
+        }
+    }
 }
 
 struct ErrorAuthors: Error {
@@ -30,6 +40,11 @@ struct Author: Decodable {
 
 struct ResponseCategories: Decodable {
     let response: [Category]
+    var responseSorted: [Category] {
+        response.sorted { (a: Category, b: Category) in
+            a.displayName <= b.displayName
+        }
+    }
 }
 
 struct Category: Decodable {
@@ -38,6 +53,6 @@ struct Category: Decodable {
     let Description: String
     
     var displayName: String {
-        Name
+        Name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

@@ -10,8 +10,8 @@ protocol SearchResultsObservable {
     func hideSearchBar()
 }
 extension SearchResultsObservable {
-    var searchTextObservable: Observable<String?> {
-        searchBar.rx.text
+    var searchTextObservable: Observable<String> {
+        searchBar.rx.text.orEmpty
             .subscribe(on: MainScheduler.instance)
             .distinctUntilChanged()
             .debounce( RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)

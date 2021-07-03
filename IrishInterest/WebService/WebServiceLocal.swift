@@ -4,6 +4,9 @@ import Foundation
 import RxSwift
 
 struct WebServiceLocal: WebService {
+    
+    let decoder = JSONDecoder()
+    
     func categories() -> Observable<[Category]> {
         let s: String = """
         {
@@ -258,7 +261,9 @@ struct WebServiceLocal: WebService {
         }
         """
         let response: ResponseCategories = try! decode(data: s.data(using: .utf8)!)
-        return .just(response.response)
+        return .just(response.response.sorted(by: { (a: Category, b: Category) in
+            a.displayName <= b.displayName
+        }))
     }
     
     func authors() -> Observable<[Author]> {
@@ -665,21 +670,5 @@ struct WebServiceLocal: WebService {
             a.fullName <= b.fullName
         }))
         return authors
-    }
-    
-    func authors(searching: Observable<String?>) -> Observable<[Author]> {
-        return searching.flatMap { (value: String?) -> Observable<[Author]> in
-            let authors: Observable<[Author]> = authors()
-            guard let searchValue = value else { return authors }
-            return authors.map { (list: [Author]) -> [Author] in
-                list.filter { (author: Author) -> Bool in
-                    author.fullName.lowercased().contains(searchValue.lowercased())
-                }
-            }
-        }
-    }
-    
-    func decode<T: Decodable>(data: Data) throws -> T {
-        try JSONDecoder().decode(T.self, from: data)
     }
 }
