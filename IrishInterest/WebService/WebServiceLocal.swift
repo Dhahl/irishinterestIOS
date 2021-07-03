@@ -1,9 +1,10 @@
 // Copyright © 2021 Balazs Perlaki-Horvath, PerlakiDigital. All rights reserved.
 
 import Foundation
+import RxSwift
 
 struct WebServiceLocal: WebService {
-    func author() -> Result<[Author], ErrorAuthors> {
+    func authors() -> Observable<[Author]> {
         let s: String = """
     {
         "response": [
@@ -402,6 +403,9 @@ struct WebServiceLocal: WebService {
     }
 """
         let response: ResponseAuthors = try! JSONDecoder().decode(ResponseAuthors.self, from: s.data(using: .utf8)!)
-        return .success(response.response)
+        
+        return .just(response.response.sorted(by: { (a: Author, b: Author) in
+            a.fullName <= b.fullName
+        }))
     }
 }

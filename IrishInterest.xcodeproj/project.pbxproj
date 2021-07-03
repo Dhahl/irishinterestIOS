@@ -17,6 +17,7 @@
 		98052C0C268FB2BF00F3FB45 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C0B268FB2BF00F3FB45 /* Differentiator */; };
 		98052C0E268FB2BF00F3FB45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C0D268FB2BF00F3FB45 /* RxDataSources */; };
 		98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */; };
+		98052C13268FB4AC00F3FB45 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C12268FB4AC00F3FB45 /* TextViewCell.swift */; };
 		98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67345267E0B7A001F643E /* AppDelegate.swift */; };
 		98A6734F267E0B7B001F643E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6734E267E0B7B001F643E /* Assets.xcassets */; };
 		98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A67350267E0B7B001F643E /* LaunchScreen.storyboard */; };
@@ -64,6 +65,7 @@
 		98052C06268C08F600F3FB45 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		98052C08268F9C6800F3FB45 /* WebServiceLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceLocal.swift; sourceTree = "<group>"; };
 		98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceRemote.swift; sourceTree = "<group>"; };
+		98052C12268FB4AC00F3FB45 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		98A67342267E0B7A001F643E /* IrishInterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IrishInterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67345267E0B7A001F643E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98A6734E267E0B7B001F643E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -120,6 +122,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		98052C11268FB49800F3FB45 /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				98052C12268FB4AC00F3FB45 /* TextViewCell.swift */,
+			);
+			path = Collections;
+			sourceTree = "<group>";
+		};
 		98A67339267E0B7A001F643E = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +153,7 @@
 		98A67344267E0B7A001F643E /* IrishInterest */ = {
 			isa = PBXGroup;
 			children = (
+				98052C11268FB49800F3FB45 /* Collections */,
 				98BCFF002688008F00555587 /* LocalStore */,
 				98A6738C267E8386001F643E /* WebService */,
 				98A67379267E187B001F643E /* UI */,
@@ -374,6 +385,7 @@
 				98A67381267E189D001F643E /* UIColorExt.swift in Sources */,
 				98BCFF07268800B500555587 /* FileDataIO.swift in Sources */,
 				98052BFC268A791300F3FB45 /* PublishedBooksViewController.swift in Sources */,
+				98052C13268FB4AC00F3FB45 /* TextViewCell.swift in Sources */,
 				98A67380267E189D001F643E /* ActionButton.swift in Sources */,
 				98A67382267E189D001F643E /* VStack.swift in Sources */,
 			);

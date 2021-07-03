@@ -12,4 +12,7 @@ enum Brand {
     
     static let colorError = UIColor.colorFromRGB(0xd83232)
     static let colorOK = UIColor.colorFromRGB(0x379A49)
+    
+    static let colorCellSelectedBackground = UIColor.colorFromRGB(0xE5E5E5, alpha: 0.15)
+    static let colorCellHighlightedBackground = UIColor.colorFromRGB(0xFAFAFA, alpha: 0.25)
 }
