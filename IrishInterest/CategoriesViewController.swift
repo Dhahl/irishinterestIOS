@@ -8,10 +8,30 @@ import RxCocoa
 final class CategoriesViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
+    private var webService: WebService!
+    private let layout = UICollectionViewFlowLayout()
+    private var collectionView: UICollectionView!
+    
+    func setup(webService: WebService) {
+        self.webService = webService
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("CategoriesViewController.viewDidLoad")
+        
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
+        layout.minimumLineSpacing = 0
+        let itemWidth = UIScreen.main.bounds.smallestSide - 16
+        layout.itemSize = CGSize(width: itemWidth, height: 48.0)
+
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        collectionView.backgroundColor = .systemBackground
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
+        
+        view.addSubview(collectionView)
+        UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -19,15 +39,10 @@ final class CategoriesViewController: UIViewController {
         title = "Categories"
         let searchController = (tabBarController as? SearchResultsObservable)
         searchController?.showSearchBar(withPlaceholder: "Categories")
-        searchController?.searchTextObservable
-            .subscribe(onNext: { (searchValue: String?) in
-                guard let value = searchValue, !value.isEmpty else {
-                    //clear search result
-                    return
-                }
-                print("searching for Category: \(value)")
-            })
-            .disposed(by: disposeBag)
+        webService.categories().bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Category, cell: TextViewCell) in
+            cell.update(title: model.displayName)
+        }
+        .disposed(by: disposeBag)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

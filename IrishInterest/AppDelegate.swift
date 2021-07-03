@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         authors.restorationIdentifier = "authors"
         
         let categories = CategoriesViewController()
+        categories.setup(webService: webService)
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
         categories.restorationIdentifier = "categories"
         

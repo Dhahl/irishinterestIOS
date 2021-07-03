@@ -4,6 +4,263 @@ import Foundation
 import RxSwift
 
 struct WebServiceLocal: WebService {
+    func categories() -> Observable<[Category]> {
+        let s: String = """
+        {
+            "response": [
+                {
+                    "id": 1,
+                    "Name": "Art",
+                    "Description": "Art"
+                },
+                {
+                    "id": 2,
+                    "Name": "History",
+                    "Description": "History"
+                },
+                {
+                    "id": 5,
+                    "Name": "Autobiography",
+                    "Description": "autobiography"
+                },
+                {
+                    "id": 6,
+                    "Name": "Biography",
+                    "Description": "biography"
+                },
+                {
+                    "id": 7,
+                    "Name": "Business",
+                    "Description": "business"
+                },
+                {
+                    "id": 8,
+                    "Name": "Culture",
+                    "Description": "culture"
+                },
+                {
+                    "id": 9,
+                    "Name": "Cuisine",
+                    "Description": "cuisine"
+                },
+                {
+                    "id": 10,
+                    "Name": "Education",
+                    "Description": "education"
+                },
+                {
+                    "id": 11,
+                    "Name": "Fiction",
+                    "Description": "fiction"
+                },
+                {
+                    "id": 12,
+                    "Name": "Childrens",
+                    "Description": "childrens"
+                },
+                {
+                    "id": 13,
+                    "Name": "Film",
+                    "Description": "film"
+                },
+                {
+                    "id": 14,
+                    "Name": "Geology",
+                    "Description": "geology"
+                },
+                {
+                    "id": 15,
+                    "Name": "History culture",
+                    "Description": "history culture"
+                },
+                {
+                    "id": 17,
+                    "Name": "Hobby",
+                    "Description": "hobby"
+                },
+                {
+                    "id": 18,
+                    "Name": "Music",
+                    "Description": "music"
+                },
+                {
+                    "id": 19,
+                    "Name": "Non-fiction",
+                    "Description": "non-fiction"
+                },
+                {
+                    "id": 20,
+                    "Name": "Photography",
+                    "Description": "photography"
+                },
+                {
+                    "id": 21,
+                    "Name": "Play",
+                    "Description": "play"
+                },
+                {
+                    "id": 23,
+                    "Name": "Poetry",
+                    "Description": "poetry"
+                },
+                {
+                    "id": 24,
+                    "Name": "Politics",
+                    "Description": "politics"
+                },
+                {
+                    "id": 25,
+                    "Name": "Society",
+                    "Description": "society"
+                },
+                {
+                    "id": 27,
+                    "Name": "Sports",
+                    "Description": "sports"
+                },
+                {
+                    "id": 28,
+                    "Name": "Tourism",
+                    "Description": "tourism"
+                },
+                {
+                    "id": 29,
+                    "Name": "Places to stay",
+                    "Description": "places to stay"
+                },
+                {
+                    "id": 30,
+                    "Name": "Holidays",
+                    "Description": "holidays"
+                },
+                {
+                    "id": 31,
+                    "Name": "Travel",
+                    "Description": "travel"
+                },
+                {
+                    "id": 33,
+                    "Name": "Guide book/Reference book",
+                    "Description": "Guide book/Reference book"
+                },
+                {
+                    "id": 34,
+                    "Name": "Gardens",
+                    "Description": "Gardens/Gardening"
+                },
+                {
+                    "id": 35,
+                    "Name": "Archaeology",
+                    "Description": "Archaeology"
+                },
+                {
+                    "id": 36,
+                    "Name": "Young Adult/Teen",
+                    "Description": "Young Adult/Teen"
+                },
+                {
+                    "id": 37,
+                    "Name": "Religion",
+                    "Description": "Religion"
+                },
+                {
+                    "id": 38,
+                    "Name": "Lifestyle",
+                    "Description": "Lifestyle"
+                },
+                {
+                    "id": 39,
+                    "Name": "Irish Language",
+                    "Description": "Irish Language"
+                },
+                {
+                    "id": 40,
+                    "Name": "Memoir",
+                    "Description": "Memoir"
+                },
+                {
+                    "id": 41,
+                    "Name": "Animals",
+                    "Description": "Animals"
+                },
+                {
+                    "id": 42,
+                    "Name": "Humor",
+                    "Description": "Humor"
+                },
+                {
+                    "id": 43,
+                    "Name": "Historical Fiction ",
+                    "Description": "Historical Fiction "
+                },
+                {
+                    "id": 44,
+                    "Name": "Journal",
+                    "Description": "Journal"
+                },
+                {
+                    "id": 45,
+                    "Name": "Humanities",
+                    "Description": "Humanities"
+                },
+                {
+                    "id": 46,
+                    "Name": "Language",
+                    "Description": "Language "
+                },
+                {
+                    "id": 47,
+                    "Name": "Literature ",
+                    "Description": "Literature "
+                },
+                {
+                    "id": 48,
+                    "Name": "Law ",
+                    "Description": "Law "
+                },
+                {
+                    "id": 49,
+                    "Name": "Medicine ",
+                    "Description": "Medicine "
+                },
+                {
+                    "id": 50,
+                    "Name": "Science ",
+                    "Description": "Science "
+                },
+                {
+                    "id": 51,
+                    "Name": "Earth Sciences ",
+                    "Description": "Earth Sciences "
+                },
+                {
+                    "id": 52,
+                    "Name": "Technology",
+                    "Description": "Technology "
+                },
+                {
+                    "id": 53,
+                    "Name": "Children ",
+                    "Description": "Children "
+                },
+                {
+                    "id": 54,
+                    "Name": "Unknown E",
+                    "Description": "Unknown E"
+                },
+                {
+                    "id": 55,
+                    "Name": "Unknown T",
+                    "Description": "Unknown  T"
+                }
+            ],
+            "token": null
+        }
+        """
+        let response: ResponseCategories = try! decode(data: s.data(using: .utf8)!)
+        return .just(response.response)
+    }
+    
     func authors() -> Observable<[Author]> {
         let s: String = """
     {
@@ -420,5 +677,9 @@ struct WebServiceLocal: WebService {
                 }
             }
         }
+    }
+    
+    func decode<T: Decodable>(data: Data) throws -> T {
+        try JSONDecoder().decode(T.self, from: data)
     }
 }
