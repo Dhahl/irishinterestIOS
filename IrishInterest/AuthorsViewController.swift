@@ -20,7 +20,8 @@ final class AuthorsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AuthorsViewController")
-        layout.sectionInset = UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 8)
+        
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
         layout.minimumLineSpacing = 0
         let itemWidth = UIScreen.main.bounds.smallestSide - 16
         layout.itemSize = CGSize(width: itemWidth, height: 48.0)
@@ -37,21 +38,12 @@ final class AuthorsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("AuthorsViewController.viewDidAppear")
-        (tabBarController as? SearchResultsObservable)?.searchTextObservable?
-            .subscribe(onNext: { (searchValue: String?) in
-                guard let value = searchValue, !value.isEmpty else {
-                    //clear search result
-                    return
-                }
-                print("searching for Author: \(value)")
-            })
-            .disposed(by: disposeBag)
-        
-        webService.authors()
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
-                cell.update(title: model.fullName)
-            }
-            .disposed(by: disposeBag)
+        let searchController = (tabBarController as! SearchResultsObservable)
+        searchController.showSearchBar(withPlaceholder: "Authors")
+        webService.authors().bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
+            cell.update(title: model.fullName)
+        }
+        .disposed(by: disposeBag)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

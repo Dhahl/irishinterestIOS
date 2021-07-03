@@ -6,6 +6,7 @@ import URLSessionDecodable
 import UIKit
 
 protocol WebService {
+    func authors(searching: Observable<String?>) -> Observable<[Author]>
     func authors() -> Observable<[Author]>
 }
 

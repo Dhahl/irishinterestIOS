@@ -9,4 +9,11 @@ final class PublishedBooksViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.title = "Published Books"
+        let searchController = (tabBarController as! SearchResultsObservable)
+        searchController.hideSearchBar()
+    }
 }

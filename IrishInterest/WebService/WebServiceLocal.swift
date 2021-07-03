@@ -404,8 +404,21 @@ struct WebServiceLocal: WebService {
 """
         let response: ResponseAuthors = try! JSONDecoder().decode(ResponseAuthors.self, from: s.data(using: .utf8)!)
         
-        return .just(response.response.sorted(by: { (a: Author, b: Author) in
+        let authors: Observable<[Author]> = .just(response.response.sorted(by: { (a: Author, b: Author) in
             a.fullName <= b.fullName
         }))
+        return authors
+    }
+    
+    func authors(searching: Observable<String?>) -> Observable<[Author]> {
+        return searching.flatMap { (value: String?) -> Observable<[Author]> in
+            let authors: Observable<[Author]> = authors()
+            guard let searchValue = value else { return authors }
+            return authors.map { (list: [Author]) -> [Author] in
+                list.filter { (author: Author) -> Bool in
+                    author.fullName.lowercased().contains(searchValue.lowercased())
+                }
+            }
+        }
     }
 }

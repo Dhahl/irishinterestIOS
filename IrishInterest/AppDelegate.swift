@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
         categories.restorationIdentifier = "categories"
         
-        let latest = LatestViewController()
+        let latest = LatestBooksViewController()
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
         latest.restorationIdentifier = "latest"
         

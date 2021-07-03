@@ -9,4 +9,11 @@ final class TopSearchesViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.title = "Top Searches"
+        let searchController = (tabBarController as! SearchResultsObservable)
+        searchController.hideSearchBar()
+    }
 }

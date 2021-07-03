@@ -16,7 +16,7 @@ final class CategoriesViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        (tabBarController as? SearchResultsObservable)?.searchTextObservable?
+        (tabBarController as? SearchResultsObservable)?.searchTextObservable
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {
                     //clear search result

@@ -9,4 +9,10 @@ final class FavouritesViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let searchController = (tabBarController as! SearchResultsObservable)
+        searchController.hideSearchBar()
+    }
 }

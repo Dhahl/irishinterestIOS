@@ -15,13 +15,15 @@ final class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        (tabBarController as? SearchResultsObservable)?.searchTextObservable?
+        let searchController = (tabBarController as! SearchResultsObservable)
+        searchController.showSearchBar(withPlaceholder: "Books or Authors")
+        searchController.searchTextObservable
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {
                     //clear search result
                     return
                 }
-                print("searching for Author: \(value)")
+                print("searching general: \(value)")
             })
             .disposed(by: disposeBag)
     }
