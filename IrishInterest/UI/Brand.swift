@@ -9,6 +9,7 @@ enum Brand {
     static let colorPrimarySuperLight = UIColor.colorFromRGB(0xffff86)
     static let colorPrimaryDark = UIColor.colorFromRGB(0xb88300)
     static let colorPrimaryText = UIColor.black
+    static let colorLoading: UIColor = .secondaryLabel
     
     static let colorError = UIColor.colorFromRGB(0xd83232)
     static let colorOK = UIColor.colorFromRGB(0x379A49)

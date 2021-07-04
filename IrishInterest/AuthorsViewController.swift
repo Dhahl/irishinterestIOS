@@ -12,6 +12,7 @@ final class AuthorsViewController: UIViewController {
     private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
+    private var loading = UIActivityIndicatorView(style: .large)
     
     func setup(webService: WebService) {
         self.webService = webService
@@ -21,6 +22,7 @@ final class AuthorsViewController: UIViewController {
         super.viewDidLoad()
         print("AuthorsViewController")
         
+        // collection
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
         layout.minimumLineSpacing = 0
         let itemWidth = UIScreen.main.bounds.smallestSide - 16
@@ -33,6 +35,13 @@ final class AuthorsViewController: UIViewController {
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
+        
+        // loading
+        loading.color = Brand.colorLoading
+        stopLoading()
+        UI.fit(loading, to: view)
+        loading.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loading.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -40,7 +49,11 @@ final class AuthorsViewController: UIViewController {
         print("AuthorsViewController.viewDidAppear")
         let searchController = (tabBarController as? SearchResultsObservable)
         searchController?.showSearchBar(withPlaceholder: "Authors")
-        webService.authors().bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
+        
+        webService.authors()
+            .observe(on: MainScheduler.instance)
+            .do(afterCompleted: { [weak self] in self?.stopLoading() }, onSubscribed: { [weak self] in self?.startLoading() })
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
             cell.update(title: model.fullName)
         }
         .disposed(by: disposeBag)
@@ -49,6 +62,16 @@ final class AuthorsViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
+    }
+    
+    func startLoading() {
+        loading.startAnimating()
+        loading.isHidden = false
+    }
+    
+    func stopLoading() {
+        loading.stopAnimating()
+        loading.isHidden = true
     }
 }
 
