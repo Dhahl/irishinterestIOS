@@ -4,31 +4,42 @@ import Foundation
 import UIKit
 import RxSwift
 
-struct Loading {
+
+struct Loader: Loading {
     
     private var loading = UIActivityIndicatorView(style: .large)
     
     init(view: UIView) {
         loading.color = Brand.colorLoading
-        stopLoading()
+        stop()
         UI.fit(loading, to: view)
         loading.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loading.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
-    func subscribe(to observable: Observable<Any>) -> Observable<Any> {
-        observable
-            .observe(on: MainScheduler.instance)
-            .do(afterCompleted: { [self] in self.stopLoading() }, onSubscribed: { [self] in self.startLoading() })
+    func start() {
+        DispatchAsyncIfMain {
+            loading.startAnimating()
+            loading.isHidden = false
+        }
     }
     
-    func startLoading() {
-        loading.startAnimating()
-        loading.isHidden = false
+    func stop() {
+        DispatchAsyncIfMain {
+            loading.stopAnimating()
+            loading.isHidden = true
+        }
     }
-    
-    func stopLoading() {
-        loading.stopAnimating()
-        loading.isHidden = true
+}
+
+public protocol Loading {
+    func start()
+    func stop()
+}
+
+extension ObservableType {
+    public func doLoading(with loading: Loading) -> Observable<Element> {
+            self.do(afterCompleted: { [loading] in loading.stop() },
+                onSubscribed: { [loading] in loading.start() })
     }
 }

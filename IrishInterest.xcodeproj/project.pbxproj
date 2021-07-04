@@ -19,6 +19,7 @@
 		98052C162690EA9700F3FB45 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C152690EA9700F3FB45 /* RxSwift */; };
 		98052C182690EA9700F3FB45 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C172690EA9700F3FB45 /* RxCocoa */; };
 		98052C1A2691C88800F3FB45 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C192691C88700F3FB45 /* Loading.swift */; };
+		98052C1D2691DA8600F3FB45 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C1C2691DA8600F3FB45 /* Dispatch.swift */; };
 		98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67345267E0B7A001F643E /* AppDelegate.swift */; };
 		98A6734F267E0B7B001F643E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6734E267E0B7B001F643E /* Assets.xcassets */; };
 		98A67352267E0B7B001F643E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A67350267E0B7B001F643E /* LaunchScreen.storyboard */; };
@@ -68,6 +69,7 @@
 		98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceRemote.swift; sourceTree = "<group>"; };
 		98052C12268FB4AC00F3FB45 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		98052C192691C88700F3FB45 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		98052C1C2691DA8600F3FB45 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		98A67342267E0B7A001F643E /* IrishInterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IrishInterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A67345267E0B7A001F643E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98A6734E267E0B7B001F643E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,6 +134,14 @@
 			path = Collections;
 			sourceTree = "<group>";
 		};
+		98052C1B2691DA7800F3FB45 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				98052C1C2691DA8600F3FB45 /* Dispatch.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		98A67339267E0B7A001F643E = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +165,7 @@
 		98A67344267E0B7A001F643E /* IrishInterest */ = {
 			isa = PBXGroup;
 			children = (
+				98052C1B2691DA7800F3FB45 /* Utilities */,
 				98052C11268FB49800F3FB45 /* Collections */,
 				98BCFF002688008F00555587 /* LocalStore */,
 				98A6738C267E8386001F643E /* WebService */,
@@ -392,6 +403,7 @@
 				98052C13268FB4AC00F3FB45 /* TextViewCell.swift in Sources */,
 				98A67380267E189D001F643E /* ActionButton.swift in Sources */,
 				98A67382267E189D001F643E /* VStack.swift in Sources */,
+				98052C1D2691DA8600F3FB45 /* Dispatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
