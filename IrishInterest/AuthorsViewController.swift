@@ -39,12 +39,21 @@ final class AuthorsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("AuthorsViewController.viewDidAppear")
-        let searchController = (tabBarController as? SearchResultsObservable)
-        searchController?.showSearchBar(withPlaceholder: "Authors")
+        guard let searchController = (tabBarController as? SearchResultsObservable) else {
+            fatalError("tabBarController is not a SearchResultsObservable")
+        }
+        searchController.showSearchBar(withPlaceholder: "Authors")
         
-        webService.authors()
-            .doLoading(with: Loader(view: view))
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
+        // local filtering from observer without re-triggering fetch
+        Observable.combineLatest(searchController.searchTextObservable,
+                                 webService.authors()
+                                    .doLoading(with: Loader(view: view))) { (query: String, list: [Author]) -> [Author] in
+            guard !query.isEmpty else { return list }
+            let queryLower = query.lowercased()
+            return list.filter { (item: Author) -> Bool in
+                item.fullName.lowercased().contains(queryLower)
+            }
+        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
             cell.update(title: model.fullName)
         }
         .disposed(by: disposeBag)
@@ -52,6 +61,8 @@ final class AuthorsViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // reset search entry on switching tabs
+        (tabBarController as? SearchResultsObservable)?.searchBar.text = ""
         disposeBag = DisposeBag()
     }
 }

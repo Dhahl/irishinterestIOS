@@ -14,7 +14,7 @@ extension SearchResultsObservable {
         searchBar.rx.text.orEmpty
             .subscribe(on: MainScheduler.instance)
             .distinctUntilChanged()
-            .debounce( RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
+            .debounce( RxTimeInterval.milliseconds(150), scheduler: MainScheduler.instance)
     }
     
     func showSearchBar(withPlaceholder placeholder: String) {

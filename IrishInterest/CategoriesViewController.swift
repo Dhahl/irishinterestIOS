@@ -41,9 +41,10 @@ final class CategoriesViewController: UIViewController {
             fatalError("tabBarController is not a SearchResultsObservable")
         }
         searchController.showSearchBar(withPlaceholder: "Categories")
-        // local filtering from behaviour subject, without re-triggering
+        // local filtering from observer without re-triggering fetch
         Observable.combineLatest(searchController.searchTextObservable,
-                                 webService.categories()) { (query: String, list: [Category]) -> [Category] in
+                                 webService.categories()
+                                    .doLoading(with: Loader(view: view))) { (query: String, list: [Category]) -> [Category] in
             guard !query.isEmpty else { return list }
             let queryLower = query.lowercased()
             return list.filter { (category: Category) -> Bool in
@@ -57,6 +58,8 @@ final class CategoriesViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // reset search entry on switching tabs
+        (tabBarController as? SearchResultsObservable)?.searchBar.text = ""
         disposeBag = DisposeBag()
     }
 }
