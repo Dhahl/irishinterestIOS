@@ -11,7 +11,6 @@ final class LatestBooksViewController: UIViewController {
     private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
-    private var booksObservable: Observable<[Book]>?
     
     func setup(webService: WebService) {
         self.webService = webService
@@ -40,8 +39,7 @@ final class LatestBooksViewController: UIViewController {
         let searchController = (tabBarController as? SearchResultsObservable)
         searchController?.hideSearchBar()
         
-        booksObservable = webService.books(page: 0)
-        booksObservable?
+        webService.books(page: 0)
             .doLoading(with: Loader(view: view))
             .debug("books")
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) {
