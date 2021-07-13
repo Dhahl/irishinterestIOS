@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categories.restorationIdentifier = "categories"
         
         let latest = LatestBooksViewController()
+        latest.setup(webService: webService)
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
         latest.restorationIdentifier = "latest"
         

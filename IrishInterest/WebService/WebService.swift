@@ -9,6 +9,7 @@ protocol WebService {
     var decoder: JSONDecoder { get }
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
+    func books(page: Int) -> Observable<[Book]>
 }
 
 extension WebService {
@@ -24,6 +25,10 @@ struct ResponseAuthors: Decodable {
             a.fullName <= b.fullName
         }
     }
+}
+
+struct ResponseBooks: Decodable {
+    let response: [Book]
 }
 
 struct ErrorAuthors: Error {
@@ -55,4 +60,23 @@ struct Category: Decodable {
     var displayName: String {
         Name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+}
+
+struct Book: Decodable {
+    let author: String
+    let authorid: Int
+    let title: String
+    let genre: String
+    let categoryid: Int
+    let area: String
+    let synopsis: String
+    let id: Int
+    let image: String
+    var imageURL: URL? {
+        guard !image.isEmpty else { return nil }
+        return URL(string: "https://irishinterest.ie/uploads/\(image)")
+    }
+    let isbn: String?
+    let isbn13: String
+    let publisher: String
 }
