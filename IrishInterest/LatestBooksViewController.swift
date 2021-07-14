@@ -20,10 +20,17 @@ final class LatestBooksViewController: UIViewController {
         super.viewDidLoad()
         print("LatestBooksViewController")
         
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
-        layout.minimumLineSpacing = 0
-        let itemWidth = UIScreen.main.bounds.smallestSide - 16
-        layout.itemSize = CGSize(width: itemWidth, height: 48.0)
+        // 8 [ ] 8 [ ] 8
+        let border: CGFloat = 8
+        let columns: CGFloat = 2
+        let screenWidth = UIScreen.main.bounds.smallestSide
+        let columnWidth = ceil((screenWidth - 24) / columns)   // (3 * 8 border) = 24
+        let rightMargin = screenWidth - columns * columnWidth - columns * border // compensate for rounding with the right margin
+        
+        layout.sectionInset = UIEdgeInsets(top: border, left: border, bottom: border, right: rightMargin)
+        layout.minimumLineSpacing = border
+        layout.minimumInteritemSpacing = border / 2
+        layout.itemSize = CGSize(width: columnWidth, height: 270)
 
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground

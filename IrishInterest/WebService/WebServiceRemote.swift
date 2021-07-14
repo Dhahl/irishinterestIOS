@@ -14,7 +14,7 @@ struct WebServiceRemote: WebService {
     }
     
     private enum Const {
-        static let baseURL: URL = URL(string: "https://irishinterest.ie/API/rest/request.php")!
+        static let baseURL: URL = URL(string: "https://irishinterest.ie/API2/rest/request.php")!
         static func url(params: String) -> URL {
             URL(string: params, relativeTo: baseURL)!
         }

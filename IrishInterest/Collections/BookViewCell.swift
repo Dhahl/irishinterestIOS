@@ -6,7 +6,8 @@ import UIKit
 final class BookViewCell: UICollectionViewCell {
     
     let titleLabel = UILabel()
-    let separator = UIView()
+    let authorLabel = UILabel()
+    let imageView = UIImageView()
     
     public override var isHighlighted: Bool {
         didSet {
@@ -32,14 +33,29 @@ final class BookViewCell: UICollectionViewCell {
     }
     
     func update(book: Book) {
-        UI.body(label: titleLabel, text: book.title, nrOfLines: 1)
-        UI.fit(titleLabel, to: self.contentView, left: 16, right: 16)
-        titleLabel.textColor = .label
-        titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
+        imageView.backgroundColor = .tertiarySystemFill
         
-        UI.fit(separator, to: self.contentView, left: 16, right: 16, bottom: 0)
-        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        separator.backgroundColor = .systemFill
+        UI.fit(imageView, to: contentView, left: 0, right: 0, top: 0)
+        imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        
+        UI.caption1(label: authorLabel, text: book.author, nrOfLines: 1)
+        UI.fit(authorLabel, to: contentView, left: 0, right: 0)
+        authorLabel.textColor = .secondaryLabel
+        authorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true // discussable
+        authorLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        authorLabel.lineBreakMode = .byTruncatingTail
+        authorLabel.adjustsFontSizeToFitWidth = false
+        
+        UI.body(label: titleLabel, text: book.title.trimmingCharacters(in: ["'", " "]), nrOfLines: 1)
+        UI.fit(titleLabel, to: self.contentView, left: 0, right: 0)
+        titleLabel.textColor = .label
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.adjustsFontSizeToFitWidth = false
+        titleLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: authorLabel.topAnchor, constant: 0).isActive = true
+
+        backgroundColor = .clear
     }
     
 }

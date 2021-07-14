@@ -65,18 +65,32 @@ struct Category: Decodable {
 struct Book: Decodable {
     let author: String
     let authorid: Int
-    let title: String
-    let genre: String
-    let categoryid: Int
-    let area: String
-    let synopsis: String
     let id: Int
     let image: String
+    let title: String
     var imageURL: URL? {
         guard !image.isEmpty else { return nil }
         return URL(string: "https://irishinterest.ie/uploads/\(image)")
     }
-    let isbn: String?
-    let isbn13: String
-    let publisher: String
 }
+
+
+//
+//struct Book: Decodable {
+//    let author: String
+//    let authorid: Int
+//    let title: String
+//    let genre: String
+//    let categoryid: Int
+//    let area: String
+//    let synopsis: String
+//    let id: Int
+//    let image: String
+//    var imageURL: URL? {
+//        guard !image.isEmpty else { return nil }
+//        return URL(string: "https://irishinterest.ie/uploads/\(image)")
+//    }
+//    let isbn: String?
+//    let isbn13: String
+//    let publisher: String
+//}
