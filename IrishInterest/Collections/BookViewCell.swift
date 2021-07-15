@@ -2,12 +2,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 final class BookViewCell: UICollectionViewCell {
     
     let titleLabel = UILabel()
     let authorLabel = UILabel()
     let imageView = UIImageView()
+    var disposeBag = DisposeBag()
     
     public override var isHighlighted: Bool {
         didSet {
@@ -32,18 +34,23 @@ final class BookViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(book: Book) {
+    func update(book: Book, imageLoader: ImageLoader) {
         imageView.backgroundColor = .tertiarySystemFill
         
         UI.fit(imageView, to: contentView, left: 0, right: 0, top: 0)
-        imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         imageView.contentMode = .scaleAspectFit
+        imageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: CellConst.imageRatio).isActive = true
+        
+        imageLoader.load(url: book.imageURL)
+            .bind(to: imageView.rx.image)
+            .disposed(by: disposeBag)
+        
         
         UI.caption1(label: authorLabel, text: book.author, nrOfLines: 1)
         UI.fit(authorLabel, to: contentView, left: 0, right: 0)
         authorLabel.textColor = .secondaryLabel
         authorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true // discussable
-        authorLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        authorLabel.heightAnchor.constraint(equalToConstant: CellConst.authorHeight).isActive = true
         authorLabel.lineBreakMode = .byTruncatingTail
         authorLabel.adjustsFontSizeToFitWidth = false
         
@@ -52,10 +59,20 @@ final class BookViewCell: UICollectionViewCell {
         titleLabel.textColor = .label
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.adjustsFontSizeToFitWidth = false
-        titleLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: authorLabel.topAnchor, constant: 0).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: CellConst.titleHeight).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: authorLabel.topAnchor, constant: -CellConst.titleAuthorGap).isActive = true
+        
+        imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 0).isActive = true
 
         backgroundColor = .clear
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+        titleLabel.text = nil
+        authorLabel.text = nil
+        imageView.image = nil
     }
     
 }

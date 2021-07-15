@@ -5,12 +5,39 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum CellConst {
+    
+    // 8 [ ] 8 [ ] 8
+    static let border: CGFloat = 8
+    static let columns: CGFloat = 2
+    static let totalBorders = (columns + 1) * border
+    
+    static func itemSizeAndSectionInset(forScreenWidth width: CGFloat) -> (CGSize, UIEdgeInsets) {
+        let cellWidth = ceil((width - totalBorders) / columns)
+        // compensate for rounding with the right margin
+        let rightMargin = width - columns * cellWidth - columns * border
+        
+        let size = CGSize(width: cellWidth, height: ceil(cellWidth * CellConst.imageRatio) + CellConst.textAreaFullHeight)
+        let insets = UIEdgeInsets(top: border, left: border, bottom: border, right: rightMargin)
+        return (size, insets)
+    }
+    
+    static let imageRatio: CGFloat = 1.5
+    static let titleHeight: CGFloat = 32
+    static let titleAuthorGap: CGFloat = -8
+    static let authorHeight: CGFloat = 16
+    
+    static let textAreaFullHeight: CGFloat = titleHeight + titleAuthorGap + authorHeight
+    
+}
+
 final class LatestBooksViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
+    private let imageLoader = ImageLoader()
     
     func setup(webService: WebService) {
         self.webService = webService
@@ -20,17 +47,11 @@ final class LatestBooksViewController: UIViewController {
         super.viewDidLoad()
         print("LatestBooksViewController")
         
-        // 8 [ ] 8 [ ] 8
-        let border: CGFloat = 8
-        let columns: CGFloat = 2
         let screenWidth = UIScreen.main.bounds.smallestSide
-        let columnWidth = ceil((screenWidth - 24) / columns)   // (3 * 8 border) = 24
-        let rightMargin = screenWidth - columns * columnWidth - columns * border // compensate for rounding with the right margin
+        (layout.itemSize, layout.sectionInset) = CellConst.itemSizeAndSectionInset(forScreenWidth: screenWidth)
         
-        layout.sectionInset = UIEdgeInsets(top: border, left: border, bottom: border, right: rightMargin)
-        layout.minimumLineSpacing = border
-        layout.minimumInteritemSpacing = border / 2
-        layout.itemSize = CGSize(width: columnWidth, height: 270)
+        layout.minimumLineSpacing = CellConst.border
+        layout.minimumInteritemSpacing = CellConst.border / 2
 
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
@@ -48,10 +69,10 @@ final class LatestBooksViewController: UIViewController {
         
         webService.books(page: 0)
             .doLoading(with: Loader(view: view))
-            .debug("books")
-            .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) {
+            .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
-                cell.update(book: model)
+                guard let strongSelf = self else { return }
+                cell.update(book: model, imageLoader: strongSelf.imageLoader)
             }
             .disposed(by: disposeBag)
     }

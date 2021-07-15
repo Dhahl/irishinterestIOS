@@ -70,7 +70,7 @@ struct Book: Decodable {
     let title: String
     var imageURL: URL? {
         guard !image.isEmpty else { return nil }
-        return URL(string: "https://irishinterest.ie/uploads/\(image)")
+        return URL(string: "https://irishinterest.ie/upload/\(image)")
     }
 }
 
