@@ -43,22 +43,12 @@ struct Author: Decodable {
     }
 }
 
-struct ResponseCategories: Decodable {
-    let response: [Category]
-    var responseSorted: [Category] {
-        response.sorted { (a: Category, b: Category) in
-            a.displayName <= b.displayName
-        }
-    }
-}
-
 struct Category: Decodable {
     let id: Int
-    let Name: String
-    let Description: String
+    let name: String
     
     var displayName: String {
-        Name.trimmingCharacters(in: .whitespacesAndNewlines)
+        name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

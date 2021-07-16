@@ -9,7 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var orientationLock = UIInterfaceOrientationMask.portrait
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
-    let webService: WebService = WebServiceRemote()
+    let webService: WebService = WebServiceRemote() //WebServiceLocal()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

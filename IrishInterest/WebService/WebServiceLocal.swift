@@ -9,261 +9,207 @@ struct WebServiceLocal: WebService {
     
     func categories() -> Observable<[Category]> {
         let s: String = """
-        {
-            "response": [
-                {
-                    "id": 1,
-                    "Name": "Art",
-                    "Description": "Art"
-                },
-                {
-                    "id": 2,
-                    "Name": "History",
-                    "Description": "History"
-                },
-                {
-                    "id": 5,
-                    "Name": "Autobiography",
-                    "Description": "autobiography"
-                },
-                {
-                    "id": 6,
-                    "Name": "Biography",
-                    "Description": "biography"
-                },
-                {
-                    "id": 7,
-                    "Name": "Business",
-                    "Description": "business"
-                },
-                {
-                    "id": 8,
-                    "Name": "Culture",
-                    "Description": "culture"
-                },
-                {
-                    "id": 9,
-                    "Name": "Cuisine",
-                    "Description": "cuisine"
-                },
-                {
-                    "id": 10,
-                    "Name": "Education",
-                    "Description": "education"
-                },
-                {
-                    "id": 11,
-                    "Name": "Fiction",
-                    "Description": "fiction"
-                },
-                {
-                    "id": 12,
-                    "Name": "Childrens",
-                    "Description": "childrens"
-                },
-                {
-                    "id": 13,
-                    "Name": "Film",
-                    "Description": "film"
-                },
-                {
-                    "id": 14,
-                    "Name": "Geology",
-                    "Description": "geology"
-                },
-                {
-                    "id": 15,
-                    "Name": "History culture",
-                    "Description": "history culture"
-                },
-                {
-                    "id": 17,
-                    "Name": "Hobby",
-                    "Description": "hobby"
-                },
-                {
-                    "id": 18,
-                    "Name": "Music",
-                    "Description": "music"
-                },
-                {
-                    "id": 19,
-                    "Name": "Non-fiction",
-                    "Description": "non-fiction"
-                },
-                {
-                    "id": 20,
-                    "Name": "Photography",
-                    "Description": "photography"
-                },
-                {
-                    "id": 21,
-                    "Name": "Play",
-                    "Description": "play"
-                },
-                {
-                    "id": 23,
-                    "Name": "Poetry",
-                    "Description": "poetry"
-                },
-                {
-                    "id": 24,
-                    "Name": "Politics",
-                    "Description": "politics"
-                },
-                {
-                    "id": 25,
-                    "Name": "Society",
-                    "Description": "society"
-                },
-                {
-                    "id": 27,
-                    "Name": "Sports",
-                    "Description": "sports"
-                },
-                {
-                    "id": 28,
-                    "Name": "Tourism",
-                    "Description": "tourism"
-                },
-                {
-                    "id": 29,
-                    "Name": "Places to stay",
-                    "Description": "places to stay"
-                },
-                {
-                    "id": 30,
-                    "Name": "Holidays",
-                    "Description": "holidays"
-                },
-                {
-                    "id": 31,
-                    "Name": "Travel",
-                    "Description": "travel"
-                },
-                {
-                    "id": 33,
-                    "Name": "Guide book/Reference book",
-                    "Description": "Guide book/Reference book"
-                },
-                {
-                    "id": 34,
-                    "Name": "Gardens",
-                    "Description": "Gardens/Gardening"
-                },
-                {
-                    "id": 35,
-                    "Name": "Archaeology",
-                    "Description": "Archaeology"
-                },
-                {
-                    "id": 36,
-                    "Name": "Young Adult/Teen",
-                    "Description": "Young Adult/Teen"
-                },
-                {
-                    "id": 37,
-                    "Name": "Religion",
-                    "Description": "Religion"
-                },
-                {
-                    "id": 38,
-                    "Name": "Lifestyle",
-                    "Description": "Lifestyle"
-                },
-                {
-                    "id": 39,
-                    "Name": "Irish Language",
-                    "Description": "Irish Language"
-                },
-                {
-                    "id": 40,
-                    "Name": "Memoir",
-                    "Description": "Memoir"
-                },
-                {
-                    "id": 41,
-                    "Name": "Animals",
-                    "Description": "Animals"
-                },
-                {
-                    "id": 42,
-                    "Name": "Humor",
-                    "Description": "Humor"
-                },
-                {
-                    "id": 43,
-                    "Name": "Historical Fiction ",
-                    "Description": "Historical Fiction "
-                },
-                {
-                    "id": 44,
-                    "Name": "Journal",
-                    "Description": "Journal"
-                },
-                {
-                    "id": 45,
-                    "Name": "Humanities",
-                    "Description": "Humanities"
-                },
-                {
-                    "id": 46,
-                    "Name": "Language",
-                    "Description": "Language "
-                },
-                {
-                    "id": 47,
-                    "Name": "Literature ",
-                    "Description": "Literature "
-                },
-                {
-                    "id": 48,
-                    "Name": "Law ",
-                    "Description": "Law "
-                },
-                {
-                    "id": 49,
-                    "Name": "Medicine ",
-                    "Description": "Medicine "
-                },
-                {
-                    "id": 50,
-                    "Name": "Science ",
-                    "Description": "Science "
-                },
-                {
-                    "id": 51,
-                    "Name": "Earth Sciences ",
-                    "Description": "Earth Sciences "
-                },
-                {
-                    "id": 52,
-                    "Name": "Technology",
-                    "Description": "Technology "
-                },
-                {
-                    "id": 53,
-                    "Name": "Children ",
-                    "Description": "Children "
-                },
-                {
-                    "id": 54,
-                    "Name": "Unknown E",
-                    "Description": "Unknown E"
-                },
-                {
-                    "id": 55,
-                    "Name": "Unknown T",
-                    "Description": "Unknown  T"
-                }
-            ],
-            "token": null
-        }
+        [
+            {
+                "id": 41,
+                "name": "Animals"
+            },
+            {
+                "id": 35,
+                "name": "Archaeology"
+            },
+            {
+                "id": 1,
+                "name": "Art"
+            },
+            {
+                "id": 5,
+                "name": "Autobiography"
+            },
+            {
+                "id": 6,
+                "name": "Biography"
+            },
+            {
+                "id": 7,
+                "name": "Business"
+            },
+            {
+                "id": 53,
+                "name": "Children"
+            },
+            {
+                "id": 12,
+                "name": "Childrens"
+            },
+            {
+                "id": 9,
+                "name": "Cuisine"
+            },
+            {
+                "id": 8,
+                "name": "Culture"
+            },
+            {
+                "id": 51,
+                "name": "Earth Sciences"
+            },
+            {
+                "id": 10,
+                "name": "Education"
+            },
+            {
+                "id": 11,
+                "name": "Fiction"
+            },
+            {
+                "id": 13,
+                "name": "Film"
+            },
+            {
+                "id": 34,
+                "name": "Gardens"
+            },
+            {
+                "id": 14,
+                "name": "Geology"
+            },
+            {
+                "id": 33,
+                "name": "Guide book/Reference book"
+            },
+            {
+                "id": 43,
+                "name": "Historical Fiction"
+            },
+            {
+                "id": 2,
+                "name": "History"
+            },
+            {
+                "id": 15,
+                "name": "History culture"
+            },
+            {
+                "id": 17,
+                "name": "Hobby"
+            },
+            {
+                "id": 30,
+                "name": "Holidays"
+            },
+            {
+                "id": 45,
+                "name": "Humanities"
+            },
+            {
+                "id": 42,
+                "name": "Humor"
+            },
+            {
+                "id": 39,
+                "name": "Irish Language"
+            },
+            {
+                "id": 44,
+                "name": "Journal"
+            },
+            {
+                "id": 46,
+                "name": "Language"
+            },
+            {
+                "id": 48,
+                "name": "Law"
+            },
+            {
+                "id": 38,
+                "name": "Lifestyle"
+            },
+            {
+                "id": 47,
+                "name": "Literature"
+            },
+            {
+                "id": 49,
+                "name": "Medicine"
+            },
+            {
+                "id": 40,
+                "name": "Memoir"
+            },
+            {
+                "id": 18,
+                "name": "Music"
+            },
+            {
+                "id": 19,
+                "name": "Non-fiction"
+            },
+            {
+                "id": 20,
+                "name": "Photography"
+            },
+            {
+                "id": 29,
+                "name": "Places to stay"
+            },
+            {
+                "id": 21,
+                "name": "Play"
+            },
+            {
+                "id": 23,
+                "name": "Poetry"
+            },
+            {
+                "id": 24,
+                "name": "Politics"
+            },
+            {
+                "id": 37,
+                "name": "Religion"
+            },
+            {
+                "id": 50,
+                "name": "Science"
+            },
+            {
+                "id": 25,
+                "name": "Society"
+            },
+            {
+                "id": 27,
+                "name": "Sports"
+            },
+            {
+                "id": 52,
+                "name": "Technology"
+            },
+            {
+                "id": 28,
+                "name": "Tourism"
+            },
+            {
+                "id": 31,
+                "name": "Travel"
+            },
+            {
+                "id": 54,
+                "name": "Unknown E"
+            },
+            {
+                "id": 55,
+                "name": "Unknown T"
+            },
+            {
+                "id": 36,
+                "name": "Young Adult/Teen"
+            }
+        ]
         """
-        let response: ResponseCategories = try! decode(data: s.data(using: .utf8)!)
-        return .just(response.response.sorted(by: { (a: Category, b: Category) in
-            a.displayName <= b.displayName
-        }))
+        let categories: [Category] = try! decode(data: s.data(using: .utf8)!)
+        return .just(categories)
     }
     
     func authors() -> Observable<[Author]> {

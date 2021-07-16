@@ -37,8 +37,8 @@ struct WebServiceRemote: WebService {
         let params: String = "?value=categories&apiKey=testApiKey"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).map { (data: Data) in
-            let response: ResponseCategories = try decode(data: data)
-            return response.responseSorted
+            let categories: [Category] = try decode(data: data)
+            return categories
         }.catchAndReturn([])
     }
     

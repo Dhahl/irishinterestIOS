@@ -45,7 +45,6 @@ final class BookViewCell: UICollectionViewCell {
             .bind(to: imageView.rx.image)
             .disposed(by: disposeBag)
         
-        
         UI.caption1(label: authorLabel, text: book.author, nrOfLines: 1)
         UI.fit(authorLabel, to: contentView, left: 0, right: 0)
         authorLabel.textColor = .secondaryLabel

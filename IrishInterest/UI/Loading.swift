@@ -39,7 +39,7 @@ public protocol Loading {
 
 extension ObservableType {
     public func doLoading(with loading: Loading) -> Observable<Element> {
-            self.do(afterCompleted: { [loading] in loading.stop() },
-                onSubscribed: { [loading] in loading.start() })
+            self.do(onNext: { [loading] _ in loading.stop() },
+                onSubscribe: { [loading] in loading.start() })
     }
 }
