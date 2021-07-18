@@ -39,7 +39,6 @@ final class BookViewCell: UICollectionViewCell {
         
         UI.fit(imageView, to: contentView, left: 0, right: 0, top: 0)
         imageView.contentMode = .scaleAspectFit
-        imageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: CellConst.imageRatio).isActive = true
         
         imageLoader.load(url: book.imageURL)
             .bind(to: imageView.rx.image)
@@ -48,7 +47,7 @@ final class BookViewCell: UICollectionViewCell {
         UI.caption1(label: authorLabel, text: book.author, nrOfLines: 1)
         UI.fit(authorLabel, to: contentView, left: 0, right: 0)
         authorLabel.textColor = .secondaryLabel
-        authorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true // discussable
+        authorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         authorLabel.heightAnchor.constraint(equalToConstant: CellConst.authorHeight).isActive = true
         authorLabel.lineBreakMode = .byTruncatingTail
         authorLabel.adjustsFontSizeToFitWidth = false
