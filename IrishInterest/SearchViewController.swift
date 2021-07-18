@@ -16,7 +16,8 @@ final class SearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let searchController = (tabBarController as? SearchResultsObservable)
-        searchController?.showSearchBar(withPlaceholder: "Books or Authors")
+        searchController?.hideSearchBar()
+//        searchController?.showSearchBar(withPlaceholder: "Books or Authors")
         searchController?.searchTextObservable
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {

@@ -31,7 +31,6 @@ final class TabViewController: UITabBarController, SearchResultsObservable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-//        hideSearchBar()
         
         // NAV LEFT
         let burgerImage = UIImage(systemName: "line.horizontal.3")
@@ -46,4 +45,8 @@ final class TabViewController: UITabBarController, SearchResultsObservable {
         barTitleView.addSubview(logoImageView)
         navigationItem.titleView = barTitleView
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
 }

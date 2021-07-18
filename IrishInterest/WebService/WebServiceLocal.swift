@@ -618,7 +618,7 @@ struct WebServiceLocal: WebService {
         return authors
     }
     
-    func books(page: Int) -> Observable<[Book]> {
+    func latestBooks(page: Int) -> Observable<[Book]> {
         let s: String = """
         {
             "response": [

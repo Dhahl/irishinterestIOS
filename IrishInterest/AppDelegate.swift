@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latest.restorationIdentifier = "latest"
         
         let published = PublishedBooksViewController()
+        published.setup(webService: webService)
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
         published.restorationIdentifier = "published"
 

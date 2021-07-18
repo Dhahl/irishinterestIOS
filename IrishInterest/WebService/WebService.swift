@@ -9,7 +9,7 @@ protocol WebService {
     var decoder: JSONDecoder { get }
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
-    func books(page: Int) -> Observable<[Book]>
+    func latestBooks(page: Int) -> Observable<[Book]>
 }
 
 extension WebService {
@@ -54,7 +54,7 @@ struct Category: Decodable {
 
 struct Book: Decodable {
     let author: String
-    let authorid: Int
+    let authorid: Int?
     let id: Int
     let image: String
     let title: String

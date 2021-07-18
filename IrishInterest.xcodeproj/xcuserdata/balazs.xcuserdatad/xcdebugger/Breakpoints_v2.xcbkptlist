@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
             endingLineNumber = "49"
-            landmarkName = "books(page:)"
+            landmarkName = "latestBooks(page:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

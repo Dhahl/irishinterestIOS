@@ -4,7 +4,6 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 final class AuthorsViewController: UIViewController {
     
@@ -30,6 +29,7 @@ final class AuthorsViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
         
         view.addSubview(collectionView)

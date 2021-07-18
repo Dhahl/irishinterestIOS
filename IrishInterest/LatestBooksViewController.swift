@@ -31,6 +31,7 @@ final class LatestBooksViewController: UIViewController {
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(BookViewCell.self, forCellWithReuseIdentifier: "BookViewCell")
+        collectionView.keyboardDismissMode = .onDrag
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
@@ -38,10 +39,11 @@ final class LatestBooksViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        navigationItem.title = "Published Books"
         let searchController = (tabBarController as? SearchResultsObservable)
         searchController?.hideSearchBar()
         
-        webService.books(page: 0)
+        webService.latestBooks(page: 91)
             .doLoading(with: Loader(view: view))
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in

@@ -27,6 +27,7 @@ final class CategoriesViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
         
         view.addSubview(collectionView)
