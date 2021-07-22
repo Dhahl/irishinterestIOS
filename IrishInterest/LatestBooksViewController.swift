@@ -12,7 +12,7 @@ final class LatestBooksViewController: UIViewController {
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
     private let imageLoader = ImageLoader()
-    private var models: [Book] = []
+    private var models: [Int: Book] = [:]
     private var onSelected: ((Book) -> Void)?
     
     func setup(webService: WebService, onSelected: @escaping (Book) -> Void) {
@@ -44,7 +44,7 @@ final class LatestBooksViewController: UIViewController {
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
                 guard let strongSelf = self else { return }
-                strongSelf.models.append(model)
+                strongSelf.models[index] = model
                 cell.update(book: model, imageLoader: strongSelf.imageLoader)
             }
             .disposed(by: disposeBag)

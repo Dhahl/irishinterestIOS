@@ -48,7 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latestWrap.restorationIdentifier = "latest"
         
         let published = PublishedBooksViewController()
-        published.setup(webService: webService)
+        published.setup(webService: webService) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book)
+            published.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
         let publishedWrap = UINavigationController(rootViewController: published)
         publishedWrap.restorationIdentifier = "published"

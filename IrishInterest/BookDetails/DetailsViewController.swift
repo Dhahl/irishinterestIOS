@@ -17,27 +17,24 @@ final class DetailsViewController: UIViewController {
     private enum Const {
         static let border: CGFloat = 16
         static let imageWidthPercent: CGFloat = 0.56
-        static let imageRatio: CGFloat = 1.47
+        static let imageRatio: CGFloat = 1.5
     }
     
     func bind(model: Book) {
         self.book = model
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
         
         let stack = VStack(parent: view, lastView: nil)
         
-        // image
+        // IMAGE
         view.addSubview(imageView)
         UI.fit(imageView, to: view.safeAreaLayoutGuide, top: Const.border)
         imageView.backgroundColor = .tertiarySystemFill
         imageView.contentMode = .scaleAspectFit
-        
         imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Const.imageWidthPercent).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Const.imageRatio).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -48,6 +45,7 @@ final class DetailsViewController: UIViewController {
         }
         stack.add(imageView)
         
+        // TITLE
         let titleText: String = book?.title.trimmingCharacters(in: ["'", " "]) ?? ""
         UI.format(.title2, label: titleLabel, text: titleText, nrOfLines: 2)
         titleLabel.textColor = .label
@@ -56,6 +54,7 @@ final class DetailsViewController: UIViewController {
         UI.fit(titleLabel, to: view, left: Const.border, right: Const.border)
         stack.add(titleLabel, constant: Const.border)
         
+        // AUTHOR
         UI.format(.subheadline, label: authorLabel, text: book?.author ?? "", nrOfLines: 2)
         authorLabel.textColor = .secondaryLabel
         authorLabel.adjustsFontSizeToFitWidth = false
