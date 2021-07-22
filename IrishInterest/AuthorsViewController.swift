@@ -5,12 +5,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class AuthorsViewController: UIViewController {
-    
+final class AuthorsViewController: UIViewController, SearchResultsObservable {    
     private var disposeBag = DisposeBag()
     private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
+    let searchBar = UISearchBar()
     
     func setup(webService: WebService) {
         self.webService = webService
@@ -39,13 +39,10 @@ final class AuthorsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("AuthorsViewController.viewDidAppear")
-        guard let searchController = (tabBarController as? SearchResultsObservable) else {
-            fatalError("tabBarController is not a SearchResultsObservable")
-        }
-        searchController.showSearchBar(withPlaceholder: "Authors")
+        showSearchBar(withPlaceholder: "Authors")
         
         // local filtering from observer without re-triggering fetch
-        Observable.combineLatest(searchController.searchTextObservable,
+        Observable.combineLatest(searchTextObservable,
                                  webService.authors()
                                     .doLoading(with: Loader(view: view))) { (query: String, list: [Author]) -> [Author] in
             guard !query.isEmpty else { return list }
@@ -62,7 +59,7 @@ final class AuthorsViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // reset search entry on switching tabs
-        (tabBarController as? SearchResultsObservable)?.searchBar.text = ""
+        searchBar.text = ""
         disposeBag = DisposeBag()
     }
 }

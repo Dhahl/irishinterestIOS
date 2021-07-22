@@ -15,15 +15,16 @@ struct UI {
                label: label, text: text, nrOfLines: nrOfLines)
     }
     
+    static func title2(label: UILabel, text: String = "", nrOfLines: Int = 0) {
+        format(.title2,
+               label: label, text: text, nrOfLines: nrOfLines)
+    }
+    
     static func title3(label: UILabel, text: String = "", nrOfLines: Int = 0) {
         format(.title3,
                label: label, text: text, nrOfLines: nrOfLines)
     }
     
-    static func title2(label: UILabel, text: String = "", nrOfLines: Int = 0) {
-        format(.title2,
-               label: label, text: text, nrOfLines: nrOfLines)
-    }
     
     static func caption1(label: UILabel, text: String = "", nrOfLines: Int = 0) {
         format(.caption1,

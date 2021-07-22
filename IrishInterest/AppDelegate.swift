@@ -10,6 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
     let webService: WebService = WebServiceRemote() //WebServiceLocal()
+    var navController: UINavigationController?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -18,43 +19,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // tabs:
         tabsController.restorationIdentifier = "tabsController"
+        
         let search = SearchViewController()
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
-        search.restorationIdentifier = "search"
+        let searchWrap = UINavigationController(rootViewController: search)
+        searchWrap.restorationIdentifier = "search"
         
         let authors = AuthorsViewController()
         authors.setup(webService: webService)
         authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
-        authors.restorationIdentifier = "authors"
+        let authorsWrap = UINavigationController(rootViewController: authors)
+        authorsWrap.restorationIdentifier = "authors"
         
         let categories = CategoriesViewController()
         categories.setup(webService: webService)
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
-        categories.restorationIdentifier = "categories"
+        let categoriesWrap = UINavigationController(rootViewController: categories)
+        categoriesWrap.restorationIdentifier = "categories"
         
         let latest = LatestBooksViewController()
-        latest.setup(webService: webService)
+        latest.setup(webService: webService) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book)
+            latest.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
-        latest.restorationIdentifier = "latest"
+        let latestWrap = UINavigationController(rootViewController: latest)
+        latestWrap.restorationIdentifier = "latest"
         
         let published = PublishedBooksViewController()
         published.setup(webService: webService)
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
-        published.restorationIdentifier = "published"
+        let publishedWrap = UINavigationController(rootViewController: published)
+        publishedWrap.restorationIdentifier = "published"
 
         let topSearches = TopSearchesViewController()
         topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
+        let topSearchesWrap = UINavigationController(rootViewController: topSearches)
         topSearches.restorationIdentifier = "topSearches"
         
         let comingSoon = ComingSoonViewController()
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
-        comingSoon.restorationIdentifier = "comingSoon"
+        let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
+        comingSoonWrap.restorationIdentifier = "comingSoon"
         
         let favourites = FavouritesViewController()
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
-        favourites.restorationIdentifier = "favourites"
+        let favouritesWrap = UINavigationController(rootViewController: favourites)
+        favouritesWrap.restorationIdentifier = "favourites"
         
-        let tabs = [search, authors, categories, latest, published, topSearches, comingSoon, favourites]
+        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
                 guard let aID: String = a.restorationIdentifier,
@@ -69,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabsController.viewControllers = tabs
         }
         
-        let navController = UINavigationController(rootViewController: tabsController)
+        self.navController = UINavigationController(rootViewController: tabsController)
         window.rootViewController = navController
         window.makeKeyAndVisible()
         self.window = window

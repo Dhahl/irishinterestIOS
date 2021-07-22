@@ -4,12 +4,13 @@ import Foundation
 import UIKit
 import RxSwift
 
-final class CategoriesViewController: UIViewController {
+final class CategoriesViewController: UIViewController, SearchResultsObservable {
     
     private var disposeBag = DisposeBag()
     private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
+    let searchBar = UISearchBar()
     
     func setup(webService: WebService) {
         self.webService = webService
@@ -37,12 +38,9 @@ final class CategoriesViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         title = "Categories"
-        guard let searchController = (tabBarController as? SearchResultsObservable) else {
-            fatalError("tabBarController is not a SearchResultsObservable")
-        }
-        searchController.showSearchBar(withPlaceholder: "Categories")
+        showSearchBar(withPlaceholder: "Categories")
         // local filtering from observer without re-triggering fetch
-        Observable.combineLatest(searchController.searchTextObservable,
+        Observable.combineLatest(searchTextObservable,
                                  webService.categories()
                                     .doLoading(with: Loader(view: view))) { (query: String, list: [Category]) -> [Category] in
             guard !query.isEmpty else { return list }
@@ -59,7 +57,7 @@ final class CategoriesViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // reset search entry on switching tabs
-        (tabBarController as? SearchResultsObservable)?.searchBar.text = ""
+        searchBar.text = ""
         disposeBag = DisposeBag()
     }
 }

@@ -34,10 +34,9 @@ final class BookViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(book: Book, imageLoader: ImageLoader) {
-        imageView.backgroundColor = .tertiarySystemFill
-        
+    func update(book: Book, imageLoader: ImageLoader) {        
         UI.fit(imageView, to: contentView, left: 0, right: 0, top: 0)
+        imageView.backgroundColor = .tertiarySystemFill
         imageView.contentMode = .scaleAspectFit
         
         imageLoader.load(url: book.imageURL)

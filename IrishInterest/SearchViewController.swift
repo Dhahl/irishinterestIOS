@@ -4,9 +4,12 @@ import Foundation
 import UIKit
 import RxSwift
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController, SearchResultsObservable {
     
     private var disposeBag = DisposeBag()
+    var searchBar: UISearchBar {
+        navigationItem.searchController?.searchBar ?? UISearchBar()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,10 +18,8 @@ final class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let searchController = (tabBarController as? SearchResultsObservable)
-        searchController?.hideSearchBar()
-//        searchController?.showSearchBar(withPlaceholder: "Books or Authors")
-        searchController?.searchTextObservable
+        showSearchBar(withPlaceholder: "Books or Authors")
+        searchTextObservable
             .subscribe(onNext: { (searchValue: String?) in
                 guard let value = searchValue, !value.isEmpty else {
                     //clear search result

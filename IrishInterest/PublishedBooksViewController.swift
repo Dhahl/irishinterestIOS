@@ -40,8 +40,6 @@ final class PublishedBooksViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.title = "Published Books"
-        let searchController = (tabBarController as? SearchResultsObservable)
-        searchController?.hideSearchBar()
         
         webService.latestBooks(page: 30)
             .doLoading(with: Loader(view: view))
