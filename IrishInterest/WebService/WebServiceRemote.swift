@@ -65,6 +65,9 @@ struct WebServiceRemote: WebService {
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> BookDetails in
             return try decode(data: data)
-        }//.catchAndReturn([])
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn(BookDetails.empty())
     }
 }

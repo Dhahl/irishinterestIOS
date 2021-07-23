@@ -90,4 +90,8 @@ struct BookDetails: Decodable {
     let title: String
     let vendor: String?
     let vendorurl: String?
+    
+    static func empty() -> BookDetails {
+        BookDetails(area: "", author: nil, authorid: nil, categoryid: 0, ebook: 0, genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil)
+    }
 }

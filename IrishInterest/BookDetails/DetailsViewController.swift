@@ -69,9 +69,9 @@ final class DetailsViewController: UIViewController {
         if let book = book {
             webservice?.details(bookID: book.id)
                 .observe(on: MainScheduler.instance)
+                .doLoading(with: Loader(view: view))
                 .subscribe(onNext: { [weak self] (details: BookDetails) in
                     guard let strongSelf = self else { return }
-                    print(details)
                     if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
                         // BUY AT AMAZON
                         let actionButton = ActionButton.create(title: "Buy at Amazon")
