@@ -37,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let categoriesWrap = UINavigationController(rootViewController: categories)
         categoriesWrap.restorationIdentifier = "categories"
         
-        let latest = LatestBooksViewController()
-        latest.setup(webService: webService) { (book: Book) in
+        let latest = ListBooksViewController()
+        latest.setup(title: "Latest books", booksProvider: webService.latestBooks(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -47,8 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let latestWrap = UINavigationController(rootViewController: latest)
         latestWrap.restorationIdentifier = "latest"
         
-        let published = PublishedBooksViewController()
-        published.setup(webService: webService) { (book: Book) in
+        let published = ListBooksViewController()
+        published.setup(title: "Published books", booksProvider: webService.latestBooks(page: 30)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book)
             published.navigationController?.pushViewController(detailsViewController, animated: true)

@@ -55,13 +55,18 @@ final class DetailsViewController: UIViewController {
         stack.add(titleLabel, constant: Const.border)
         
         // AUTHOR
-        UI.format(.subheadline, label: authorLabel, text: book?.author ?? "", nrOfLines: 2)
+        UI.format(.subheadline, label: authorLabel, text: book?.author ?? "", nrOfLines: 1)
         authorLabel.textColor = .secondaryLabel
         authorLabel.adjustsFontSizeToFitWidth = false
         authorLabel.textAlignment = .center
         UI.fit(authorLabel, to: view, left: Const.border, right: Const.border)
         stack.add(authorLabel)
-
+        
+        // BUY AT AMAZON
+        let actionButton = ActionButton.create(title: "Buy at Amazon")
+        UI.fit(actionButton, to: view, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
+        stack.add(actionButton, constant: Const.border)
+        
     }
 }
 

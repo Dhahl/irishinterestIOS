@@ -5,24 +5,25 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class PublishedBooksViewController: UIViewController {
+final class ListBooksViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
-    private var webService: WebService!
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
     private let imageLoader = ImageLoader()
     private var models: [Int: Book] = [:]
+    private var booksProvider: Observable<[Book]>?
     private var onSelected: ((Book) -> Void)?
+    private var navTitle: String?
     
-    func setup(webService: WebService, onSelected: @escaping (Book) -> Void) {
-        self.webService = webService
+    func setup(title: String, booksProvider: Observable<[Book]>, onSelected: @escaping (Book) -> Void) {
+        self.navTitle = title
+        self.booksProvider = booksProvider
         self.onSelected = onSelected
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("PublishedBooksViewController")
         
         let screenWidth = UIScreen.main.bounds.smallestSide
         (layout.itemSize, layout.sectionInset) = CellConst.itemSizeAndSectionInset(forScreenWidth: screenWidth)
@@ -39,7 +40,7 @@ final class PublishedBooksViewController: UIViewController {
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
-        webService.latestBooks(page: 30)
+        booksProvider?
             .doLoading(with: Loader(view: view))
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
@@ -60,6 +61,8 @@ final class PublishedBooksViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationItem.title = "Published Books"
+        if let navTitle = navTitle {
+            navigationItem.title = navTitle
+        }
     }
 }

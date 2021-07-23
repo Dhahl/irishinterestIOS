@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		98052BFC268A791300F3FB45 /* PublishedBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052BFB268A791300F3FB45 /* PublishedBooksViewController.swift */; };
 		98052BFE268A798400F3FB45 /* TopSearchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052BFD268A798400F3FB45 /* TopSearchesViewController.swift */; };
 		98052C00268A79AF00F3FB45 /* ComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052BFF268A79AF00F3FB45 /* ComingSoonViewController.swift */; };
 		98052C02268A79D100F3FB45 /* FavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C01268A79D100F3FB45 /* FavouritesViewController.swift */; };
@@ -35,7 +34,7 @@
 		98A67382267E189D001F643E /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737D267E189D001F643E /* VStack.swift */; };
 		98A67383267E189D001F643E /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6737E267E189D001F643E /* UI.swift */; };
 		98A67387267E1D2C001F643E /* BarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67386267E1D2C001F643E /* BarItem.swift */; };
-		98A67389267E26E8001F643E /* LatestBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* LatestBooksViewController.swift */; };
+		98A67389267E26E8001F643E /* ListBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* ListBooksViewController.swift */; };
 		98A67393267E8964001F643E /* AuthorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67392267E8964001F643E /* AuthorsViewController.swift */; };
 		98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67394267E8A60001F643E /* CategoriesViewController.swift */; };
 		98BCFEFF2687E3FB00555587 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFEFE2687E3FB00555587 /* SearchViewController.swift */; };
@@ -64,7 +63,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		98052BFB268A791300F3FB45 /* PublishedBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedBooksViewController.swift; sourceTree = "<group>"; };
 		98052BFD268A798400F3FB45 /* TopSearchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSearchesViewController.swift; sourceTree = "<group>"; };
 		98052BFF268A79AF00F3FB45 /* ComingSoonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonViewController.swift; sourceTree = "<group>"; };
 		98052C01268A79D100F3FB45 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
@@ -95,7 +93,7 @@
 		98A6737D267E189D001F643E /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
 		98A6737E267E189D001F643E /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		98A67386267E1D2C001F643E /* BarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItem.swift; sourceTree = "<group>"; };
-		98A67388267E26E8001F643E /* LatestBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestBooksViewController.swift; sourceTree = "<group>"; };
+		98A67388267E26E8001F643E /* ListBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBooksViewController.swift; sourceTree = "<group>"; };
 		98A67392267E8964001F643E /* AuthorsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorsViewController.swift; sourceTree = "<group>"; };
 		98A67394267E8A60001F643E /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		98BCFEFE2687E3FB00555587 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +135,7 @@
 		98052C11268FB49800F3FB45 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
+				98A67388267E26E8001F643E /* ListBooksViewController.swift */,
 				98052C12268FB4AC00F3FB45 /* TextViewCell.swift */,
 				986D43F9269E3B0100732225 /* BookViewCell.swift */,
 				986D43FD26A0EB5100732225 /* CellConst.swift */,
@@ -187,11 +186,9 @@
 				98A67350267E0B7B001F643E /* LaunchScreen.storyboard */,
 				98A67353267E0B7B001F643E /* Info.plist */,
 				98A67375267E124C001F643E /* TabViewController.swift */,
-				98A67388267E26E8001F643E /* LatestBooksViewController.swift */,
 				98A67392267E8964001F643E /* AuthorsViewController.swift */,
 				98A67394267E8A60001F643E /* CategoriesViewController.swift */,
 				98BCFEFE2687E3FB00555587 /* SearchViewController.swift */,
-				98052BFB268A791300F3FB45 /* PublishedBooksViewController.swift */,
 				98052BFD268A798400F3FB45 /* TopSearchesViewController.swift */,
 				98052BFF268A79AF00F3FB45 /* ComingSoonViewController.swift */,
 				98052C01268A79D100F3FB45 /* FavouritesViewController.swift */,
@@ -409,7 +406,7 @@
 				98A6737F267E189D001F643E /* Brand.swift in Sources */,
 				98052C02268A79D100F3FB45 /* FavouritesViewController.swift in Sources */,
 				98052C07268C08F600F3FB45 /* WebService.swift in Sources */,
-				98A67389267E26E8001F643E /* LatestBooksViewController.swift in Sources */,
+				98A67389267E26E8001F643E /* ListBooksViewController.swift in Sources */,
 				986D43FA269E3B0100732225 /* BookViewCell.swift in Sources */,
 				98052C1A2691C88800F3FB45 /* Loading.swift in Sources */,
 				986D43FC26A0DD2500732225 /* ImageLoader.swift in Sources */,
@@ -421,7 +418,6 @@
 				98BCFF05268800B500555587 /* UserDefaultsDataIO.swift in Sources */,
 				98A67381267E189D001F643E /* UIColorExt.swift in Sources */,
 				98BCFF07268800B500555587 /* FileDataIO.swift in Sources */,
-				98052BFC268A791300F3FB45 /* PublishedBooksViewController.swift in Sources */,
 				98052C13268FB4AC00F3FB45 /* TextViewCell.swift in Sources */,
 				98A67380267E189D001F643E /* ActionButton.swift in Sources */,
 				98A67382267E189D001F643E /* VStack.swift in Sources */,
