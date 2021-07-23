@@ -34,7 +34,7 @@ final class BookViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(book: Book, imageLoader: ImageLoader) {        
+    func update(book: Book, imageLoader: ImageLoader) {
         UI.fit(imageView, to: contentView, left: 0, right: 0, top: 0)
         imageView.backgroundColor = .tertiarySystemFill
         imageView.contentMode = .scaleAspectFit
@@ -51,7 +51,7 @@ final class BookViewCell: UICollectionViewCell {
         authorLabel.lineBreakMode = .byTruncatingTail
         authorLabel.adjustsFontSizeToFitWidth = false
         
-        UI.body(label: titleLabel, text: book.title.trimmingCharacters(in: ["'", " "]), nrOfLines: 1)
+        UI.body(label: titleLabel, text: book.displayTitle, nrOfLines: 1)
         UI.fit(titleLabel, to: self.contentView, left: 0, right: 0)
         titleLabel.textColor = .label
         titleLabel.lineBreakMode = .byTruncatingTail

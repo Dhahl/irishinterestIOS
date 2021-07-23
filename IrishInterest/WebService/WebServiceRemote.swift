@@ -63,9 +63,8 @@ struct WebServiceRemote: WebService {
     func details(bookID: Int) -> Observable<BookDetails> {
         let params: String = "?value=books&type=getById&apiKey=testApiKey&bookId=\(bookID)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
-        return session.rx.data(request: request).compactMap { (data: Data) in
-            let response: ResponseBookDetails = try decode(data: data)
-            return response.response.first
+        return session.rx.data(request: request).compactMap { (data: Data) -> BookDetails in
+            return try decode(data: data)
         }//.catchAndReturn([])
     }
 }

@@ -49,7 +49,7 @@ final class DetailsViewController: UIViewController {
         stack.add(imageView)
         
         // TITLE
-        let titleText: String = book?.title.trimmingCharacters(in: ["'", " "]) ?? ""
+        let titleText: String = book?.displayTitle ?? ""
         UI.format(.title2, label: titleLabel, text: titleText, nrOfLines: 2)
         titleLabel.textColor = .label
         titleLabel.adjustsFontSizeToFitWidth = false
@@ -65,28 +65,26 @@ final class DetailsViewController: UIViewController {
         UI.fit(authorLabel, to: view, left: Const.border, right: Const.border)
         stack.add(authorLabel)
         
-        // BUY AT AMAZON
-        let actionButton = ActionButton.create(title: "Buy at Amazon")
-        actionButton.isHidden = true // initially hidden
-        UI.fit(actionButton, to: view, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
-        stack.add(actionButton, constant: Const.border)
-        
-        
         // DETAILS
-        UI.fit(descriptionLabel, to: view, left: Const.border, right: Const.border)
-        stack.add(descriptionLabel, constant: Const.border)
-        
         if let book = book {
             webservice?.details(bookID: book.id)
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] (details: BookDetails) in
                     guard let strongSelf = self else { return }
-                    UI.format(.body, label: strongSelf.descriptionLabel, text: details.synopsis, nrOfLines: 0)
-                    strongSelf.descriptionLabel.textColor = .label
-                    if details.vendor.lowercased().contains("amazon") {
-                        actionButton.isHidden = false
+                    print(details)
+                    if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
+                        // BUY AT AMAZON
+                        let actionButton = ActionButton.create(title: "Buy at Amazon")
+                        UI.fit(actionButton, to: strongSelf.view, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
+                        stack.add(actionButton, constant: Const.border)
                         //TODO: set up amazon link
                     }
+                    // Description / synopsis
+                    UI.fit(strongSelf.descriptionLabel, to: strongSelf.view, left: Const.border, right: Const.border)
+                    stack.add(strongSelf.descriptionLabel, constant: Const.border)
+                    UI.format(.body, label: strongSelf.descriptionLabel, text: details.synopsis, nrOfLines: 0)
+                    strongSelf.descriptionLabel.textAlignment = .justified
+                    strongSelf.descriptionLabel.textColor = .label
                 })
                 .disposed(by: disposeBag)
         }

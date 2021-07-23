@@ -1684,11 +1684,7 @@ struct WebServiceLocal: WebService {
     func details(bookID: Int) -> Observable<BookDetails> {
         guard let url: URL = Bundle.main.url(forResource: "details", withExtension: "json") else { return .never() }
         let data = try! Data.init(contentsOf: url)
-        let response: ResponseBookDetails = try! JSONDecoder().decode(ResponseBookDetails.self, from: data)
-        if let details = response.response.first {
-            return .just(details)
-        } else {
-            return .error(BookDetailsError.parseError)
-        }
+        let details: BookDetails = try! JSONDecoder().decode(BookDetails.self, from: data)
+        return .just(details)
     }
 }

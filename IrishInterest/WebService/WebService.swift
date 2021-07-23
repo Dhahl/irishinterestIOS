@@ -32,10 +32,6 @@ struct ResponseBooks: Decodable {
     let response: [Book]
 }
 
-struct ResponseBookDetails: Decodable {
-    let response: [BookDetails]
-}
-
 struct ErrorAuthors: Error {
 }
 
@@ -62,21 +58,23 @@ struct Book: Decodable {
     let authorid: Int?
     let id: Int
     let image: String
+    
+    @available(*, deprecated, message: "use displayTitle instead")
     let title: String
+    var displayTitle: String {
+        title.trimmingCharacters(in: ["'", " "])
+            .replacingOccurrences(of: "<br>", with: " ")
+    }
     var imageURL: URL? {
         guard !image.isEmpty else { return nil }
         return URL(string: "https://irishinterest.ie/upload/\(image)")
     }
 }
 
-enum BookDetailsError: Error {
-    case parseError
-}
-
 struct BookDetails: Decodable {
     let area: String
-    let author: String
-    let authorid: Int
+    let author: String?
+    let authorid: Int?
     let categoryid: Int
     let ebook: Int
     let genre: String
@@ -90,27 +88,6 @@ struct BookDetails: Decodable {
     let publisher: String
     let synopsis: String
     let title: String
-    let vendor: String
-    let vendorurl: String
+    let vendor: String?
+    let vendorurl: String?
 }
-
-
-//
-//struct Book: Decodable {
-//    let author: String
-//    let authorid: Int
-//    let title: String
-//    let genre: String
-//    let categoryid: Int
-//    let area: String
-//    let synopsis: String
-//    let id: Int
-//    let image: String
-//    var imageURL: URL? {
-//        guard !image.isEmpty else { return nil }
-//        return URL(string: "https://irishinterest.ie/uploads/\(image)")
-//    }
-//    let isbn: String?
-//    let isbn13: String
-//    let publisher: String
-//}
