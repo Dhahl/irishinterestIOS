@@ -9,10 +9,12 @@ final class DetailsViewController: UIViewController {
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let authorLabel = UILabel()
+    private let descriptionLabel = UILabel()
     private let imageLoader = ImageLoader()
     
     private let disposeBag = DisposeBag()
     private var book: Book?
+    private var webservice: WebService?
     
     private enum Const {
         static let border: CGFloat = 16
@@ -20,8 +22,9 @@ final class DetailsViewController: UIViewController {
         static let imageRatio: CGFloat = 1.5
     }
     
-    func bind(model: Book) {
+    func bind(model: Book, webservice: WebService) {
         self.book = model
+        self.webservice = webservice
     }
     
     override func viewDidLoad() {
@@ -64,9 +67,29 @@ final class DetailsViewController: UIViewController {
         
         // BUY AT AMAZON
         let actionButton = ActionButton.create(title: "Buy at Amazon")
+        actionButton.isHidden = true // initially hidden
         UI.fit(actionButton, to: view, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
         stack.add(actionButton, constant: Const.border)
         
+        
+        // DETAILS
+        UI.fit(descriptionLabel, to: view, left: Const.border, right: Const.border)
+        stack.add(descriptionLabel, constant: Const.border)
+        
+        if let book = book {
+            webservice?.details(bookID: book.id)
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (details: BookDetails) in
+                    guard let strongSelf = self else { return }
+                    UI.format(.body, label: strongSelf.descriptionLabel, text: details.synopsis, nrOfLines: 0)
+                    strongSelf.descriptionLabel.textColor = .label
+                    if details.vendor.lowercased().contains("amazon") {
+                        actionButton.isHidden = false
+                        //TODO: set up amazon link
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
 

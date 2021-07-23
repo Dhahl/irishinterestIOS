@@ -10,6 +10,7 @@ protocol WebService {
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
     func latestBooks(page: Int) -> Observable<[Book]>
+    func details(bookID: Int) -> Observable<BookDetails>
 }
 
 extension WebService {
@@ -29,6 +30,10 @@ struct ResponseAuthors: Decodable {
 
 struct ResponseBooks: Decodable {
     let response: [Book]
+}
+
+struct ResponseBookDetails: Decodable {
+    let response: [BookDetails]
 }
 
 struct ErrorAuthors: Error {
@@ -62,6 +67,31 @@ struct Book: Decodable {
         guard !image.isEmpty else { return nil }
         return URL(string: "https://irishinterest.ie/upload/\(image)")
     }
+}
+
+enum BookDetailsError: Error {
+    case parseError
+}
+
+struct BookDetails: Decodable {
+    let area: String
+    let author: String
+    let authorid: Int
+    let categoryid: Int
+    let ebook: Int
+    let genre: String
+    let hardback: Int
+    let id: Int
+    let isbn: String?
+    let isbn13: String
+    let language: String
+    let pages: Int
+    let paperback: Int
+    let publisher: String
+    let synopsis: String
+    let title: String
+    let vendor: String
+    let vendorurl: String
 }
 
 

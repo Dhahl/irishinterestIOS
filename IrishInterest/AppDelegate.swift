@@ -38,9 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categoriesWrap.restorationIdentifier = "categories"
         
         let latest = ListBooksViewController()
+        let webServiceRef = webService
         latest.setup(title: "Latest books", booksProvider: webService.latestBooks(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book)
+            detailsViewController.bind(model: book, webservice: webServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
@@ -50,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let published = ListBooksViewController()
         published.setup(title: "Published books", booksProvider: webService.latestBooks(page: 30)) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book)
+            detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
