@@ -58,6 +58,7 @@ final class DetailsViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
         stack.add(imageView)
+        bindImageTaps()
         
         // TITLE
         let titleText: String = book?.displayTitle ?? ""
@@ -126,6 +127,18 @@ final class DetailsViewController: UIViewController {
             bottomConstraint.priority = .defaultLow
             bottomConstraint.isActive = true
         }
+    }
+    
+    private func bindImageTaps() {
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer( UITapGestureRecognizer.init(target: self,
+                                                                    action: #selector(onImageTap)))
+    }
+    
+    @objc func onImageTap() {
+        let popUp = BookCoverPopUp()
+        popUp.display(image: imageView.image)
+        present(popUp, animated: true, completion: nil)
     }
 }
 

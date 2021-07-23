@@ -45,6 +45,7 @@
 		98E8A4F826A8A90700F5D983 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */; };
 		98E8A4FB26AB410E00F5D983 /* details.json in Resources */ = {isa = PBXBuildFile; fileRef = 98E8A4FA26AB410E00F5D983 /* details.json */; };
 		98E8A4FD26AB64C300F5D983 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */; };
+		98E8A4FF26AB6DE700F5D983 /* BookCoverPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8A4FE26AB6DE700F5D983 /* BookCoverPopUp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		98E8A4FA26AB410E00F5D983 /* details.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = details.json; sourceTree = "<group>"; };
 		98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
+		98E8A4FE26AB6DE700F5D983 /* BookCoverPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverPopUp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +261,7 @@
 			children = (
 				98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */,
 				98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */,
+				98E8A4FE26AB6DE700F5D983 /* BookCoverPopUp.swift */,
 			);
 			path = BookDetails;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98E8A4FF26AB6DE700F5D983 /* BookCoverPopUp.swift in Sources */,
 				98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */,
 				98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */,
 				98BCFF06268800B500555587 /* LocalStore.swift in Sources */,
