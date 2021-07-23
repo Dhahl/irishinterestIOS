@@ -83,29 +83,42 @@ final class DetailsViewController: UIViewController {
                 .doLoading(with: Loader(view: contentView))
                 .subscribe(onNext: { [weak self] (details: BookDetails) in
                     guard let strongSelf = self else { return }
-                    if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
-                        // BUY AT AMAZON
-                        let actionButton = ActionButton.create(title: "Buy at Amazon")
-                        UI.fit(actionButton, to: strongSelf.contentView, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
-                        stack.add(actionButton, constant: Const.border)
-                        //TODO: set up amazon link
-                    }
-                    // Description / synopsis
-                    UI.fit(strongSelf.descriptionLabel, to: strongSelf.contentView, left: Const.border, right: Const.border)
-                    stack.add(strongSelf.descriptionLabel, constant: Const.border)
-                    UI.format(.body, label: strongSelf.descriptionLabel, text: details.synopsis, nrOfLines: 0)
-                    strongSelf.descriptionLabel.textAlignment = .justified
-                    strongSelf.descriptionLabel.textColor = .label
-                    
-                    //bind the lastView's bottom to the contentView bottom to make it scrollable:
-                    if let lastView = stack.lastView {
-                        let bottomConstraint = strongSelf.contentView.bottomAnchor.constraint(equalTo: lastView.bottomAnchor, constant: Const.border)
-                        bottomConstraint.priority = .defaultLow
-                        bottomConstraint.isActive = true
-                    }
-                    
+                    strongSelf.bindDetails(details: details, stack: stack)
                 })
                 .disposed(by: disposeBag)
+        }
+    }
+    
+    private func bindDetails(details: BookDetails, stack: VStack) {
+        // BUY AT AMAZON
+        if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
+            let actionButton = ActionButton.create(title: "Buy at Amazon")
+            UI.fit(actionButton, to: contentView, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
+            stack.add(actionButton, constant: Const.border)
+            //TODO: set up amazon link
+        }
+        
+        //Publisher info:
+        if !details.publisher.isEmpty {
+            TitleLabel(titleText: "Publisher", valueText: details.publisher)
+                .display(in: contentView, with: stack, using: Const.border)
+        }
+        
+        
+        
+        
+        
+        // Description / synopsis
+        UI.fit(descriptionLabel, to: contentView, left: Const.border, right: Const.border)
+        stack.add(descriptionLabel, constant: Const.border)
+        UI.format(.body, color: .label, label: descriptionLabel, text: details.synopsis, nrOfLines: 0)
+        descriptionLabel.textAlignment = .justified
+        
+        //bind the lastView's bottom to the contentView bottom to make it scrollable:
+        if let lastView = stack.lastView {
+            let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: lastView.bottomAnchor, constant: Const.border)
+            bottomConstraint.priority = .defaultLow
+            bottomConstraint.isActive = true
         }
     }
 }

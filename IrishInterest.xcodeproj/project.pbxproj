@@ -44,6 +44,7 @@
 		98BCFF08268800B500555587 /* DataIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFF04268800B500555587 /* DataIO.swift */; };
 		98E8A4F826A8A90700F5D983 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */; };
 		98E8A4FB26AB410E00F5D983 /* details.json in Resources */ = {isa = PBXBuildFile; fileRef = 98E8A4FA26AB410E00F5D983 /* details.json */; };
+		98E8A4FD26AB64C300F5D983 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		98BCFF04268800B500555587 /* DataIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataIO.swift; sourceTree = "<group>"; };
 		98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		98E8A4FA26AB410E00F5D983 /* details.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = details.json; sourceTree = "<group>"; };
+		98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */,
+				98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */,
 			);
 			path = BookDetails;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				98A67346267E0B7A001F643E /* AppDelegate.swift in Sources */,
 				98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */,
 				98BCFF06268800B500555587 /* LocalStore.swift in Sources */,
+				98E8A4FD26AB64C300F5D983 /* TitleLabel.swift in Sources */,
 				98052BFE268A798400F3FB45 /* TopSearchesViewController.swift in Sources */,
 				98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */,
 				98A67383267E189D001F643E /* UI.swift in Sources */,
