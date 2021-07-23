@@ -104,6 +104,11 @@ final class DetailsViewController: UIViewController {
                 .display(in: contentView, with: stack, using: Const.border)
         }
         
+        if !details.isbnToDisplay.isEmpty {
+            TitleLabel(titleText: "ISBN", valueText: details.isbnToDisplay)
+                .display(in: contentView, with: stack, using: Const.border)
+        }
+        
         
         
         
@@ -111,8 +116,9 @@ final class DetailsViewController: UIViewController {
         // Description / synopsis
         UI.fit(descriptionLabel, to: contentView, left: Const.border, right: Const.border)
         stack.add(descriptionLabel, constant: Const.border)
-        UI.format(.body, color: .label, label: descriptionLabel, text: details.synopsis, nrOfLines: 0)
-        descriptionLabel.textAlignment = .justified
+        UI.format(.body, color: .label, label: descriptionLabel, text: details.synopsisToDisplay, nrOfLines: 0)
+        descriptionLabel.textAlignment = .left
+        descriptionLabel.lineBreakMode = .byWordWrapping
         
         //bind the lastView's bottom to the contentView bottom to make it scrollable:
         if let lastView = stack.lastView {

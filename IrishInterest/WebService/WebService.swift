@@ -74,7 +74,7 @@ struct Book: Decodable {
 struct BookDetails: Decodable {
     let area: String
     let author: String?
-    let authorid: Int?
+    let authorid: String?
     let categoryid: Int
     let ebook: Int
     let genre: String
@@ -82,11 +82,26 @@ struct BookDetails: Decodable {
     let id: Int
     let isbn: String?
     let isbn13: String
+    var isbnToDisplay: String {
+        if isbn13.isEmpty {
+            return isbn ?? ""
+        } else {
+            return isbn13
+        }
+    }
     let language: String
     let pages: Int
     let paperback: Int
     let publisher: String
     let synopsis: String
+    var synopsisToDisplay: String {
+        synopsis
+            .replacingOccurrences(of: "\r\n\r\n", with: "\r\n")
+            .replacingOccurrences(of: "\r\n\r\n", with: "\r\n")
+            .replacingOccurrences(of: "\n\n", with: "\n")
+            .replacingOccurrences(of: "<br>", with: "\n")
+            .trimmingCharacters(in: ["'"])
+    }
     let title: String
     let vendor: String?
     let vendorurl: String?
