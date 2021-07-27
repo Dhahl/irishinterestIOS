@@ -72,11 +72,13 @@ struct Book: Decodable {
 }
 
 struct BookDetails: Decodable {
-    let area: String
-    let author: String?
-    let authorid: String?
+    var author: String {
+        [firstname, lastname].compactMap { $0 }.joined(separator: " ")
+    }
+    let authorid: Int
     let categoryid: Int
     let ebook: Int
+    let firstname: String
     let genre: String
     let hardback: Int
     let id: Int
@@ -90,7 +92,8 @@ struct BookDetails: Decodable {
         }
     }
     let language: String
-    let pages: Int
+    let lastname: String
+    let pages: Int?
     let paperback: Int
     let publisher: String
     let synopsis: String
@@ -107,6 +110,6 @@ struct BookDetails: Decodable {
     let vendorurl: String?
     
     static func empty() -> BookDetails {
-        BookDetails(area: "", author: nil, authorid: nil, categoryid: 0, ebook: 0, genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil)
+        BookDetails(authorid: -1, categoryid: 0, ebook: 0, firstname: "", genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", lastname: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil)
     }
 }
