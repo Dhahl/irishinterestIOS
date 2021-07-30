@@ -37,6 +37,8 @@ final class ListBooksViewController: UIViewController {
         collectionView.register(BookViewCell.self, forCellWithReuseIdentifier: "BookViewCell")
         collectionView.keyboardDismissMode = .onDrag
         
+        setupTitle()
+        
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
@@ -59,8 +61,7 @@ final class ListBooksViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    func setupTitle() {
         if let navTitle = navTitle {
             navigationItem.title = navTitle
         }

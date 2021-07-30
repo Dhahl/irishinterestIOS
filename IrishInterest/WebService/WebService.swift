@@ -10,6 +10,7 @@ protocol WebService {
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
     func latestBooks(page: Int) -> Observable<[Book]>
+    func booksBy(categoryId: Int) -> Observable<[Book]>
     func details(bookID: Int) -> Observable<BookDetails>
 }
 
@@ -54,8 +55,8 @@ struct Category: Decodable {
 }
 
 struct Book: Decodable {
-    let author: String
-    let authorid: Int?
+    let author: String?
+    let authorid: String?
     let id: Int
     let image: String
     

@@ -31,14 +31,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let authorsWrap = UINavigationController(rootViewController: authors)
         authorsWrap.restorationIdentifier = "authors"
         
+        let webServiceRef = webService
+        
         let categories = CategoriesViewController()
-        categories.setup(webService: webService)
+        categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
+            let listBooks = ListBooksViewController()
+            listBooks.setup(title: categoryTitle,
+                            booksProvider: webServiceRef.booksBy(categoryId: categoryId)) { (book: Book) in
+                let detailsViewController = DetailsViewController()
+                detailsViewController.bind(model: book, webservice: webServiceRef)
+                listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
+            }
+            categories.navigationController?.pushViewController(listBooks, animated: true)
+        }
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
         let categoriesWrap = UINavigationController(rootViewController: categories)
         categoriesWrap.restorationIdentifier = "categories"
         
         let latest = ListBooksViewController()
-        let webServiceRef = webService
         latest.setup(title: "Latest books", booksProvider: webService.latestBooks(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)

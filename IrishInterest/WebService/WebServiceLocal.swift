@@ -1687,4 +1687,11 @@ struct WebServiceLocal: WebService {
         let details: BookDetails = try! JSONDecoder().decode(BookDetails.self, from: data)
         return .just(details)
     }
+    
+    func booksBy(categoryId: Int) -> Observable<[Book]> {
+        guard let url: URL = Bundle.main.url(forResource: "books_by_category", withExtension: "json") else { return .never() }
+        let data = try! Data.init(contentsOf: url)
+        let books: [Book] = try! JSONDecoder().decode([Book].self, from: data)
+        return .just(books)
+    }
 }

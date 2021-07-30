@@ -11,9 +11,12 @@ final class CategoriesViewController: UIViewController, SearchResultsObservable 
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
     let searchBar = UISearchBar()
+    private var models: [Int: Category] = [:]
+    private var onSelected: ((Int, String) -> Void)?
     
-    func setup(webService: WebService) {
+    func setup(webService: WebService, onSelected: @escaping(Int, String) -> Void) {
         self.webService = webService
+        self.onSelected = onSelected
     }
     
     override func viewDidLoad() {
@@ -33,10 +36,7 @@ final class CategoriesViewController: UIViewController, SearchResultsObservable 
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+
         title = "Categories"
         showSearchBar(withPlaceholder: "Categories")
         // local filtering from observer without re-triggering fetch
@@ -48,16 +48,24 @@ final class CategoriesViewController: UIViewController, SearchResultsObservable 
             return list.filter { (category: Category) -> Bool in
                 category.displayName.lowercased().contains(queryLower)
             }
-        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Category, cell: TextViewCell) in
+        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { [weak self] (index: Int, model: Category, cell: TextViewCell) in
+            self?.models[index] = model
             cell.update(title: model.displayName)
         }
         .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] (indexPath: IndexPath) in
+                guard let model: Category = self?.models[indexPath.item] else { return }
+                self?.onSelected?(model.id, model.displayName)
+            }
+            .disposed(by: disposeBag)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // reset search entry on switching tabs
         searchBar.text = ""
-        disposeBag = DisposeBag()
     }
 }
