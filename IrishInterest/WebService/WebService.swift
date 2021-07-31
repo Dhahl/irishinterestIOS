@@ -10,6 +10,7 @@ protocol WebService {
     func countAuthors() -> Observable<Int>
     func countAuthorsABC() -> Observable<[CountByLetter]>
     func authors() -> Observable<[Author]>
+    func authors(byLetter: String) -> Observable<[Author]>
     func categories() -> Observable<[Category]>
     func latestBooks(page: Int) -> Observable<[Book]>
     func booksBy(categoryId: Int) -> Observable<[Book]>

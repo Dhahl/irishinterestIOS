@@ -31,6 +31,18 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
+    // TODO: implement this part
+    func authors(byLetter: String) -> Observable<[Author]> {
+        let params: String = "?value=authors&type=getAll&apiKey=testApiKey&offset=0"
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) -> [Author] in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
+    }
+    
     func countAuthors() -> Observable<Int> {
         let params: String = "?value=authors&type=count&apiKey=testApiKey"
         let request = URLRequest(url: Const.url(params: params))

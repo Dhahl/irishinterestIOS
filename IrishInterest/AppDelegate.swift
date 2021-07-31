@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // tabs:
         tabsController.restorationIdentifier = "tabsController"
+        let webServiceRef = webService
         
         let search = SearchViewController()
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
@@ -26,12 +27,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         searchWrap.restorationIdentifier = "search"
         
         let authors = AuthorsViewController()
-        authors.setup(webService: webService)
+        authors.setup(webService: webService) { (letter: String) in
+            let authorsList = AuthorsListedViewController()
+            authorsList.setup(authorsObservable: webServiceRef.authors(), byLetter: letter) { (author: Author) in
+                print("selected author: \(author)")
+            }
+            authors.navigationController?.pushViewController(authorsList, animated: true)
+        }
         authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
         let authorsWrap = UINavigationController(rootViewController: authors)
         authorsWrap.restorationIdentifier = "authors"
         
-        let webServiceRef = webService
         
         let categories = CategoriesViewController()
         categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
