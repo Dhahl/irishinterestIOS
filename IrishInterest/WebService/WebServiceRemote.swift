@@ -22,24 +22,35 @@ struct WebServiceRemote: WebService {
     
     func authors() -> Observable<[Author]> {
         let params: String = "?value=authors&type=getAll&apiKey=testApiKey&offset=0"
-        let request: URLRequest = URLRequest(url: Const.url(params: params))
-        return session.rx.data(request: request).map { (data: Data) in
-            let response: ResponseAuthors = try decode(data: data)
-            return response.responseSorted
-        }.catchAndReturn([])
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) -> [Author] in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
     }
     
-    func authors(searching: Observable<String?>) -> Observable<[Author]> {
-        .just([])
+    func countAuthors() -> Observable<Int> {
+        let params: String = "?value=authors&type=count&apiKey=testApiKey"
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) -> Int in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn(42499)
     }
     
     func categories() -> Observable<[Category]> {
         let params: String = "?value=categories&apiKey=testApiKey"
-        let request: URLRequest = URLRequest(url: Const.url(params: params))
-        return session.rx.data(request: request).map { (data: Data) in
-            let categories: [Category] = try decode(data: data)
-            return categories
-        }.catchAndReturn([])
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) -> [Category] in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
     }
     
     func booksBy(categoryId: Int) -> Observable<[Book]> {
@@ -54,10 +65,10 @@ struct WebServiceRemote: WebService {
     }
     
     func latestBooks(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getLatest&apiKey=testApiKey&offset=\(page)"
+        let params: String = "?value=books&type=getLatest2&apiKey=testApiKey&offset=\(page)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
-            return try decode(data: data)
+            try decode(data: data)
         }.catch({ (error: Error) in
             print(error)
             throw error
@@ -65,10 +76,10 @@ struct WebServiceRemote: WebService {
     }
     
     func publishedBooks(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getLatest&apiKey=testApiKey&offset=\(page)"
+        let params: String = "?value=books&type=getLatest2&apiKey=testApiKey&offset=\(page)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
-            return try decode(data: data)
+            try decode(data: data)
         }.catch({ (error: Error) in
             print(error)
             throw error
@@ -79,7 +90,7 @@ struct WebServiceRemote: WebService {
         let params: String = "?value=books&type=getById2&apiKey=testApiKey&bookId=\(bookID)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> BookDetails in
-            return try decode(data: data)
+            try decode(data: data)
         }.catch({ (error: Error) in
             print(error)
             throw error

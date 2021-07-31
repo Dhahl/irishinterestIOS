@@ -1681,6 +1681,10 @@ struct WebServiceLocal: WebService {
         return .just(response.response)
     }
     
+    func countAuthors() -> Observable<Int> {
+        .just(10)
+    }
+    
     func details(bookID: Int) -> Observable<BookDetails> {
         guard let url: URL = Bundle.main.url(forResource: "details", withExtension: "json") else { return .never() }
         let data = try! Data.init(contentsOf: url)

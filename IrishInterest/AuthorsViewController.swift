@@ -39,21 +39,29 @@ final class AuthorsViewController: UIViewController, SearchResultsObservable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("AuthorsViewController.viewDidAppear")
-        showSearchBar(withPlaceholder: "Authors")
+        showSearchBar(withPlaceholder: "... Authors")
         
-        // local filtering from observer without re-triggering fetch
-        Observable.combineLatest(searchTextObservable,
-                                 webService.authors()
-                                    .doLoading(with: Loader(view: view))) { (query: String, list: [Author]) -> [Author] in
-            guard !query.isEmpty else { return list }
-            let queryLower = query.lowercased()
-            return list.filter { (item: Author) -> Bool in
-                item.fullName.lowercased().contains(queryLower)
-            }
-        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
-            cell.update(title: model.fullName)
-        }
-        .disposed(by: disposeBag)
+        webService.countAuthors()
+            .doLoading(with: Loader(view: view))
+            .map({ (count: Int) -> String in
+                "\(count) Authors"
+            })
+            .bind(to: searchBar.rx.placeholder)
+            .disposed(by: disposeBag)
+        
+//        // local filtering from observer without re-triggering fetch
+//        Observable.combineLatest(searchTextObservable,
+//                                 webService.authors()
+//                                    .doLoading(with: Loader(view: view))) { (query: String, list: [Author]) -> [Author] in
+//            guard !query.isEmpty else { return list }
+//            let queryLower = query.lowercased()
+//            return list.filter { (item: Author) -> Bool in
+//                item.fullName.lowercased().contains(queryLower)
+//            }
+//        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
+//            cell.update(title: model.fullName)
+//        }
+//        .disposed(by: disposeBag)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

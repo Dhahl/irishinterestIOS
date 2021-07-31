@@ -7,6 +7,7 @@ import UIKit
 
 protocol WebService {
     var decoder: JSONDecoder { get }
+    func countAuthors() -> Observable<Int>
     func authors() -> Observable<[Author]>
     func categories() -> Observable<[Category]>
     func latestBooks(page: Int) -> Observable<[Book]>
@@ -17,6 +18,11 @@ protocol WebService {
 extension WebService {
     func decode<T: Decodable>(data: Data) throws -> T {
         try decoder.decode(T.self, from: data)
+    }
+    
+    func authorNameLetters() -> [String] {
+        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+         "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     }
 }
 
