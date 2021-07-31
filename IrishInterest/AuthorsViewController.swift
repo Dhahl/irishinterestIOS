@@ -30,26 +30,27 @@ final class AuthorsViewController: UIViewController, SearchResultsObservable {
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
+        collectionView.register(TextWithDetailViewCell.self, forCellWithReuseIdentifier: "TextWithDetailViewCell")
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
-        showSearchBar(withPlaceholder: "Search ... Authors")
+        showSearchBar(withPlaceholder: "Search authors")
         
         // AUTHORS COUNT
         webService.countAuthors()
             .doLoading(with: Loader(view: view))
             .map({ (count: Int) -> String in
-                "Search \(count) Authors"
+                "Search authors - \(count)"
             })
             .bind(to: searchBar.rx.placeholder)
             .disposed(by: disposeBag)
         
         // ABC
-        webService.authorNameLetters()
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, letter: String, cell: TextViewCell) in
-                cell.update(title: letter)
+        webService.countAuthorsABC()
+            .doLoading(with: Loader(view: view))
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextWithDetailViewCell")) { (index: Int, countByLetter: CountByLetter, cell: TextWithDetailViewCell) in
+                cell.update(title: countByLetter.alpha, detail: String(countByLetter.count))
             }
             .disposed(by: disposeBag)
     }

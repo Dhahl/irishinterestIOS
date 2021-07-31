@@ -42,6 +42,20 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn(42499)
     }
     
+    func countAuthorsABC() -> Observable<[CountByLetter]> {
+        let params: String = "?value=authors&type=abcCount&apiKey=testApiKey"
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).map { (data: Data) -> [CountByLetter] in
+            let counts: [CountByLetter] = try decode(data: data)
+            return counts.filter { (countBy: CountByLetter) -> Bool in
+                countBy.alpha.first?.isLetter == true
+            }
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
+    }
+    
     func categories() -> Observable<[Category]> {
         let params: String = "?value=categories&apiKey=testApiKey"
         let request = URLRequest(url: Const.url(params: params))

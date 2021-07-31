@@ -37,6 +37,7 @@
 		98A67389267E26E8001F643E /* ListBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* ListBooksViewController.swift */; };
 		98A67393267E8964001F643E /* AuthorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67392267E8964001F643E /* AuthorsViewController.swift */; };
 		98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67394267E8A60001F643E /* CategoriesViewController.swift */; };
+		98B81A3D26B55CEF00197290 /* TextWithDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B81A3C26B55CEF00197290 /* TextWithDetailViewCell.swift */; };
 		98BCFEFF2687E3FB00555587 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFEFE2687E3FB00555587 /* SearchViewController.swift */; };
 		98BCFF05268800B500555587 /* UserDefaultsDataIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFF01268800B500555587 /* UserDefaultsDataIO.swift */; };
 		98BCFF06268800B500555587 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFF02268800B500555587 /* LocalStore.swift */; };
@@ -99,6 +100,7 @@
 		98A67388267E26E8001F643E /* ListBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBooksViewController.swift; sourceTree = "<group>"; };
 		98A67392267E8964001F643E /* AuthorsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorsViewController.swift; sourceTree = "<group>"; };
 		98A67394267E8A60001F643E /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		98B81A3C26B55CEF00197290 /* TextWithDetailViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithDetailViewCell.swift; sourceTree = "<group>"; };
 		98BCFEFE2687E3FB00555587 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		98BCFF01268800B500555587 /* UserDefaultsDataIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataIO.swift; sourceTree = "<group>"; };
 		98BCFF02268800B500555587 /* LocalStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStore.swift; sourceTree = "<group>"; };
@@ -141,10 +143,11 @@
 		98052C11268FB49800F3FB45 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
-				98A67388267E26E8001F643E /* ListBooksViewController.swift */,
-				98052C12268FB4AC00F3FB45 /* TextViewCell.swift */,
 				986D43F9269E3B0100732225 /* BookViewCell.swift */,
 				986D43FD26A0EB5100732225 /* CellConst.swift */,
+				98A67388267E26E8001F643E /* ListBooksViewController.swift */,
+				98052C12268FB4AC00F3FB45 /* TextViewCell.swift */,
+				98B81A3C26B55CEF00197290 /* TextWithDetailViewCell.swift */,
 			);
 			path = Collections;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				98BCFF06268800B500555587 /* LocalStore.swift in Sources */,
 				98E8A4FD26AB64C300F5D983 /* TitleLabel.swift in Sources */,
 				98052BFE268A798400F3FB45 /* TopSearchesViewController.swift in Sources */,
+				98B81A3D26B55CEF00197290 /* TextWithDetailViewCell.swift in Sources */,
 				98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */,
 				98A67383267E189D001F643E /* UI.swift in Sources */,
 				98A67387267E1D2C001F643E /* BarItem.swift in Sources */,
