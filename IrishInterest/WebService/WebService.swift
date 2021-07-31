@@ -7,13 +7,14 @@ import UIKit
 
 protocol WebService {
     var decoder: JSONDecoder { get }
-    func countAuthors() -> Observable<Int>
-    func countAuthorsABC() -> Observable<[CountByLetter]>
     func authors() -> Observable<[Author]>
     func authors(byLetter: String) -> Observable<[Author]>
+    func authorsCount() -> Observable<Int>
+    func authorsAtoZCount() -> Observable<[CountByLetter]>
     func categories() -> Observable<[Category]>
-    func latestBooks(page: Int) -> Observable<[Book]>
-    func booksBy(categoryId: Int) -> Observable<[Book]>
+    func booksLatest(page: Int) -> Observable<[Book]>
+    func books(byCategoryId: Int) -> Observable<[Book]>
+    func books(byAuthorID: Int) -> Observable<[Book]>
     func details(bookID: Int) -> Observable<BookDetails>
 }
 
@@ -69,7 +70,7 @@ struct Category: Decodable {
 
 struct Book: Decodable {
     let author: String?
-    let authorid: String?
+    let authorid: Int
     let id: Int
     let image: String
     

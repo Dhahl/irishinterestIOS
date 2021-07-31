@@ -26,16 +26,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let searchWrap = UINavigationController(rootViewController: search)
         searchWrap.restorationIdentifier = "search"
         
-        let authors = AuthorsViewController()
-        authors.setup(webService: webService) { (letter: String) in
-            let authorsList = AuthorsListedViewController()
-            authorsList.setup(authorsObservable: webServiceRef.authors(byLetter: letter), byLetter: letter) { (author: Author) in
-                print("selected author: \(author)")
+        
+        let authorsAtoZ = AuthorsAtoZViewController()
+        authorsAtoZ.setup(webService: webService) { (letter: String) in
+            let authorsByLetter = AuthorsByLetterViewController()
+            authorsByLetter.setup(authorsObservable: webServiceRef.authors(byLetter: letter), byLetter: letter) { (author: Author) in
+                let booksOfAuthor = ListBooksViewController()
+                booksOfAuthor.setup(title: "By: \(author.fullName)",
+                                booksProvider: webServiceRef.books(byAuthorID: author.id)) { (book: Book) in
+                    let detailsViewController = DetailsViewController()
+                    detailsViewController.bind(model: book, webservice: webServiceRef)
+                    booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
+                }
+                authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
             }
-            authors.navigationController?.pushViewController(authorsList, animated: true)
+            authorsAtoZ.navigationController?.pushViewController(authorsByLetter, animated: true)
         }
-        authors.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
-        let authorsWrap = UINavigationController(rootViewController: authors)
+        authorsAtoZ.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
+        let authorsWrap = UINavigationController(rootViewController: authorsAtoZ)
         authorsWrap.restorationIdentifier = "authors"
         
         
@@ -43,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
             let listBooks = ListBooksViewController()
             listBooks.setup(title: categoryTitle,
-                            booksProvider: webServiceRef.booksBy(categoryId: categoryId)) { (book: Book) in
+                            booksProvider: webServiceRef.books(byCategoryId: categoryId)) { (book: Book) in
                 let detailsViewController = DetailsViewController()
                 detailsViewController.bind(model: book, webservice: webServiceRef)
                 listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -55,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categoriesWrap.restorationIdentifier = "categories"
         
         let latest = ListBooksViewController()
-        latest.setup(title: "Latest books", booksProvider: webService.latestBooks(page: 0)) { (book: Book) in
+        latest.setup(title: "Latest books", booksProvider: webService.booksLatest(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -65,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latestWrap.restorationIdentifier = "latest"
         
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: webService.latestBooks(page: 30)) { (book: Book) in
+        published.setup(title: "Published books", booksProvider: webService.booksLatest(page: 30)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
