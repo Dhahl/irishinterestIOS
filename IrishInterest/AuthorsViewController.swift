@@ -34,21 +34,29 @@ final class AuthorsViewController: UIViewController, SearchResultsObservable {
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("AuthorsViewController.viewDidAppear")
-        showSearchBar(withPlaceholder: "... Authors")
         
+        showSearchBar(withPlaceholder: "Search ... Authors")
+        
+        // AUTHORS COUNT
         webService.countAuthors()
             .doLoading(with: Loader(view: view))
             .map({ (count: Int) -> String in
-                "\(count) Authors"
+                "Search \(count) Authors"
             })
             .bind(to: searchBar.rx.placeholder)
             .disposed(by: disposeBag)
         
+        // ABC
+        webService.authorNameLetters()
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, letter: String, cell: TextViewCell) in
+                cell.update(title: letter)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        print("AuthorsViewController.viewDidAppear")
 //        // local filtering from observer without re-triggering fetch
 //        Observable.combineLatest(searchTextObservable,
 //                                 webService.authors()
@@ -62,13 +70,12 @@ final class AuthorsViewController: UIViewController, SearchResultsObservable {
 //            cell.update(title: model.fullName)
 //        }
 //        .disposed(by: disposeBag)
-    }
+//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // reset search entry on switching tabs
         searchBar.text = ""
-        disposeBag = DisposeBag()
     }
 }
 
