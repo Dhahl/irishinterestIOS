@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let authors = AuthorsViewController()
         authors.setup(webService: webService) { (letter: String) in
             let authorsList = AuthorsListedViewController()
-            authorsList.setup(authorsObservable: webServiceRef.authors(), byLetter: letter) { (author: Author) in
+            authorsList.setup(authorsObservable: webServiceRef.authors(byLetter: letter), byLetter: letter) { (author: Author) in
                 print("selected author: \(author)")
             }
             authors.navigationController?.pushViewController(authorsList, animated: true)

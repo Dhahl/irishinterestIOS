@@ -46,7 +46,7 @@ final class AuthorsListedViewController: UIViewController, SearchResultsObservab
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         if let firstLetter = firstLetter {
-            showSearchBar(withPlaceholder: "Authors name starting with \(firstLetter)")
+            showSearchBar(withPlaceholder: "Authors starting with \(firstLetter)")
         }
         
         // ABC

@@ -31,9 +31,8 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
-    // TODO: implement this part
     func authors(byLetter: String) -> Observable<[Author]> {
-        let params: String = "?value=authors&type=getAll&apiKey=testApiKey&offset=0"
+        let params: String = "?value=authors&type=byLastNameStartsWith&apiKey=testApiKey&startsWith=\(byLetter)"
         let request = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).map { (data: Data) -> [Author] in
             try decode(data: data)
