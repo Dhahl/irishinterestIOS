@@ -84,7 +84,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let publishedWrap = UINavigationController(rootViewController: published)
         publishedWrap.restorationIdentifier = "published"
 
-        let topSearches = TopSearchesViewController()
+        let topSearches = ListBooksViewController()
+        topSearches.setup(title: "Top searches", booksProvider: .just([])) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book, webservice: webServiceRef)
+            topSearches.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
         let topSearchesWrap = UINavigationController(rootViewController: topSearches)
         topSearches.restorationIdentifier = "topSearches"
