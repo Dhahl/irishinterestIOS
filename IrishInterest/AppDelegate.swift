@@ -62,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let categoriesWrap = UINavigationController(rootViewController: categories)
         categoriesWrap.restorationIdentifier = "categories"
         
+        
         let latest = ListBooksViewController()
         latest.setup(title: "Latest books", booksProvider: webService.booksLatest(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
@@ -72,8 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let latestWrap = UINavigationController(rootViewController: latest)
         latestWrap.restorationIdentifier = "latest"
         
+        
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: webService.booksLatest(page: 30)) { (book: Book) in
+        published.setup(title: "Published books", booksProvider: webService.booksPublished(page: 0)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -87,7 +89,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let topSearchesWrap = UINavigationController(rootViewController: topSearches)
         topSearches.restorationIdentifier = "topSearches"
         
-        let comingSoon = ComingSoonViewController()
+        let comingSoon = ListBooksViewController()
+        comingSoon.setup(title: "Coming soon", booksProvider: webService.booksComingSoon(page: 0)) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book, webservice: webServiceRef)
+            comingSoon.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
         let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
         comingSoonWrap.restorationIdentifier = "comingSoon"

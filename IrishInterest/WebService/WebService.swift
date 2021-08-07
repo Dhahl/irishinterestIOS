@@ -11,10 +11,14 @@ protocol WebService {
     func authors(byLetter: String) -> Observable<[Author]>
     func authorsCount() -> Observable<Int>
     func authorsAtoZCount() -> Observable<[CountByLetter]>
+    
     func categories() -> Observable<[Category]>
+    
     func booksLatest(page: Int) -> Observable<[Book]>
+    func booksPublished(page: Int) -> Observable<[Book]>
     func books(byCategoryId: Int) -> Observable<[Book]>
     func books(byAuthorID: Int) -> Observable<[Book]>
+    func booksComingSoon(page: Int) -> Observable<[Book]>
     func details(bookID: Int) -> Observable<BookDetails>
 }
 
@@ -22,32 +26,11 @@ extension WebService {
     func decode<T: Decodable>(data: Data) throws -> T {
         try decoder.decode(T.self, from: data)
     }
-    
-//    func authorNameLetters() -> Observable<[String]> {
-//        .just(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
-//         "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"])
-//    }
 }
 
 struct CountByLetter: Decodable {
     let alpha: String
     let count: Int
-}
-
-struct ResponseAuthors: Decodable {
-    let response: [Author]
-    var responseSorted: [Author] {
-        response.sorted { (a: Author, b: Author) in
-            a.fullName <= b.fullName
-        }
-    }
-}
-
-struct ResponseBooks: Decodable {
-    let response: [Book]
-}
-
-struct ErrorAuthors: Error {
 }
 
 struct Author: Decodable {

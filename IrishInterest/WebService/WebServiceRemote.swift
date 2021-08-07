@@ -113,8 +113,19 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
-    func publishedBooks(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getLatest2&apiKey=testApiKey&offset=\(page)"
+    func booksPublished(page: Int) -> Observable<[Book]> {
+        let params: String = "?value=books&type=getPublished&apiKey=testApiKey&offset=\(page)"
+        let request: URLRequest = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
+            return try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
+    }
+    
+    func booksComingSoon(page: Int) -> Observable<[Book]> {
+        let params: String = "?value=books&type=getComingSoon&apiKey=testApiKey&offset=\(page)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             return try decode(data: data)
