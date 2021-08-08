@@ -9,32 +9,28 @@ final class WebServicePaging {
 
     private let serviceCall: (Int) -> Observable<[Book]>
     private let paging: Paging
-    private var itemsSubject = PublishSubject<[Book]>()
-    private var pagesLoading = Set<Int>()
+    private var itemsSubject = BehaviorSubject<[Book]>(value: [])
+    private var loadedPages = Set<Int>()
+    private var nextPage = BehaviorSubject<Int>(value: 0)
     private let disposeBag = DisposeBag()
 
     init(serviceCall: @escaping (Int) -> Observable<[Book]>, pageSize: Int = 30) {
         self.serviceCall = serviceCall
         self.paging = Paging(size: pageSize)
         self.items = itemsSubject.asObservable()
-    }
-
-    public func start() {
-        onDisplayed(index: -1)
+        nextPage.flatMap({ page in
+            serviceCall(page)
+        }).subscribe(onNext: { [weak self] items in
+            guard let self = self else { return }
+            try? self.itemsSubject.onNext( self.itemsSubject.value() + items)
+        }).disposed(by: disposeBag)
     }
 
     public func onDisplayed(index: Int) {
-        guard let nextPage = paging.nextPage(for: index) else {
-            return
-        }
-        guard !pagesLoading.contains(nextPage) else {
-            return
-        }
-        pagesLoading.insert(nextPage)
-        serviceCall(nextPage)
-            .subscribe(onNext: { [weak self] (books: [Book]) in
-                self?.itemsSubject.onNext(books)
-            }).disposed(by: disposeBag)
+        guard let page = paging.nextPage(for: index) else { return }
+        guard !loadedPages.contains(page) else { return }
+        loadedPages.insert(page)
+        nextPage.onNext(page)
     }
 }
 

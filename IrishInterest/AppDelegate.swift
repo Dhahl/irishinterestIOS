@@ -77,9 +77,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latestWrap.restorationIdentifier = "latest"
         
         
+        let booksProviderPaged = WebServicePaging(serviceCall: webService.booksPublished(page:), pageSize: 30)
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: webService.booksPublished(page: 0),
-                        onDisplaying: { index in print("Published books: \(index)")}) { (book: Book) in
+        published.setup(title: "Published books", booksProvider: booksProviderPaged.items,
+                        onDisplaying: booksProviderPaged.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
