@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             authorsByLetter.setup(authorsObservable: webServiceRef.authors(byLetter: letter), byLetter: letter) { (author: Author) in
                 let booksOfAuthor = ListBooksViewController()
                 booksOfAuthor.setup(title: "By: \(author.fullName)",
-                                booksProvider: webServiceRef.books(byAuthorID: author.id)) { (book: Book) in
+                                    booksProvider: webServiceRef.books(byAuthorID: author.id, page: 0),
+                                    onDisplaying: { index in print("booksOfAuthor: \(index)")}) { (book: Book) in
                     let detailsViewController = DetailsViewController()
                     detailsViewController.bind(model: book, webservice: webServiceRef)
                     booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -51,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
             let listBooks = ListBooksViewController()
             listBooks.setup(title: categoryTitle,
-                            booksProvider: webServiceRef.books(byCategoryId: categoryId)) { (book: Book) in
+                            booksProvider: webServiceRef.books(byCategoryId: categoryId, page: 0),
+                            onDisplaying: { index in print("by category: \(index)")}) { (book: Book) in
                 let detailsViewController = DetailsViewController()
                 detailsViewController.bind(model: book, webservice: webServiceRef)
                 listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -64,7 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let latest = ListBooksViewController()
-        latest.setup(title: "Latest books", booksProvider: webService.booksLatest(page: 0)) { (book: Book) in
+        latest.setup(title: "Latest books", booksProvider: webService.booksLatest(page: 0),
+                     onDisplaying: { index in print("Latest books: \(index)")}) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -75,7 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: webService.booksPublished(page: 0)) { (book: Book) in
+        published.setup(title: "Published books", booksProvider: webService.booksPublished(page: 0),
+                        onDisplaying: { index in print("Published books: \(index)")}) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -85,7 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         publishedWrap.restorationIdentifier = "published"
 
         let topSearches = ListBooksViewController()
-        topSearches.setup(title: "Top searches", booksProvider: .just([])) { (book: Book) in
+        topSearches.setup(title: "Top searches", booksProvider: .just([]),
+                          onDisplaying: { index in print("Top searches: \(index)")}) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             topSearches.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -95,7 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         topSearches.restorationIdentifier = "topSearches"
         
         let comingSoon = ListBooksViewController()
-        comingSoon.setup(title: "Coming soon", booksProvider: webService.booksComingSoon(page: 0)) { (book: Book) in
+        comingSoon.setup(title: "Coming soon", booksProvider: webService.booksComingSoon(page: 0),
+                         onDisplaying: { index in print("booksOfAuthor: \(index)")}) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             comingSoon.navigationController?.pushViewController(detailsViewController, animated: true)

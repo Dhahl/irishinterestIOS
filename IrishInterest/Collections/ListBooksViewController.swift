@@ -14,12 +14,17 @@ final class ListBooksViewController: UIViewController {
     private var models: [Int: Book] = [:]
     private var booksProvider: Observable<[Book]>?
     private var onSelected: ((Book) -> Void)?
+    private var onDisplaying: ((Int) -> Void)?
     private var navTitle: String?
     
-    func setup(title: String, booksProvider: Observable<[Book]>, onSelected: @escaping (Book) -> Void) {
+    func setup(title: String,
+               booksProvider: Observable<[Book]>,
+               onDisplaying: @escaping (Int) -> Void,
+               onSelected: @escaping (Book) -> Void) {
         self.navTitle = title
         self.booksProvider = booksProvider
         self.onSelected = onSelected
+        self.onDisplaying = onDisplaying
     }
     
     override func viewDidLoad() {
@@ -49,6 +54,7 @@ final class ListBooksViewController: UIViewController {
                 guard let strongSelf = self else { return }
                 strongSelf.models[index] = model
                 cell.update(book: model, imageLoader: strongSelf.imageLoader)
+                strongSelf.onDisplaying?(index)
             }
             .disposed(by: disposeBag)
         

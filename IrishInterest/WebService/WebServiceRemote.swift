@@ -14,6 +14,7 @@ struct WebServiceRemote: WebService {
     }
     
     private enum Const {
+        static let pageSize = 30
         static let baseURL: URL = URL(string: "https://irishinterest.ie/API2/rest/request.php")!
         static func url(params: String) -> URL {
             URL(string: params, relativeTo: baseURL)!
@@ -80,8 +81,8 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
-    func books(byAuthorID authorID: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=byAuthorID&authorID=\(authorID)&offset=0&apiKey=testApiKey"
+    func books(byAuthorID authorID: Int, page: Int) -> Observable<[Book]> {
+        let params: String = "?value=books&type=byAuthorID&authorID=\(authorID)&offset=\(page * Const.pageSize)&apiKey=testApiKey"
         let request = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             try decode(data: data)
@@ -91,8 +92,8 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
-    func books(byCategoryId: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=byCategory&categoryId=\(byCategoryId)&offset=0&apiKey=testApiKey"
+    func books(byCategoryId: Int, page: Int) -> Observable<[Book]> {
+        let params: String = "?value=books&type=byCategory&categoryId=\(byCategoryId)&offset=\(page * Const.pageSize)&apiKey=testApiKey"
         let request = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             try decode(data: data)
@@ -103,7 +104,7 @@ struct WebServiceRemote: WebService {
     }
     
     func booksLatest(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getLatest2&apiKey=testApiKey&offset=\(page)"
+        let params: String = "?value=books&type=getLatest2&apiKey=testApiKey&offset=\(page * Const.pageSize)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             return try decode(data: data)
@@ -114,7 +115,7 @@ struct WebServiceRemote: WebService {
     }
     
     func booksPublished(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getPublished&apiKey=testApiKey&offset=\(page)"
+        let params: String = "?value=books&type=getPublished&apiKey=testApiKey&offset=\(page * Const.pageSize)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             return try decode(data: data)
@@ -125,7 +126,7 @@ struct WebServiceRemote: WebService {
     }
     
     func booksComingSoon(page: Int) -> Observable<[Book]> {
-        let params: String = "?value=books&type=getComingSoon&apiKey=testApiKey&offset=\(page)"
+        let params: String = "?value=books&type=getComingSoon&apiKey=testApiKey&offset=\(page * Const.pageSize)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> [Book] in
             return try decode(data: data)

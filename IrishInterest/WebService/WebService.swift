@@ -16,8 +16,8 @@ protocol WebService {
     
     func booksLatest(page: Int) -> Observable<[Book]>
     func booksPublished(page: Int) -> Observable<[Book]>
-    func books(byCategoryId: Int) -> Observable<[Book]>
-    func books(byAuthorID: Int) -> Observable<[Book]>
+    func books(byCategoryId: Int, page: Int) -> Observable<[Book]>
+    func books(byAuthorID: Int, page: Int) -> Observable<[Book]>
     func booksComingSoon(page: Int) -> Observable<[Book]>
     func details(bookID: Int) -> Observable<BookDetails>
 }
