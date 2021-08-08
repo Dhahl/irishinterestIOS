@@ -31,10 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         authorsAtoZ.setup(webService: webService) { (letter: String) in
             let authorsByLetter = AuthorsByLetterViewController()
             authorsByLetter.setup(authorsObservable: webServiceRef.authors(byLetter: letter), byLetter: letter) { (author: Author) in
+                let booksOfAuthorService = WebServicePaging(serviceCall: { page in webServiceRef.books(byAuthorID: author.id, page: page) })
                 let booksOfAuthor = ListBooksViewController()
                 booksOfAuthor.setup(title: "By: \(author.fullName)",
-                                    booksProvider: webServiceRef.books(byAuthorID: author.id, page: 0),
-                                    onDisplaying: { index in print("booksOfAuthor: \(index)")}) { (book: Book) in
+                                    booksProvider: booksOfAuthorService.items,
+                                    onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
                     let detailsViewController = DetailsViewController()
                     detailsViewController.bind(model: book, webservice: webServiceRef)
                     booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -50,10 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let categories = CategoriesViewController()
         categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
+            let categoryListService = WebServicePaging(serviceCall: { page in webServiceRef.books(byCategoryId: categoryId, page:page) })
             let listBooks = ListBooksViewController()
             listBooks.setup(title: categoryTitle,
-                            booksProvider: webServiceRef.books(byCategoryId: categoryId, page: 0),
-                            onDisplaying: { index in print("by category: \(index)")}) { (book: Book) in
+                            booksProvider: categoryListService.items,
+                            onDisplaying: categoryListService.onDisplayed(index:)) { (book: Book) in
                 let detailsViewController = DetailsViewController()
                 detailsViewController.bind(model: book, webservice: webServiceRef)
                 listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -65,9 +67,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         categoriesWrap.restorationIdentifier = "categories"
         
         
+        let latestBookService = WebServicePaging(serviceCall: webService.booksLatest(page:))
         let latest = ListBooksViewController()
-        latest.setup(title: "Latest books", booksProvider: webService.booksLatest(page: 0),
-                     onDisplaying: { index in print("Latest books: \(index)")}) { (book: Book) in
+        latest.setup(title: "Latest books", booksProvider: latestBookService.items,
+                     onDisplaying: latestBookService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -77,10 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latestWrap.restorationIdentifier = "latest"
         
         
-        let booksProviderPaged = WebServicePaging(serviceCall: webService.booksPublished(page:), pageSize: 30)
+        let publishedBookService = WebServicePaging(serviceCall: webService.booksPublished(page:))
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: booksProviderPaged.items,
-                        onDisplaying: booksProviderPaged.onDisplayed(index:)) { (book: Book) in
+        published.setup(title: "Published books", booksProvider: publishedBookService.items,
+                        onDisplaying: publishedBookService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
@@ -100,9 +103,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let topSearchesWrap = UINavigationController(rootViewController: topSearches)
         topSearches.restorationIdentifier = "topSearches"
         
+        let commingSoonService = WebServicePaging(serviceCall: webService.booksComingSoon(page:))
         let comingSoon = ListBooksViewController()
-        comingSoon.setup(title: "Coming soon", booksProvider: webService.booksComingSoon(page: 0),
-                         onDisplaying: { index in print("booksOfAuthor: \(index)")}) { (book: Book) in
+        comingSoon.setup(title: "Coming soon", booksProvider: commingSoonService.items,
+                         onDisplaying: commingSoonService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef)
             comingSoon.navigationController?.pushViewController(detailsViewController, animated: true)
