@@ -8,7 +8,8 @@ import RxCocoa
 final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable {    
     
     let searchBar = UISearchBar()
-    private var models: [Int: CountByLetter] = [:]
+    private var modelLetters: [Int: CountByLetter] = [:]
+    private var modelFoundAuthors: [Int: Author] = [:]
     private var disposeBag = DisposeBag()
     private var webService: WebService!
     private var onSelectedFirstLetter: ((String) -> Void)?
@@ -35,11 +36,30 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(TextWithDetailViewCell.self, forCellWithReuseIdentifier: "TextWithDetailViewCell")
+        collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
+        // SEARCH
         showSearchBar(withPlaceholder: "Search authors")
+        searchTextObservable
+            .map(Search.regexify(_:))
+            .distinctUntilChanged()
+            .doLoading(with: Loader(view: view))
+            .flatMap { [weak self] (searchValue: String?) -> Observable<[Author]> in
+                guard let strongSelf = self, let searchValue = searchValue, 3 < searchValue.count else {
+                    return .just([])
+                }
+                return strongSelf.webService.authors(searchBy: searchValue)
+            }
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell" )) {
+                [weak self] (index: Int, author: Author, cell: TextViewCell) in
+                cell.update(title: author.fullName)
+                self?.modelFoundAuthors[index] = author
+            }
+            .disposed(by: disposeBag)
+        
         
         // AUTHORS COUNT
         webService.authorsCount()
@@ -51,19 +71,19 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             .disposed(by: disposeBag)
         
         // ABC
-        webService.authorsAtoZCount()
-            .doLoading(with: Loader(view: view))
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextWithDetailViewCell")) { [weak self] (index: Int, countByLetter: CountByLetter, cell: TextWithDetailViewCell) in
-                cell.update(title: countByLetter.alpha, detail: String(countByLetter.count))
-                self?.models[index] = countByLetter
-            }
-            .disposed(by: disposeBag)
+//        webService.authorsAtoZCount()
+//            .doLoading(with: Loader(view: view))
+//            .bind(to: collectionView.rx.items(cellIdentifier: "TextWithDetailViewCell")) { [weak self] (index: Int, countByLetter: CountByLetter, cell: TextWithDetailViewCell) in
+//                cell.update(title: countByLetter.alpha, detail: String(countByLetter.count))
+//                self?.modelLetters[index] = countByLetter
+//            }
+//            .disposed(by: disposeBag)
         
         // selection
         collectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (indexPath: IndexPath) in
-                guard let model: CountByLetter = self?.models[indexPath.item] else { return }
+                guard let model: CountByLetter = self?.modelLetters[indexPath.item] else { return }
                 self?.onSelectedFirstLetter?(model.alpha)
             }
             .disposed(by: disposeBag)
@@ -98,5 +118,18 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
 extension CGRect {
     var smallestSide: CGFloat {
         min(width, height)
+    }
+}
+
+
+enum Search {
+    /// Create a regex like piped search value
+    /// eg. from "joyce blunt" => "joyce|blunt"
+    /// - Parameter searchValue: input from the user
+    /// - Returns: a regex friendly value
+    static func regexify(_ searchValue: String) -> String {
+        return searchValue.split { (char: Character) -> Bool in
+            [" ", ",", ";"].contains(char)
+        }.joined(separator: "|")
     }
 }

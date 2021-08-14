@@ -187,15 +187,15 @@
 				98A6738C267E8386001F643E /* WebService */,
 				98A67379267E187B001F643E /* UI */,
 				98A67345267E0B7A001F643E /* AppDelegate.swift */,
-				98A6734E267E0B7B001F643E /* Assets.xcassets */,
-				98A67350267E0B7B001F643E /* LaunchScreen.storyboard */,
-				98A67353267E0B7B001F643E /* Info.plist */,
-				98A67375267E124C001F643E /* TabViewController.swift */,
 				98A67392267E8964001F643E /* AuthorsAtoZViewController.swift */,
+				98B81A3E26B567D300197290 /* AuthorsByLetterViewController.swift */,
+				98A67350267E0B7B001F643E /* LaunchScreen.storyboard */,
+				98A67375267E124C001F643E /* TabViewController.swift */,
 				98A67394267E8A60001F643E /* CategoriesViewController.swift */,
 				98BCFEFE2687E3FB00555587 /* SearchViewController.swift */,
 				98052C01268A79D100F3FB45 /* FavouritesViewController.swift */,
-				98B81A3E26B567D300197290 /* AuthorsByLetterViewController.swift */,
+				98A67353267E0B7B001F643E /* Info.plist */,
+				98A6734E267E0B7B001F643E /* Assets.xcassets */,
 			);
 			path = IrishInterest;
 			sourceTree = "<group>";

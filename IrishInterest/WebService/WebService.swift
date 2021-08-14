@@ -8,6 +8,7 @@ import UIKit
 protocol WebService {
     var decoder: JSONDecoder { get }
     func authors() -> Observable<[Author]>
+    func authors(searchBy value: String) -> Observable<[Author]>
     func authors(byLetter: String) -> Observable<[Author]>
     func authorsCount() -> Observable<Int>
     func authorsAtoZCount() -> Observable<[CountByLetter]>
