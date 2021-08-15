@@ -111,6 +111,37 @@ struct WebServiceRemote: WebService {
         }).catchAndReturn([])
     }
     
+    // MARK: Books
+    func books(searchBy value: String) -> Observable<[Book]> {
+        let paramStrings: [String: String] = [
+            "value": "books",
+            "type": "searchByName",
+            "apiKey": "testApiKey",
+            "searchBy": value
+        ]
+        let queryItems: [URLQueryItem] = paramStrings.map { (key: String, value: String) -> URLQueryItem in
+            URLQueryItem(name: key, value: value)
+        }
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "irishinterest.ie"
+        urlComponents.path = "/API2/rest/request.php"
+        urlComponents.queryItems = queryItems
+        
+        guard let url: URL = urlComponents.url else {
+            print("ERROR: invalid url of components: \(urlComponents.debugDescription)")
+            return .just([])
+        }
+        
+        let request = URLRequest(url: url)
+        return session.rx.data(request: request).map { (data: Data) -> [Book] in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn([])
+    }
+    
     func books(byAuthorID authorID: Int, page: Int) -> Observable<[Book]> {
         let params: String = "?value=books&type=byAuthorID&authorID=\(authorID)&offset=\(page * Const.pageSize)&apiKey=testApiKey"
         let request = URLRequest(url: Const.url(params: params))

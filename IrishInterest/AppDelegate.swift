@@ -22,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let webServiceRef = webService
         
         let search = SearchViewController()
+        search.setup(title: "Search", webService: webService) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book, webservice: webServiceRef)
+            search.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
         let searchWrap = UINavigationController(rootViewController: search)
         searchWrap.restorationIdentifier = "search"

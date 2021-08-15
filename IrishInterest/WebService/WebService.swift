@@ -15,6 +15,7 @@ protocol WebService {
     
     func categories() -> Observable<[Category]>
     
+    func books(searchBy value: String) -> Observable<[Book]>
     func booksLatest(page: Int) -> Observable<[Book]>
     func booksPublished(page: Int) -> Observable<[Book]>
     func books(byCategoryId: Int, page: Int) -> Observable<[Book]>
