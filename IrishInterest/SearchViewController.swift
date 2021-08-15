@@ -16,7 +16,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private var webService: WebService!
     private var onSelected: ((Book) -> Void)?
     private var navTitle: String?
-    private var state: CurrentState = .listSearchResults
+    private var state: CurrentState = .empty
     private let warningLabel = UILabel()
     private let noResultsLabel = UILabel()
     private var dissmissByTap: UITapGestureRecognizer?
@@ -43,6 +43,11 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private func update(_ newState: CurrentState) {
         state = newState
         switch state {
+        case .empty:
+            noResultsLabel.isHidden = true
+            if let gesture = dissmissByTap {
+                view.addGestureRecognizer(gesture)
+            }
         case .noResults:
             noResultsLabel.isHidden = false
             if let gesture = dissmissByTap {
@@ -100,7 +105,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         noResultsLabel.isHidden = true
         
         // INITIAL STATE
-        update(.listSearchResults)
+        update(.empty)
         
         showSearchBar(withPlaceholder: "Book titles")
         searchTextObservable
@@ -108,12 +113,12 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
             .flatMap { [weak self] (searchValue: String?) -> Observable<[Book]> in
                 guard let strongSelf = self else { return .just([]) }
                 guard let value = searchValue else {
-                    strongSelf.update(.listSearchResults)
+                    strongSelf.update(.empty)
                     return .just([])
                 }
                 switch value.count {
                 case 0:
-                    strongSelf.update(.listSearchResults)
+                    strongSelf.update(.empty)
                     return .just([])
                 case 1..<Const.minChar:
                     strongSelf.update(.warningSearchTermTooShort(count: value.count))
@@ -159,6 +164,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
 }
 
 private enum CurrentState {
+    case empty
     case noResults
     case listSearchResults
     case warningSearchTermTooShort(count: Int)
