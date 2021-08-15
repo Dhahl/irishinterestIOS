@@ -99,7 +99,7 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         UI.fit(searchCollectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         // SEARCH WARNING
-        UI.format(.headline, label: warningLabel, text: "", nrOfLines: 1)
+        UI.format(.subheadline, label: warningLabel, text: "", nrOfLines: 1)
         warningLabel.textColor = .secondaryLabel
         view.addSubview(warningLabel)
         UI.fit(warningLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
@@ -197,7 +197,7 @@ enum Search {
     /// - Parameter searchValue: input from the user
     /// - Returns: a regex friendly value
     static func regexify(_ searchValue: String) -> String {
-        return "^" + searchValue.split { (char: Character) -> Bool in
+        return searchValue.split { (char: Character) -> Bool in
             [" ", ",", ";"].contains(char)
         }.joined(separator: "|")
     }
