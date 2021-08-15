@@ -20,9 +20,11 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
     private var searchCollectionView: UICollectionView!
     private var state: CurrentState = .listAToZ
     private let warningLabel = UILabel()
+    private let noResultsLabel = UILabel()
     
     private enum Const {
         static let minChar: Int = 4
+        static let noResults = "No search results."
         static func searchPlaceHolder(authorsCount: Int?) -> String {
             if let count = authorsCount {
                 return "Search authors - \(count)"
@@ -53,14 +55,17 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             collectionView.isHidden = false
             searchCollectionView.isHidden = true
             warningLabel.isHidden = true
+            noResultsLabel.isHidden = true
         case .listSearchResults:
             collectionView.isHidden = true
             searchCollectionView.isHidden = false
             warningLabel.isHidden = true
+            noResultsLabel.isHidden = true
         case .warningSearchTermTooShort(let count):
             collectionView.isHidden = true
             searchCollectionView.isHidden = true
             warningLabel.isHidden = false
+            noResultsLabel.isHidden = true
             warningLabel.text = Const.searchWarning(count: count)
         }
     }
@@ -102,8 +107,16 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         warningLabel.textColor = .secondaryLabel
         view.addSubview(warningLabel)
         UI.fit(warningLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
-        update(.listAToZ)
         
+        // NO RESULTS LABEL
+        UI.format(.subheadline, label: noResultsLabel, text: Const.noResults, nrOfLines: 1)
+        noResultsLabel.textColor = .secondaryLabel
+        view.addSubview(noResultsLabel)
+        UI.fit(noResultsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
+        noResultsLabel.isHidden = true
+
+        // INITIAL STATE
+        update(.listAToZ)
         
         // SEARCH
         showSearchBar(withPlaceholder: Const.searchPlaceHolder(authorsCount: nil))
@@ -126,7 +139,11 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
                 default: //above Const.minChar
                     strongSelf.update(.listSearchResults)
                     return strongSelf.webService.authors(searchBy: value)
+                        .observe(on: MainScheduler.instance)
                         .doLoading(with: Loader(view: strongSelf.view))
+                        .do { (authors: [Author]) in
+                            strongSelf.noResultsLabel.isHidden = authors.count != 0
+                        }
                 }
             }
             .bind(to: searchCollectionView.rx.items(cellIdentifier: "TextViewCell" )) {
