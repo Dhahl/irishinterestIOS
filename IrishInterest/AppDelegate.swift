@@ -43,6 +43,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
             }
             authorsAtoZ.navigationController?.pushViewController(authorsByLetter, animated: true)
+            
+        } onSelected: { (author: Author) -> Void in
+            let booksOfAuthorService = WebServicePaging(serviceCall: { page in webServiceRef.books(byAuthorID: author.id, page: page) })
+            let booksOfAuthor = ListBooksViewController()
+            booksOfAuthor.setup(title: "By: \(author.fullName)",
+                                booksProvider: booksOfAuthorService.items,
+                                onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
+                let detailsViewController = DetailsViewController()
+                detailsViewController.bind(model: book, webservice: webServiceRef)
+                booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
+            }
+            authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
         }
         authorsAtoZ.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
         let authorsWrap = UINavigationController(rootViewController: authorsAtoZ)

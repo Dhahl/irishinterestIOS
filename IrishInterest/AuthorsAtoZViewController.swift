@@ -13,12 +13,16 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
     private var disposeBag = DisposeBag()
     private var webService: WebService!
     private var onSelectedFirstLetter: ((String) -> Void)?
+    private var onSelected: ((Author) -> Void)?
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
     
-    func setup(webService: WebService, onSelectedFirstLetter: @escaping (String) -> Void) {
+    func setup(webService: WebService,
+               onSelectedFirstLetter: @escaping (String) -> Void,
+               onSelected: @escaping (Author) -> Void) {
         self.webService = webService
         self.onSelectedFirstLetter = onSelectedFirstLetter
+        self.onSelected = onSelected
     }
     
     override func viewDidLoad() {
@@ -60,6 +64,15 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             }
             .disposed(by: disposeBag)
         
+        // SEARCH RESULT SELECTION
+        collectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] (indexPath: IndexPath) in
+                guard let model: Author = self?.modelFoundAuthors[indexPath.item] else { return }
+                self?.onSelected?(model)
+            }
+            .disposed(by: disposeBag)
+        
         
         // AUTHORS COUNT
         webService.authorsCount()
@@ -80,13 +93,13 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
 //            .disposed(by: disposeBag)
         
         // selection
-        collectionView.rx.itemSelected
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] (indexPath: IndexPath) in
-                guard let model: CountByLetter = self?.modelLetters[indexPath.item] else { return }
-                self?.onSelectedFirstLetter?(model.alpha)
-            }
-            .disposed(by: disposeBag)
+//        collectionView.rx.itemSelected
+//            .observe(on: MainScheduler.instance)
+//            .subscribe { [weak self] (indexPath: IndexPath) in
+//                guard let model: CountByLetter = self?.modelLetters[indexPath.item] else { return }
+//                self?.onSelectedFirstLetter?(model.alpha)
+//            }
+//            .disposed(by: disposeBag)
     }
     
 //    override func viewDidAppear(_ animated: Bool) {
@@ -107,11 +120,11 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
 //        .disposed(by: disposeBag)
 //    }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
         // reset search entry on switching tabs
-        searchBar.text = ""
-    }
+//        searchBar.text = ""
+//    }
 }
 
 
