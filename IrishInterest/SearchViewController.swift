@@ -16,9 +16,10 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private var webService: WebService!
     private var onSelected: ((Book) -> Void)?
     private var navTitle: String?
-    private var state: CurrentState = .listAToZ
+    private var state: CurrentState = .listSearchResults
     private let warningLabel = UILabel()
     private let noResultsLabel = UILabel()
+    private var dissmissByTap: UITapGestureRecognizer?
     
     private enum Const {
         static let minChar: Int = 4
@@ -42,16 +43,24 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private func update(_ newState: CurrentState) {
         state = newState
         switch state {
-        case .listAToZ:
-            warningLabel.isHidden = true
-            noResultsLabel.isHidden = true
+        case .noResults:
+            noResultsLabel.isHidden = false
+            if let gesture = dissmissByTap {
+                view.addGestureRecognizer(gesture)
+            }
         case .listSearchResults:
             warningLabel.isHidden = true
             noResultsLabel.isHidden = true
+            if let gesture = dissmissByTap {
+                view.removeGestureRecognizer(gesture)
+            }
         case .warningSearchTermTooShort(let count):
             warningLabel.isHidden = false
             noResultsLabel.isHidden = true
             warningLabel.text = Const.searchWarning(count: count)
+            if let gesture = dissmissByTap {
+                view.addGestureRecognizer(gesture)
+            }
         }
     }
     
@@ -73,6 +82,8 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         setupTitle()
         
         view.addSubview(collectionView)
+        dissmissByTap = UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard))
+        
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         // SEARCH WARNING
@@ -89,7 +100,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         noResultsLabel.isHidden = true
         
         // INITIAL STATE
-        update(.listAToZ)
+        update(.listSearchResults)
         
         showSearchBar(withPlaceholder: "Book titles")
         searchTextObservable
@@ -102,7 +113,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
                 }
                 switch value.count {
                 case 0:
-                    strongSelf.update(.listAToZ)
+                    strongSelf.update(.listSearchResults)
                     return .just([])
                 case 1..<Const.minChar:
                     strongSelf.update(.warningSearchTermTooShort(count: value.count))
@@ -113,7 +124,9 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
                         .observe(on: MainScheduler.instance)
                         .doLoading(with: Loader(view: strongSelf.view))
                         .do { (books: [Book]) in
-                            strongSelf.noResultsLabel.isHidden = books.count != 0
+                            if books.count == 0 {
+                                strongSelf.update(.noResults)
+                            }
                         }
                 }
             }
@@ -139,10 +152,14 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
             navigationItem.title = navTitle
         }
     }
+    
+    @objc func dissmissKeyboard() {
+        searchBar.endEditing(true)
+    }
 }
 
 private enum CurrentState {
-    case listAToZ
+    case noResults
     case listSearchResults
     case warningSearchTermTooShort(count: Int)
 }
