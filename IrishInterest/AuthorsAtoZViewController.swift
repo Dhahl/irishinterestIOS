@@ -10,7 +10,7 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
     let searchBar = UISearchBar()
     private var modelLetters: [Int: CountByLetter] = [:]
     private var modelFoundAuthors: [Int: Author] = [:]
-    private var disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     private var webService: WebService!
     private var onSelectedFirstLetter: ((String) -> Void)?
     private var onSelected: ((Author) -> Void)?
