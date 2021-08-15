@@ -67,7 +67,6 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AuthorsViewController")
         
         // A-Z COLLECTION
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
@@ -112,7 +111,6 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             .map(Search.regexify(_:))
             .distinctUntilChanged()
             .flatMap { [weak self] (searchValue: String?) -> Observable<[Author]> in
-                print("searched for: \(searchValue ?? "nil")")
                 guard let strongSelf = self else { return .just([]) }
                 guard let value = searchValue else {
                     strongSelf.update(.listSearchResults)
