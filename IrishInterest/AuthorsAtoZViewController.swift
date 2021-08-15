@@ -175,30 +175,6 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             }
             .disposed(by: disposeBag)
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        print("AuthorsViewController.viewDidAppear")
-//        // local filtering from observer without re-triggering fetch
-//        Observable.combineLatest(searchTextObservable,
-//                                 webService.authors()
-//                                    .doLoading(with: Loader(view: view))) { (query: String, list: [Author]) -> [Author] in
-//            guard !query.isEmpty else { return list }
-//            let queryLower = query.lowercased()
-//            return list.filter { (item: Author) -> Bool in
-//                item.fullName.lowercased().contains(queryLower)
-//            }
-//        }.bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell")) { (index: Int, model: Author, cell: TextViewCell) in
-//            cell.update(title: model.fullName)
-//        }
-//        .disposed(by: disposeBag)
-//    }
-    
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-        // reset search entry on switching tabs
-//        searchBar.text = ""
-//    }
 }
 
 
@@ -217,11 +193,11 @@ private enum CurrentState {
 
 enum Search {
     /// Create a regex like piped search value
-    /// eg. from "joyce blunt" => "joyce|blunt"
+    /// eg. from "joyce blunt" => "^joyce|blunt"
     /// - Parameter searchValue: input from the user
     /// - Returns: a regex friendly value
     static func regexify(_ searchValue: String) -> String {
-        return searchValue.split { (char: Character) -> Bool in
+        return "^" + searchValue.split { (char: Character) -> Bool in
             [" ", ",", ";"].contains(char)
         }.joined(separator: "|")
     }
