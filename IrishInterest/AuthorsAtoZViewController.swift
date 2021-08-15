@@ -16,6 +16,27 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
     private var onSelected: ((Author) -> Void)?
     private let layout = UICollectionViewFlowLayout()
     private var collectionView: UICollectionView!
+    private let searchLayout = UICollectionViewFlowLayout()
+    private var searchCollectionView: UICollectionView!
+    private var state: CurrentState = .listAToZ
+    private let warningLabel = UILabel()
+    
+    private enum Const {
+        static let minChar: Int = 4
+        static func searchPlaceHolder(authorsCount: Int?) -> String {
+            if let count = authorsCount {
+                return "Search authors - \(count)"
+            } else {
+                return "Search authors"
+            }
+        }
+        
+        static func searchWarning(count: Int) -> String {
+            let left = Const.minChar - count
+            let characters = left == 1 ? "character" : "characters"
+            return "\(left) more \(characters) to search..."
+        }
+    }
     
     func setup(webService: WebService,
                onSelectedFirstLetter: @escaping (String) -> Void,
@@ -25,11 +46,30 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         self.onSelected = onSelected
     }
     
+    private func update(_ newState: CurrentState) {
+        state = newState
+        switch state {
+        case .listAToZ:
+            collectionView.isHidden = false
+            searchCollectionView.isHidden = true
+            warningLabel.isHidden = true
+        case .listSearchResults:
+            collectionView.isHidden = true
+            searchCollectionView.isHidden = false
+            warningLabel.isHidden = true
+        case .warningSearchTermTooShort(let count):
+            collectionView.isHidden = true
+            searchCollectionView.isHidden = true
+            warningLabel.isHidden = false
+            warningLabel.text = Const.searchWarning(count: count)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AuthorsViewController")
         
-        // collection
+        // A-Z COLLECTION
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
         layout.minimumLineSpacing = 0
         let itemWidth = UIScreen.main.bounds.smallestSide - 16
@@ -40,24 +80,58 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(TextWithDetailViewCell.self, forCellWithReuseIdentifier: "TextWithDetailViewCell")
-        collectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
+        // SEARCH COLLECTION
+        searchLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 8)
+        searchLayout.minimumLineSpacing = 0
+        searchLayout.itemSize = CGSize(width: itemWidth, height: 48.0)
+        
+        searchCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: searchLayout)
+        searchCollectionView.backgroundColor = .systemBackground
+        searchCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        searchCollectionView.keyboardDismissMode = .onDrag
+        searchCollectionView.register(TextViewCell.self, forCellWithReuseIdentifier: "TextViewCell")
+        
+        view.addSubview(searchCollectionView)
+        UI.fit(searchCollectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
+        
+        // SEARCH WARNING
+        UI.format(.headline, label: warningLabel, text: "", nrOfLines: 1)
+        warningLabel.textColor = .secondaryLabel
+        view.addSubview(warningLabel)
+        UI.fit(warningLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
+        update(.listAToZ)
+        
+        
         // SEARCH
-        showSearchBar(withPlaceholder: "Search authors")
+        showSearchBar(withPlaceholder: Const.searchPlaceHolder(authorsCount: nil))
         searchTextObservable
             .map(Search.regexify(_:))
             .distinctUntilChanged()
-            .doLoading(with: Loader(view: view))
             .flatMap { [weak self] (searchValue: String?) -> Observable<[Author]> in
-                guard let strongSelf = self, let searchValue = searchValue, 3 < searchValue.count else {
+                print("searched for: \(searchValue ?? "nil")")
+                guard let strongSelf = self else { return .just([]) }
+                guard let value = searchValue else {
+                    strongSelf.update(.listSearchResults)
                     return .just([])
                 }
-                return strongSelf.webService.authors(searchBy: searchValue)
+                switch value.count {
+                case 0:
+                    strongSelf.update(.listAToZ)
+                    return .just([])
+                case 1..<Const.minChar:
+                    strongSelf.update(.warningSearchTermTooShort(count: value.count))
+                    return .just([])
+                default: //above Const.minChar
+                    strongSelf.update(.listSearchResults)
+                    return strongSelf.webService.authors(searchBy: value)
+                        .doLoading(with: Loader(view: strongSelf.view))
+                }
             }
-            .bind(to: collectionView.rx.items(cellIdentifier: "TextViewCell" )) {
+            .bind(to: searchCollectionView.rx.items(cellIdentifier: "TextViewCell" )) {
                 [weak self] (index: Int, author: Author, cell: TextViewCell) in
                 cell.update(title: author.fullName)
                 self?.modelFoundAuthors[index] = author
@@ -65,7 +139,7 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
             .disposed(by: disposeBag)
         
         // SEARCH RESULT SELECTION
-        collectionView.rx.itemSelected
+        searchCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (indexPath: IndexPath) in
                 guard let model: Author = self?.modelFoundAuthors[indexPath.item] else { return }
@@ -78,28 +152,28 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         webService.authorsCount()
             .doLoading(with: Loader(view: view))
             .map({ (count: Int) -> String in
-                "Search authors - \(count)"
+                Const.searchPlaceHolder(authorsCount: count)
             })
             .bind(to: searchBar.rx.placeholder)
             .disposed(by: disposeBag)
         
         // ABC
-//        webService.authorsAtoZCount()
-//            .doLoading(with: Loader(view: view))
-//            .bind(to: collectionView.rx.items(cellIdentifier: "TextWithDetailViewCell")) { [weak self] (index: Int, countByLetter: CountByLetter, cell: TextWithDetailViewCell) in
-//                cell.update(title: countByLetter.alpha, detail: String(countByLetter.count))
-//                self?.modelLetters[index] = countByLetter
-//            }
-//            .disposed(by: disposeBag)
+        webService.authorsAtoZCount()
+            .doLoading(with: Loader(view: view))
+            .bind(to: collectionView.rx.items(cellIdentifier: "TextWithDetailViewCell")) { [weak self] (index: Int, countByLetter: CountByLetter, cell: TextWithDetailViewCell) in
+                cell.update(title: countByLetter.alpha, detail: String(countByLetter.count))
+                self?.modelLetters[index] = countByLetter
+            }
+            .disposed(by: disposeBag)
         
         // selection
-//        collectionView.rx.itemSelected
-//            .observe(on: MainScheduler.instance)
-//            .subscribe { [weak self] (indexPath: IndexPath) in
-//                guard let model: CountByLetter = self?.modelLetters[indexPath.item] else { return }
-//                self?.onSelectedFirstLetter?(model.alpha)
-//            }
-//            .disposed(by: disposeBag)
+        collectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] (indexPath: IndexPath) in
+                guard let model: CountByLetter = self?.modelLetters[indexPath.item] else { return }
+                self?.onSelectedFirstLetter?(model.alpha)
+            }
+            .disposed(by: disposeBag)
     }
     
 //    override func viewDidAppear(_ animated: Bool) {
@@ -132,6 +206,12 @@ extension CGRect {
     var smallestSide: CGFloat {
         min(width, height)
     }
+}
+
+private enum CurrentState {
+    case listAToZ
+    case listSearchResults
+    case warningSearchTermTooShort(count: Int)
 }
 
 
