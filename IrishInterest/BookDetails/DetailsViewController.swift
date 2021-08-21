@@ -101,7 +101,9 @@ final class DetailsViewController: UIViewController {
     private func bindDetails(details: BookDetails, stack: VStack) {
         self.details = details
         // BUY AT AMAZON
-        if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
+        if let vendor = details.vendor,
+           vendor.lowercased().contains("amazon"),
+           let _ = URL(string: details.vendorurl ?? "") {
             let actionButton = ActionButton.create(title: "Buy at Amazon")
             UI.fit(actionButton, to: contentView, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
             stack.add(actionButton, constant: Const.border)
