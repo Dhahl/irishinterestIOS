@@ -19,6 +19,8 @@ final class DetailsViewController: UIViewController {
     private var book: Book?
     private var webservice: WebService?
     
+    private var details: BookDetails?
+    
     private enum Const {
         static let border: CGFloat = 16
         static let imageWidthPercent: CGFloat = 0.56
@@ -90,13 +92,20 @@ final class DetailsViewController: UIViewController {
         }
     }
     
+    @objc func openInBrowser() {
+        if let url = URL(string: details?.vendorurl ?? "") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     private func bindDetails(details: BookDetails, stack: VStack) {
+        self.details = details
         // BUY AT AMAZON
         if let vendor = details.vendor, vendor.lowercased().contains("amazon") {
             let actionButton = ActionButton.create(title: "Buy at Amazon")
             UI.fit(actionButton, to: contentView, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
             stack.add(actionButton, constant: Const.border)
-            //TODO: set up amazon link
+            actionButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openInBrowser)))
         }
         
         //Publisher info:
@@ -109,10 +118,6 @@ final class DetailsViewController: UIViewController {
             TitleLabel(titleText: "ISBN", valueText: details.isbnToDisplay)
                 .display(in: contentView, with: stack, using: Const.border)
         }
-        
-        
-        
-        
         
         // Description / synopsis
         UI.fit(descriptionLabel, to: contentView, left: Const.border, right: Const.border)
