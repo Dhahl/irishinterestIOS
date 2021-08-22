@@ -34,22 +34,5 @@ final class TabViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
-        // NAV LEFT
-//        let burgerImage = UIImage(systemName: "line.horizontal.3")
-//        let barButton = UIBarButtonItem(image: burgerImage, style: .plain, target: nil, action: nil)
-//        navigationItem.rightBarButtonItem = barButton
     }
-    
-//    public func hideSearchBar() {
-//        logoImageView.contentMode = .scaleAspectFit
-//        let barTitleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width * 0.65, height: 22))
-//        logoImageView.frame = barTitleView.frame
-//        barTitleView.addSubview(logoImageView)
-//        navigationItem.titleView = barTitleView
-//    }
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        searchBar.resignFirstResponder()
-//    }
-    
 }
