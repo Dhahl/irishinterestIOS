@@ -92,12 +92,6 @@ final class DetailsViewController: UIViewController {
         }
     }
     
-    @objc func openAmazon() {
-        if let url = URL(string: bookDetails?.vendorurl ?? "") {
-            UIApplication.shared.open(url)
-        }
-    }
-    
     private func bindDetails(details: BookDetails, stack: VStack) {
         self.bookDetails = details // !important
         addActionButtons(details: details, stack: stack)
@@ -149,15 +143,17 @@ final class DetailsViewController: UIViewController {
         //FACEBOOK
         let facebookButton = ActionButton.createWithImage(name: "facebook", width: Const.border * 3, height: Const.border * 3)
         UI.fit(facebookButton, to: actionsContentView, left: Const.border, top: 0, width: Const.border * 3, height: Const.border * 3)
+        facebookButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openFacebook)))
         
         //TWITTER
         let twitterButton = ActionButton.createWithImage(name: "twitter", width: Const.border * 3, height: Const.border * 3)
         UI.fit(twitterButton, to: actionsContentView, left: Const.border * 4, width: Const.border * 3, height: Const.border * 3)
+        twitterButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openTwitter)))
         
         //YOUTUBE
         let youtubeButton = ActionButton.createWithImage(name: "youtube", width: Const.border * 3, height: Const.border * 3)
         UI.fit(youtubeButton, to: actionsContentView, left: Const.border * 7, width: Const.border * 3, height: Const.border * 3)
-        
+        youtubeButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openYoutube)))
         
         // BUY AT AMAZON
         if let vendor = details.vendor,
@@ -167,6 +163,24 @@ final class DetailsViewController: UIViewController {
             UI.fit(amazonButton, to: actionsContentView, right: Const.border, width: Const.border * 10, height: Const.border * 3)
             amazonButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAmazon)))
         }
+    }
+    
+    @objc func openAmazon() {
+        if let url = URL(string: bookDetails?.vendorurl ?? "") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    @objc func openFacebook() {
+        if let url = bookDetails?.facebookURL { UIApplication.shared.open(url) }
+    }
+    
+    @objc func openTwitter() {
+        if let url = bookDetails?.twitterURL { UIApplication.shared.open(url) }
+    }
+    
+    @objc func openYoutube() {
+        if let url = bookDetails?.youtubeURL { UIApplication.shared.open(url) }
     }
     
 }
