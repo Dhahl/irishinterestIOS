@@ -207,4 +207,26 @@ struct WebServiceRemote: WebService {
             throw error
         }).catchAndReturn(BookDetails.empty())
     }
+    
+    func termsAndConditions() -> Observable<String> {
+        let params: String = "?value=termsAndConditions&apiKey=testApiKey"
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).compactMap { (data: Data) -> String in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn("")
+    }
+    
+    func privacyPolicy() -> Observable<String> {
+        let params: String = "?value=privacyPolicy&apiKey=testApiKey"
+        let request = URLRequest(url: Const.url(params: params))
+        return session.rx.data(request: request).compactMap { (data: Data) -> String in
+            try decode(data: data)
+        }.catch({ (error: Error) in
+            print(error)
+            throw error
+        }).catchAndReturn("")
+    }
 }

@@ -22,6 +22,9 @@ protocol WebService {
     func books(byAuthorID: Int, page: Int) -> Observable<[Book]>
     func booksComingSoon(page: Int) -> Observable<[Book]>
     func details(bookID: Int) -> Observable<BookDetails>
+    
+    func termsAndConditions() -> Observable<String>
+    func privacyPolicy() -> Observable<String>
 }
 
 extension WebService {

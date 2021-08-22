@@ -138,12 +138,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         favouritesWrap.restorationIdentifier = "favourites"
         
         let termsAndCo = TextContentUIViewController()
-        termsAndCo.setup(title: "Terms & Conditions", webService: webService)
+        termsAndCo.setup(title: "Terms & Conditions", service: webService.termsAndConditions())
         termsAndCo.tabBarItem = BarItem.create(title: "Terms & Conditions", iconName: "doc", selectedIconName: "doc.fill")
         let termsAndCoWrap = UINavigationController(rootViewController: termsAndCo)
         termsAndCoWrap.restorationIdentifier = "terms"
         
-        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, termsAndCoWrap]
+        let privacy = TextContentUIViewController()
+        privacy.setup(title: "Privacy Policy", service: webService.privacyPolicy())
+        privacy.tabBarItem = BarItem.create(title: "Privacy Policy", iconName: "doc", selectedIconName: "doc.fill")
+        let privacyWrap = UINavigationController(rootViewController: privacy)
+        privacyWrap.restorationIdentifier = "privacy"
+        
+        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, termsAndCoWrap, privacyWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
                 guard let aID: String = a.restorationIdentifier,

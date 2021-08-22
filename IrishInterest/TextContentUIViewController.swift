@@ -8,15 +8,16 @@ final class TextContentUIViewController: UIViewController {
     
     private let textLabel = UILabel()
     private var navTitle: String?
-    private var webService: WebService!
+    private var service: Observable<String>!
+    private let disposeBag = DisposeBag()
     
     private enum Const {
         static let border: CGFloat = 16
     }
     
-    func setup(title: String, webService: WebService) {
+    func setup(title: String, service: Observable<String>) {
         self.navTitle = title
-        self.webService = webService
+        self.service = service
     }
     
     override func viewDidLoad() {
@@ -29,7 +30,14 @@ final class TextContentUIViewController: UIViewController {
         textLabel.textAlignment = .left
         textLabel.lineBreakMode = .byWordWrapping
         
-        UI.format(.body, color: .label, label: textLabel, text: "Terms and conditions", nrOfLines: 0)
+        service
+            .observe(on: MainScheduler.instance)
+            .doLoading(with: Loader(view: view))
+            .subscribe { [weak self] (text: String) in
+                if let textLabel = self?.textLabel {
+                    UI.format(.body, color: .label, label: textLabel, text: text, nrOfLines: 0)
+                }
+            }.disposed(by: disposeBag)
     }
     
     func setupTitle() {
