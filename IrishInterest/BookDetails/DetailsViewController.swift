@@ -19,7 +19,7 @@ final class DetailsViewController: UIViewController {
     private var book: Book?
     private var webservice: WebService?
     
-    private var details: BookDetails?
+    private var bookDetails: BookDetails?
     
     private enum Const {
         static let border: CGFloat = 16
@@ -92,23 +92,15 @@ final class DetailsViewController: UIViewController {
         }
     }
     
-    @objc func openInBrowser() {
-        if let url = URL(string: details?.vendorurl ?? "") {
+    @objc func openAmazon() {
+        if let url = URL(string: bookDetails?.vendorurl ?? "") {
             UIApplication.shared.open(url)
         }
     }
     
     private func bindDetails(details: BookDetails, stack: VStack) {
-        self.details = details
-        // BUY AT AMAZON
-        if let vendor = details.vendor,
-           vendor.lowercased().contains("amazon"),
-           let _ = URL(string: details.vendorurl ?? "") {
-            let actionButton = ActionButton.create(title: "Buy at Amazon")
-            UI.fit(actionButton, to: contentView, right: Const.border, width: Const.border * 12.7, height: Const.border * 3)
-            stack.add(actionButton, constant: Const.border)
-            actionButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openInBrowser)))
-        }
+        self.bookDetails = details // !important
+        addActionButtons(details: details, stack: stack)
         
         //Publisher info:
         if !details.publisher.isEmpty {
@@ -147,5 +139,35 @@ final class DetailsViewController: UIViewController {
         popUp.display(image: imageView.image)
         present(popUp, animated: true, completion: nil)
     }
+    
+    private func addActionButtons(details: BookDetails, stack: VStack) {
+        // Action buttons content view as a row
+        let actionsContentView = UIView()
+        UI.fit(actionsContentView, to: contentView, left: 0, right: 0, height: Const.border * 3)
+        stack.add(actionsContentView, constant: Const.border)
+        
+        //FACEBOOK
+        let facebookButton = ActionButton.createWithImage(name: "facebook", width: Const.border * 3, height: Const.border * 3)
+        UI.fit(facebookButton, to: actionsContentView, left: Const.border, top: 0, width: Const.border * 3, height: Const.border * 3)
+        
+        //TWITTER
+        let twitterButton = ActionButton.createWithImage(name: "twitter", width: Const.border * 3, height: Const.border * 3)
+        UI.fit(twitterButton, to: actionsContentView, left: Const.border * 4, width: Const.border * 3, height: Const.border * 3)
+        
+        //YOUTUBE
+        let youtubeButton = ActionButton.createWithImage(name: "youtube", width: Const.border * 3, height: Const.border * 3)
+        UI.fit(youtubeButton, to: actionsContentView, left: Const.border * 7, width: Const.border * 3, height: Const.border * 3)
+        
+        
+        // BUY AT AMAZON
+        if let vendor = details.vendor,
+           vendor.lowercased().contains("amazon"),
+           let _ = URL(string: details.vendorurl ?? "") {
+            let amazonButton = ActionButton.create(title: "Buy at Amazon")
+            UI.fit(amazonButton, to: actionsContentView, right: Const.border, width: Const.border * 10, height: Const.border * 3)
+            amazonButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAmazon)))
+        }
+    }
+    
 }
 

@@ -112,4 +112,16 @@ struct BookDetails: Decodable {
     static func empty() -> BookDetails {
         BookDetails(authorid: -1, categoryid: 0, ebook: 0, firstname: "", genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", lastname: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil)
     }
+    
+    var twitterURL: URL {
+        URL(string: "https://twitter.com/intent/tweet?url=irishinterest.ie/book/?id=\(id)")!
+    }
+    
+    var facebookURL: URL {
+        URL(string: "https://www.facebook.com/sharer/sharer.php?u=irishinterest.ie/book/?id=\(id)")!
+    }
+    
+    var youtubeURL: URL {
+        URL(string: "https://www.youtube.com/channel/UCBVh-eIxXZEfh_BK9r8wwdQ")!
+    }
 }

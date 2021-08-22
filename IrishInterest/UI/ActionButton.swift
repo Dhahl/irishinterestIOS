@@ -19,6 +19,19 @@ final class ActionButton: UIButton {
         return button
     }
     
+    public static func createWithImage(name: String, width: CGFloat, height: CGFloat) -> ActionButton {
+        let button = ActionButton(type: .custom)
+        button.clipsToBounds = true
+        button.tintColor = .systemFill
+        button.layer.cornerRadius = 15.0
+        let image = UIImage(imageLiteralResourceName: name)
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        button.addSubview(imageView)
+        return button
+    }
+    
     public func setIsCorrect(_ isCorrect: Bool?) {
         switch isCorrect {
         case true:
