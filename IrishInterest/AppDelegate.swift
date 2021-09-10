@@ -149,7 +149,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let privacyWrap = UINavigationController(rootViewController: privacy)
         privacyWrap.restorationIdentifier = "privacy"
         
-        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, termsAndCoWrap, privacyWrap]
+        let contactUs = ContactUsViewController()
+        contactUs.setup(title: "Contact us", service: webService)
+        contactUs.tabBarItem = BarItem.create(title: "Contact Us", iconName: "doc", selectedIconName: "doc.fill")
+        let contactWrap = UINavigationController(rootViewController: contactUs)
+        contactWrap.restorationIdentifier = "contactUs"
+        
+        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, termsAndCoWrap, privacyWrap, contactWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
                 guard let aID: String = a.restorationIdentifier,
