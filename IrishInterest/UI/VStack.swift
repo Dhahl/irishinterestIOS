@@ -19,5 +19,9 @@ class VStack {
         }
         lastView = subview
     }
+    
+    var isEmpty: Bool {
+        lastView == nil
+    }
 }
 

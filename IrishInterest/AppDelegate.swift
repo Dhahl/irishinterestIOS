@@ -137,25 +137,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let favouritesWrap = UINavigationController(rootViewController: favourites)
         favouritesWrap.restorationIdentifier = "favourites"
         
-        let termsAndCo = TextContentUIViewController()
-        termsAndCo.setup(title: "Terms & Conditions", service: webService.termsAndConditions())
-        termsAndCo.tabBarItem = BarItem.create(title: "Terms & Conditions", iconName: "doc", selectedIconName: "doc.fill")
-        let termsAndCoWrap = UINavigationController(rootViewController: termsAndCo)
-        termsAndCoWrap.restorationIdentifier = "terms"
+        let about = TextContentUIViewController()
+        about.setup(title: "About", contents: [
+            TextContent(title: "Terms & Conditions", description: webService.termsAndConditions()),
+            TextContent(title: "Privacy Policy", description: webService.privacyPolicy()),
+            TextContent(title: "Contact us", description: .just("adminstrator@irishinterest.ie"), action: {
+                print("emailing us....")
+            })
+        ])
+        about.tabBarItem = BarItem.create(title: "About", iconName: "doc", selectedIconName: "doc.fill")
+        let aboutWrap = UINavigationController(rootViewController: about)
+        aboutWrap.restorationIdentifier = "about"
         
-        let privacy = TextContentUIViewController()
-        privacy.setup(title: "Privacy Policy", service: webService.privacyPolicy())
-        privacy.tabBarItem = BarItem.create(title: "Privacy Policy", iconName: "doc", selectedIconName: "doc.fill")
-        let privacyWrap = UINavigationController(rootViewController: privacy)
-        privacyWrap.restorationIdentifier = "privacy"
-        
-        let contactUs = ContactUsViewController()
-        contactUs.setup(title: "Contact us", service: webService)
-        contactUs.tabBarItem = BarItem.create(title: "Contact Us", iconName: "doc", selectedIconName: "doc.fill")
-        let contactWrap = UINavigationController(rootViewController: contactUs)
-        contactWrap.restorationIdentifier = "contactUs"
-        
-        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, termsAndCoWrap, privacyWrap, contactWrap]
+        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, aboutWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
                 guard let aID: String = a.restorationIdentifier,

@@ -4,40 +4,93 @@ import Foundation
 import UIKit
 import RxSwift
 
+struct TextContent {
+    let title: String
+    let description: Observable<String>
+    let action: (() -> Void)?
+    
+    init(title: String, description: Observable<String>, action: (() -> Void)? = nil) {
+        self.title = title
+        self.description = description
+        self.action = action
+    }
+}
+
 final class TextContentUIViewController: UIViewController {
     
-    private let textLabel = UILabel()
     private var navTitle: String?
-    private var service: Observable<String>!
+    private var contents: [TextContent] = []
     private let disposeBag = DisposeBag()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private var safeArea: UILayoutGuide {
+        contentView.safeAreaLayoutGuide
+    }
     
     private enum Const {
         static let border: CGFloat = 16
     }
     
-    func setup(title: String, service: Observable<String>) {
+    func setup(title: String, contents: [TextContent]) {
         self.navTitle = title
-        self.service = service
+        self.contents = contents
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         setupTitle()
         
-        view.addSubview(textLabel)
-        UI.fit(textLabel, to: view.safeAreaLayoutGuide, left: Const.border, right: Const.border, top: Const.border)
-        textLabel.textAlignment = .left
-        textLabel.lineBreakMode = .byWordWrapping
+        //Scroll view
+        view.addSubview(scrollView)
+        UI.fit(scrollView, to: view.safeAreaLayoutGuide, left: 0, right: 0, bottom: 0, top: 0)
+        scrollView.addSubview(contentView)
+        contentView.backgroundColor = .systemBackground
+        UI.fit(contentView, to: scrollView, left: 0, right: 0, bottom: 0, top: 0)
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor).isActive = true
+
         
-        service
-            .observe(on: MainScheduler.instance)
-            .doLoading(with: Loader(view: view))
-            .subscribe { [weak self] (text: String) in
-                if let textLabel = self?.textLabel {
-                    UI.format(.body, color: .label, label: textLabel, text: text, nrOfLines: 0)
-                }
-            }.disposed(by: disposeBag)
+        let vStack = VStack(parent: contentView, lastView: nil)
+        
+        contents.forEach { (content: TextContent) in
+            let isFirst = vStack.isEmpty
+            
+            // title
+            let titleLabel = UILabel()
+            vStack.add(titleLabel, constant: Const.border)
+            UI.format(.title1, label: titleLabel, text: content.title, nrOfLines: 0)
+            if isFirst {
+                // constraint first view to top, to be able to scroll
+                UI.fit(titleLabel, to: safeArea, left: Const.border, right: Const.border, top: Const.border)
+            } else {
+                UI.fit(titleLabel, to: safeArea, left: Const.border, right: Const.border)
+            }
+            titleLabel.textColor = .label
+            
+            // content
+            let contentLabel = UILabel()
+            vStack.add(contentLabel, constant: Const.border)
+            UI.fit(contentLabel, to: safeArea, left: Const.border, right: Const.border)
+            UI.format(.body, label: contentLabel, text: "", nrOfLines: 0)
+            contentLabel.textColor = .label
+            if content.action != nil {
+                contentLabel.textColor = .link
+            }
+            
+            content.description.observe(on: MainScheduler.instance)
+                .doLoading(with: Loader(view: contentLabel))
+                .subscribe { (contentText: String) in
+                    contentLabel.text = contentText
+                }.disposed(by: disposeBag)
+            
+            //bind the lastView's bottom to the contentView bottom to make it scrollable:
+            if let lastView = vStack.lastView {
+                let bottomConstraint = lastView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -7*Const.border)
+                bottomConstraint.priority = .defaultLow
+                bottomConstraint.isActive = true
+            }
+        }
+        
     }
     
     func setupTitle() {
