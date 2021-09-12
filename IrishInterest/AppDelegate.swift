@@ -1,9 +1,14 @@
 // Copyright © 2021 Balazs Perlaki-Horvath, PerlakiDigital. All rights reserved.
 
 import UIKit
+import MessageUI
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    private enum Const {
+        static let emailTo = "adminstrator@irishinterest.ie"
+    }
 
     var window: UIWindow?
     static var orientationLock = UIInterfaceOrientationMask.portrait
@@ -141,9 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         about.setup(title: "About", contents: [
             TextContent(title: "Terms & Conditions", description: webService.termsAndConditions()),
             TextContent(title: "Privacy Policy", description: webService.privacyPolicy()),
-            TextContent(title: "Contact us", description: .just("adminstrator@irishinterest.ie"), action: {
-                print("emailing us....")
-            })
+            TextContent(title: "Contact us", description: .just(Const.emailTo), tapRecognizer: UITapGestureRecognizer(target: self, action: #selector(self.onContactUs)))
         ])
         about.tabBarItem = BarItem.create(title: "About", iconName: "doc", selectedIconName: "doc.fill")
         let aboutWrap = UINavigationController(rootViewController: about)
@@ -169,6 +172,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         self.window = window
         return true
+    }
+    
+    @objc func onContactUs() {
+        if MFMailComposeViewController.canSendMail() {
+            let mailComposerVC = MFMailComposeViewController()
+            mailComposerVC.mailComposeDelegate = self as? MFMailComposeViewControllerDelegate
+            mailComposerVC.setToRecipients([Const.emailTo])
+            mailComposerVC.setSubject("")
+            mailComposerVC.setMessageBody("", isHTML: false)
+            navController?.present(mailComposerVC, animated: true, completion: nil)
+        } else {
+            UIApplication.shared.open(URL(string: "mailto:\(Const.emailTo)")!)
+        }
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

@@ -7,12 +7,12 @@ import RxSwift
 struct TextContent {
     let title: String
     let description: Observable<String>
-    let action: (() -> Void)?
+    let tapRecognizer: UITapGestureRecognizer?
     
-    init(title: String, description: Observable<String>, action: (() -> Void)? = nil) {
+    init(title: String, description: Observable<String>, tapRecognizer: UITapGestureRecognizer? = nil) {
         self.title = title
         self.description = description
-        self.action = action
+        self.tapRecognizer = tapRecognizer
     }
 }
 
@@ -73,8 +73,10 @@ final class TextContentUIViewController: UIViewController {
             UI.fit(contentLabel, to: safeArea, left: Const.border, right: Const.border)
             UI.format(.body, label: contentLabel, text: "", nrOfLines: 0)
             contentLabel.textColor = .label
-            if content.action != nil {
+            if let tapRecognizer = content.tapRecognizer {
                 contentLabel.textColor = .link
+                contentLabel.isUserInteractionEnabled = true
+                contentLabel.addGestureRecognizer(tapRecognizer)
             }
             
             content.description.observe(on: MainScheduler.instance)
