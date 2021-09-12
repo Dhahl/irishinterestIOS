@@ -14,6 +14,7 @@ final class DetailsViewController: UIViewController {
     private let authorLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let imageLoader = ImageLoader()
+    private let favouriteImageView = UIImageView(image: UIImage(systemName: "star"))
     
     private let disposeBag = DisposeBag()
     private var book: Book?
@@ -31,6 +32,9 @@ final class DetailsViewController: UIViewController {
         self.book = model
         self.webservice = webservice
         self.favouriteService = favouriteService
+        favouriteService.isFavourite(book: model).map({ (isFav: Bool) -> UIImage? in
+            isFav ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        }).bind(to: favouriteImageView.rx.image).disposed(by: disposeBag)
     }
     
     override func viewDidLoad() {
@@ -62,6 +66,10 @@ final class DetailsViewController: UIViewController {
         }
         stack.add(imageView)
         bindImageTaps()
+        
+        // FAVOURITE
+        favouriteImageView.contentMode = .scaleAspectFit
+        UI.fit(favouriteImageView, to: contentView, right: 0, top: 0, width: 3*Const.border, height: 3*Const.border)
         
         // TITLE
         let titleText: String = book?.displayTitle ?? ""
