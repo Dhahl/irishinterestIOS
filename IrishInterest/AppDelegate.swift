@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
     let webService: WebService = WebServiceRemote() //WebServiceLocal()
-    let favouritesStore = LocalStore<[Book]>(userDefaultsKey: "favourites")
+    let favouritesStore = LocalStore<[Book]>(userDefaultsKey: "favouriteBooksStore")
     var favouritesService: FavouritesObservable!
     var navController: UINavigationController?
     let mailDelegate: MFMailComposeViewControllerDelegate = MailDelegate()
@@ -161,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                          onDisplaying: { _ in }) { (book: Book) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            latest.navigationController?.pushViewController(detailsViewController, animated: true)
+            favourites.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         let favouritesWrap = UINavigationController(rootViewController: favourites)

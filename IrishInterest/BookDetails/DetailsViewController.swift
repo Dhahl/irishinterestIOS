@@ -24,6 +24,7 @@ final class DetailsViewController: UIViewController {
     
     private enum Const {
         static let border: CGFloat = 16
+        static let favIconSize: CGFloat = 48
         static let imageWidthPercent: CGFloat = 0.56
         static let imageRatio: CGFloat = 1.5
     }
@@ -69,7 +70,11 @@ final class DetailsViewController: UIViewController {
         
         // FAVOURITE
         favouriteImageView.contentMode = .scaleAspectFit
-        UI.fit(favouriteImageView, to: contentView, right: 0, top: 0, width: 3*Const.border, height: 3*Const.border)
+        UI.fit(favouriteImageView, to: contentView, width: Const.favIconSize, height: Const.favIconSize)
+        favouriteImageView.centerXAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
+        favouriteImageView.centerYAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        favouriteImageView.isUserInteractionEnabled = true
+        favouriteImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleFavouriteBook)))
         
         // TITLE
         let titleText: String = book?.displayTitle ?? ""
@@ -98,6 +103,12 @@ final class DetailsViewController: UIViewController {
                     strongSelf.bindDetails(details: details, stack: stack)
                 })
                 .disposed(by: disposeBag)
+        }
+    }
+    
+    @objc func toggleFavouriteBook() {
+        if let book = book {
+            favouriteService?.toggle(book: book)
         }
     }
     
