@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
     let webService: WebService = WebServiceRemote() //WebServiceLocal()
+    let favouritesService = FavouritesService()
     var navController: UINavigationController?
     let mailDelegate: MFMailComposeViewControllerDelegate = MailDelegate()
 
@@ -145,7 +146,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
         comingSoonWrap.restorationIdentifier = "comingSoon"
         
-        let favourites = FavouritesViewController()
+        let favourites = ListBooksViewController()
+        favourites.setup(title: "Favourites", booksProvider: favouritesService.localFavourites(),
+                         onDisplaying: { _ in }) { (book: Book) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book, webservice: webServiceRef)
+            latest.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         let favouritesWrap = UINavigationController(rootViewController: favourites)
         favouritesWrap.restorationIdentifier = "favourites"

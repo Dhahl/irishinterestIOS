@@ -35,6 +35,7 @@
 		98A67389267E26E8001F643E /* ListBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67388267E26E8001F643E /* ListBooksViewController.swift */; };
 		98A67393267E8964001F643E /* AuthorsAtoZViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67392267E8964001F643E /* AuthorsAtoZViewController.swift */; };
 		98A67395267E8A60001F643E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A67394267E8A60001F643E /* CategoriesViewController.swift */; };
+		98AF477526ED8B8C002F47DF /* FavouritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AF477426ED8B8C002F47DF /* FavouritesService.swift */; };
 		98B81A3D26B55CEF00197290 /* TextWithDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B81A3C26B55CEF00197290 /* TextWithDetailViewCell.swift */; };
 		98B81A3F26B567D300197290 /* AuthorsByLetterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B81A3E26B567D300197290 /* AuthorsByLetterViewController.swift */; };
 		98BCFEFF2687E3FB00555587 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BCFEFE2687E3FB00555587 /* SearchViewController.swift */; };
@@ -97,6 +98,7 @@
 		98A67388267E26E8001F643E /* ListBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBooksViewController.swift; sourceTree = "<group>"; };
 		98A67392267E8964001F643E /* AuthorsAtoZViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorsAtoZViewController.swift; sourceTree = "<group>"; };
 		98A67394267E8A60001F643E /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		98AF477426ED8B8C002F47DF /* FavouritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesService.swift; sourceTree = "<group>"; };
 		98B81A3C26B55CEF00197290 /* TextWithDetailViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithDetailViewCell.swift; sourceTree = "<group>"; };
 		98B81A3E26B567D300197290 /* AuthorsByLetterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorsByLetterViewController.swift; sourceTree = "<group>"; };
 		98BCFEFE2687E3FB00555587 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				98BCFF03268800B500555587 /* FileDataIO.swift */,
 				98BCFF02268800B500555587 /* LocalStore.swift */,
 				98BCFF01268800B500555587 /* UserDefaultsDataIO.swift */,
+				98AF477426ED8B8C002F47DF /* FavouritesService.swift */,
 			);
 			path = LocalStore;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				98A67376267E124C001F643E /* TabViewController.swift in Sources */,
 				98BCFF05268800B500555587 /* UserDefaultsDataIO.swift in Sources */,
 				98A67381267E189D001F643E /* UIColorExt.swift in Sources */,
+				98AF477526ED8B8C002F47DF /* FavouritesService.swift in Sources */,
 				98BCFF07268800B500555587 /* FileDataIO.swift in Sources */,
 				98052C13268FB4AC00F3FB45 /* TextViewCell.swift in Sources */,
 				98A67380267E189D001F643E /* ActionButton.swift in Sources */,

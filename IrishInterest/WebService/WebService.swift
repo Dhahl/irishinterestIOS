@@ -56,7 +56,7 @@ struct Category: Decodable {
     }
 }
 
-struct Book: Decodable {
+struct Book: Codable {
     let author: String?
     let authorid: Int
     let id: Int
