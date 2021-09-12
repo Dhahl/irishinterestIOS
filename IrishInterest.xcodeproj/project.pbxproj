@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		98052C02268A79D100F3FB45 /* FavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C01268A79D100F3FB45 /* FavouritesViewController.swift */; };
 		98052C05268C08E900F3FB45 /* URLSessionDecodable in Frameworks */ = {isa = PBXBuildFile; productRef = 98052C04268C08E900F3FB45 /* URLSessionDecodable */; };
 		98052C07268C08F600F3FB45 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C06268C08F600F3FB45 /* WebService.swift */; };
 		98052C10268FB32800F3FB45 /* WebServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */; };
@@ -67,7 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		98052C01268A79D100F3FB45 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
 		98052C06268C08F600F3FB45 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		98052C0F268FB32800F3FB45 /* WebServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceRemote.swift; sourceTree = "<group>"; };
 		98052C12268FB4AC00F3FB45 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
@@ -197,7 +195,6 @@
 				98A67375267E124C001F643E /* TabViewController.swift */,
 				98A67394267E8A60001F643E /* CategoriesViewController.swift */,
 				98BCFEFE2687E3FB00555587 /* SearchViewController.swift */,
-				98052C01268A79D100F3FB45 /* FavouritesViewController.swift */,
 				98A67353267E0B7B001F643E /* Info.plist */,
 				98A6734E267E0B7B001F643E /* Assets.xcassets */,
 				9874499E26D278CE0023D883 /* TextContentUIViewController.swift */,
@@ -419,7 +416,6 @@
 				98A67387267E1D2C001F643E /* BarItem.swift in Sources */,
 				98A6737F267E189D001F643E /* Brand.swift in Sources */,
 				9874499F26D278CE0023D883 /* TextContentUIViewController.swift in Sources */,
-				98052C02268A79D100F3FB45 /* FavouritesViewController.swift in Sources */,
 				98052C07268C08F600F3FB45 /* WebService.swift in Sources */,
 				98A67389267E26E8001F643E /* ListBooksViewController.swift in Sources */,
 				986D43FA269E3B0100732225 /* BookViewCell.swift in Sources */,

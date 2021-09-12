@@ -2,6 +2,7 @@
 
 import UIKit
 import MessageUI
+import RxSwift
 
 final class MailDelegate: NSObject, MFMailComposeViewControllerDelegate {
     
@@ -22,14 +23,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let tabsController = TabViewController()
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
     let webService: WebService = WebServiceRemote() //WebServiceLocal()
-    let favouritesService = FavouritesService()
+    let favouritesStore = LocalStore<[Book]>(userDefaultsKey: "favourites")
+    var favouritesService: FavouritesObservable!
     var navController: UINavigationController?
     let mailDelegate: MFMailComposeViewControllerDelegate = MailDelegate()
+    let disposeBag = DisposeBag()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
+        let favouritesServiceRef = FavouritesObservable(stored: favouritesStore.read() ?? [])
+        favouritesService = favouritesServiceRef
+        favouritesServiceRef.booksObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] (favBooks: [Book]) in
+                try? self?.favouritesStore.write(favBooks)
+            }.disposed(by: disposeBag)
         
         // tabs:
         tabsController.restorationIdentifier = "tabsController"
@@ -38,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let search = SearchViewController()
         search.setup(title: "Search", webService: webService) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             search.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
@@ -56,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     booksProvider: booksOfAuthorService.items,
                                     onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
                     let detailsViewController = DetailsViewController()
-                    detailsViewController.bind(model: book, webservice: webServiceRef)
+                    detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
                     booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
                 }
                 authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
@@ -70,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 booksProvider: booksOfAuthorService.items,
                                 onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
                 let detailsViewController = DetailsViewController()
-                detailsViewController.bind(model: book, webservice: webServiceRef)
+                detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
                 booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
             }
             authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
@@ -88,7 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             booksProvider: categoryListService.items,
                             onDisplaying: categoryListService.onDisplayed(index:)) { (book: Book) in
                 let detailsViewController = DetailsViewController()
-                detailsViewController.bind(model: book, webservice: webServiceRef)
+                detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
                 listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
             }
             categories.navigationController?.pushViewController(listBooks, animated: true)
@@ -103,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         latest.setup(title: "Latest books", booksProvider: latestBookService.items,
                      onDisplaying: latestBookService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
@@ -116,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         published.setup(title: "Published books", booksProvider: publishedBookService.items,
                         onDisplaying: publishedBookService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             published.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
@@ -127,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         topSearches.setup(title: "Top searches", booksProvider: .just([]),
                           onDisplaying: { index in print("Top searches: \(index)")}) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             topSearches.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
@@ -139,7 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         comingSoon.setup(title: "Coming soon", booksProvider: commingSoonService.items,
                          onDisplaying: commingSoonService.onDisplayed(index:)) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             comingSoon.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
@@ -147,10 +157,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         comingSoonWrap.restorationIdentifier = "comingSoon"
         
         let favourites = ListBooksViewController()
-        favourites.setup(title: "Favourites", booksProvider: favouritesService.localFavourites(),
+        favourites.setup(title: "Favourites", booksProvider: favouritesService.booksObservable,
                          onDisplaying: { _ in }) { (book: Book) in
             let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef)
+            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
             latest.navigationController?.pushViewController(detailsViewController, animated: true)
         }
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)

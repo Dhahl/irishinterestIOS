@@ -18,7 +18,7 @@ final class DetailsViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private var book: Book?
     private var webservice: WebService?
-    
+    private var favouriteService: FavouriteService?
     private var bookDetails: BookDetails?
     
     private enum Const {
@@ -27,9 +27,10 @@ final class DetailsViewController: UIViewController {
         static let imageRatio: CGFloat = 1.5
     }
     
-    func bind(model: Book, webservice: WebService) {
+    func bind(model: Book, webservice: WebService, favouriteService: FavouriteService) {
         self.book = model
         self.webservice = webservice
+        self.favouriteService = favouriteService
     }
     
     override func viewDidLoad() {
