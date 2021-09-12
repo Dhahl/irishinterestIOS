@@ -3,6 +3,13 @@
 import UIKit
 import MessageUI
 
+final class MailDelegate: NSObject, MFMailComposeViewControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -16,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let store: LocalStore<[String]> = LocalStore<[String]>(userDefaultsKey: "tabController")
     let webService: WebService = WebServiceRemote() //WebServiceLocal()
     var navController: UINavigationController?
+    let mailDelegate: MFMailComposeViewControllerDelegate = MailDelegate()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -177,7 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     @objc func onContactUs() {
         if MFMailComposeViewController.canSendMail() {
             let mailComposerVC = MFMailComposeViewController()
-            mailComposerVC.mailComposeDelegate = self as? MFMailComposeViewControllerDelegate
+            mailComposerVC.mailComposeDelegate = mailDelegate
             mailComposerVC.setToRecipients([Const.emailTo])
             mailComposerVC.setSubject("")
             mailComposerVC.setMessageBody("", isHTML: false)
