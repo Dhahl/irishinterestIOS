@@ -127,6 +127,11 @@ final class DetailsViewController: UIViewController {
                 .display(in: contentView, with: stack, using: Const.border)
         }
         
+        if let publishedDate = details.published {
+            TitleLabel(titleText: "Published", valueText: publishedDate)
+                .display(in: contentView, with: stack, using: Const.border)
+        }
+        
         // Description / synopsis
         UI.fit(descriptionLabel, to: contentView, left: Const.border, right: Const.border)
         stack.add(descriptionLabel, constant: Const.border)

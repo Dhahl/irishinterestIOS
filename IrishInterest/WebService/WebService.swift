@@ -111,9 +111,10 @@ struct BookDetails: Decodable {
     let title: String
     let vendor: String?
     let vendorurl: String?
+    let published: String?
     
     static func empty() -> BookDetails {
-        BookDetails(authorid: -1, categoryid: 0, ebook: 0, firstname: "", genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", lastname: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil)
+        BookDetails(authorid: -1, categoryid: 0, ebook: 0, firstname: "", genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", lastname: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil, published: nil)
     }
     
     var twitterURL: URL {
@@ -126,5 +127,9 @@ struct BookDetails: Decodable {
     
     var youtubeURL: URL {
         URL(string: "https://www.youtube.com/channel/UCBVh-eIxXZEfh_BK9r8wwdQ")!
+    }
+    
+    var instagramURL: URL {
+        URL(string: "https://www.instagram.com/irish1nterest/")!
     }
 }
