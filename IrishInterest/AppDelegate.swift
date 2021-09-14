@@ -133,16 +133,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let publishedWrap = UINavigationController(rootViewController: published)
         publishedWrap.restorationIdentifier = "published"
 
-        let topSearches = ListBooksViewController()
-        topSearches.setup(title: "Top searches", booksProvider: .just([]),
-                          onDisplaying: { index in print("Top searches: \(index)")}) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            topSearches.navigationController?.pushViewController(detailsViewController, animated: true)
-        }
-        topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
-        let topSearchesWrap = UINavigationController(rootViewController: topSearches)
-        topSearches.restorationIdentifier = "topSearches"
+//        let topSearches = ListBooksViewController()
+//        topSearches.setup(title: "Top searches", booksProvider: .just([]),
+//                          onDisplaying: { index in print("Top searches: \(index)")}) { (book: Book) in
+//            let detailsViewController = DetailsViewController()
+//            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
+//            topSearches.navigationController?.pushViewController(detailsViewController, animated: true)
+//        }
+//        topSearches.tabBarItem = BarItem.create(title: "Top searches", iconName: "1.magnifyingglass", selectedIconName: "1.magnifyingglass")
+//        let topSearchesWrap = UINavigationController(rootViewController: topSearches)
+//        topSearches.restorationIdentifier = "topSearches"
         
         let commingSoonService = WebServicePaging(serviceCall: webService.booksComingSoon(page:))
         let comingSoon = ListBooksViewController()
@@ -177,7 +177,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let aboutWrap = UINavigationController(rootViewController: about)
         aboutWrap.restorationIdentifier = "about"
         
-        let tabs = [searchWrap, authorsWrap, categoriesWrap, latestWrap, publishedWrap, topSearchesWrap, comingSoonWrap, favouritesWrap, aboutWrap]
+        let tabs = [latestWrap, searchWrap, authorsWrap, categoriesWrap, publishedWrap, comingSoonWrap, favouritesWrap, aboutWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
                 guard let aID: String = a.restorationIdentifier,
