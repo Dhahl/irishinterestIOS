@@ -168,7 +168,7 @@ final class DetailsViewController: UIViewController {
         
         //FACEBOOK
         let facebookButton = ActionButton.createSquaredImage(name: "facebook", size: Const.socialSize)
-        UI.fit(facebookButton, to: actionsView, left: 0, top: 0, width: Const.border * 3, height: Const.border * 3)
+        UI.fit(facebookButton, to: actionsView, left: 0, top: 0, width: Const.socialSize, height: Const.socialSize)
         facebookButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openFacebook)))
         
         //TWITTER
