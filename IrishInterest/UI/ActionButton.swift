@@ -19,6 +19,10 @@ final class ActionButton: UIButton {
         return button
     }
     
+    public static func createSquaredImage(name: String, size: CGFloat = 40) -> ActionButton {
+        createWithImage(name: name, width: size, height: size)
+    }
+    
     public static func createWithImage(name: String, width: CGFloat, height: CGFloat) -> ActionButton {
         let button = ActionButton(type: .custom)
         button.clipsToBounds = true

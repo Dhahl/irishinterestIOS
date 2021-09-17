@@ -130,6 +130,6 @@ struct BookDetails: Decodable {
     }
     
     var instagramURL: URL {
-        URL(string: "https://www.instagram.com/irish1nterest/")!
+        URL(string: "https://www.instagram.com/irish1nterest")!
     }
 }
