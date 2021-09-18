@@ -16,6 +16,7 @@ final class ListBooksViewController: UIViewController {
     private var onSelected: ((Book) -> Void)?
     private var onDisplaying: ((Int) -> Void)?
     private var navTitle: String?
+    private var loader: Loader?
     
     func setup(title: String,
                booksProvider: Observable<[Book]>,
@@ -48,7 +49,7 @@ final class ListBooksViewController: UIViewController {
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         booksProvider?
-            .doLoading(with: Loader(view: view))
+            .doLoading(with: Loader(view: collectionView))
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
                 guard let strongSelf = self else { return }

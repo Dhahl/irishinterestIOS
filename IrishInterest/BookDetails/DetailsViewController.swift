@@ -21,6 +21,7 @@ final class DetailsViewController: UIViewController {
     private var webservice: WebService?
     private var favouriteService: FavouriteService?
     private var bookDetails: BookDetails?
+    private var onAuthorSelected: ((Int) -> Void)?
     
     private enum Const {
         static let border: CGFloat = 16
@@ -30,10 +31,11 @@ final class DetailsViewController: UIViewController {
         static let imageRatio: CGFloat = 1.5
     }
     
-    func bind(model: Book, webservice: WebService, favouriteService: FavouriteService) {
+    func bind(model: Book, webservice: WebService, favouriteService: FavouriteService, onAuthorSelected: ((Int) -> Void)?) {
         self.book = model
         self.webservice = webservice
         self.favouriteService = favouriteService
+        self.onAuthorSelected = onAuthorSelected
         favouriteService.isFavourite(book: model).map({ (isFav: Bool) -> UIImage? in
             isFav ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
         }).bind(to: favouriteImageView.rx.image).disposed(by: disposeBag)
@@ -104,6 +106,32 @@ final class DetailsViewController: UIViewController {
                     strongSelf.bindDetails(details: details, stack: stack)
                 })
                 .disposed(by: disposeBag)
+            
+            // AUTHOR DETAILS
+            if book.authorid != 0 {
+                webservice?.authorDetails(authorId: book.authorid)
+                    .observe(on: MainScheduler.instance)
+                    .doLoading(with: Loader(view: contentView))
+                    .subscribe(onNext: { [weak self] (details: AuthorDetails) in
+                        guard let strongSelf = self else { return }
+                        Self.bind(authorDetails: details, to: strongSelf.authorLabel)
+                    })
+                    .disposed(by: disposeBag)
+            }
+
+        }
+    }
+    
+    private static func bind(authorDetails: AuthorDetails, to authorLabel: UILabel) {
+        authorLabel.isUserInteractionEnabled = true
+        authorLabel.tintColor = Brand.colorPrimary
+        authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
+    }
+    
+    
+    @objc func onAuthorTapped() {
+        if let authorId = book?.authorid, authorId != 0 {
+            onAuthorSelected?(authorId)
         }
     }
     

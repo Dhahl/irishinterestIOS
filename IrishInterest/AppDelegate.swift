@@ -41,15 +41,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 try? self?.favouritesStore.write(favBooks)
             }.disposed(by: disposeBag)
         
+        let webServiceRef = webService
+        
+        // MARK: authorDetails
+        let showAuthorDetails: (Int, UINavigationController?) -> Void = { (authorId: Int, navController: UINavigationController?) in
+            print("show author details for: \(authorId)")
+        }
+        
+        // MARK: bookDetails
+        let showBookDetails: (Book, UINavigationController?) -> Void = { (book: Book, navController: UINavigationController?) in
+            let detailsViewController = DetailsViewController()
+            detailsViewController.bind(model: book,
+                                       webservice: webServiceRef,
+                                       favouriteService: favouritesServiceRef,
+                                       onAuthorSelected: { (auth: Int) in showAuthorDetails(auth, navController) })
+            navController?.pushViewController(detailsViewController, animated: true)
+        }
+        
+        
         // MARK: tabs
         tabsController.restorationIdentifier = "tabsController"
-        let webServiceRef = webService
         
         let search = SearchViewController()
         search.setup(title: "Search", webService: webService) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            search.navigationController?.pushViewController(detailsViewController, animated: true)
+            showBookDetails(book, search.navigationController)
         }
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
         let searchWrap = UINavigationController(rootViewController: search)
@@ -64,11 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let booksOfAuthor = ListBooksViewController()
                 booksOfAuthor.setup(title: "By: \(author.fullName)",
                                     booksProvider: booksOfAuthorService.items,
-                                    onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
-                    let detailsViewController = DetailsViewController()
-                    detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-                    booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
-                }
+                                    onDisplaying: booksOfAuthorService.onDisplayed(index:),
+                                    onSelected: { (book: Book) in
+                                        showBookDetails(book, booksOfAuthor.navigationController)
+                                    })
                 authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
             }
             authorsAtoZ.navigationController?.pushViewController(authorsByLetter, animated: true)
@@ -78,11 +92,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let booksOfAuthor = ListBooksViewController()
             booksOfAuthor.setup(title: "By: \(author.fullName)",
                                 booksProvider: booksOfAuthorService.items,
-                                onDisplaying: booksOfAuthorService.onDisplayed(index:)) { (book: Book) in
-                let detailsViewController = DetailsViewController()
-                detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-                booksOfAuthor.navigationController?.pushViewController(detailsViewController, animated: true)
-            }
+                                onDisplaying: booksOfAuthorService.onDisplayed(index:),
+                                onSelected: { (book: Book) in
+                                    showBookDetails(book, booksOfAuthor.navigationController)
+                                })
             authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
         }
         authorsAtoZ.tabBarItem = BarItem.create(title: "Authors", iconName: "person.3", selectedIconName: "person.3.fill")
@@ -96,11 +109,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let listBooks = ListBooksViewController()
             listBooks.setup(title: categoryTitle,
                             booksProvider: categoryListService.items,
-                            onDisplaying: categoryListService.onDisplayed(index:)) { (book: Book) in
-                let detailsViewController = DetailsViewController()
-                detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-                listBooks.navigationController?.pushViewController(detailsViewController, animated: true)
-            }
+                            onDisplaying: categoryListService.onDisplayed(index:),
+                            onSelected: { (book: Book) in
+                                showBookDetails(book, listBooks.navigationController)
+                            })
             categories.navigationController?.pushViewController(listBooks, animated: true)
         }
         categories.tabBarItem = BarItem.create(title: "Categories", iconName: "folder", selectedIconName: "folder.fill")
@@ -111,11 +123,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let latestBookService = WebServicePaging(serviceCall: webService.booksLatest(page:))
         let latest = ListBooksViewController()
         latest.setup(title: "Latest books", booksProvider: latestBookService.items,
-                     onDisplaying: latestBookService.onDisplayed(index:)) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            latest.navigationController?.pushViewController(detailsViewController, animated: true)
-        }
+                     onDisplaying: latestBookService.onDisplayed(index:),
+                     onSelected: { (book: Book) in
+                         showBookDetails(book, latest.navigationController)
+                     })
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
         let latestWrap = UINavigationController(rootViewController: latest)
         latestWrap.restorationIdentifier = "latest"
@@ -124,11 +135,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let publishedBookService = WebServicePaging(serviceCall: webService.booksPublished(page:))
         let published = ListBooksViewController()
         published.setup(title: "Published books", booksProvider: publishedBookService.items,
-                        onDisplaying: publishedBookService.onDisplayed(index:)) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            published.navigationController?.pushViewController(detailsViewController, animated: true)
-        }
+                        onDisplaying: publishedBookService.onDisplayed(index:),
+                        onSelected: { (book: Book) in
+                            showBookDetails(book, published.navigationController)
+                        })
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
         let publishedWrap = UINavigationController(rootViewController: published)
         publishedWrap.restorationIdentifier = "published"
@@ -149,11 +159,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let commingSoonService = WebServicePaging(serviceCall: webService.booksComingSoon(page:))
         let comingSoon = ListBooksViewController()
         comingSoon.setup(title: "Coming soon", booksProvider: commingSoonService.items,
-                         onDisplaying: commingSoonService.onDisplayed(index:)) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            comingSoon.navigationController?.pushViewController(detailsViewController, animated: true)
-        }
+                         onDisplaying: commingSoonService.onDisplayed(index:),
+                         onSelected: { (book: Book) in
+                             showBookDetails(book, comingSoon.navigationController)
+                         })
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
         let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
         comingSoonWrap.restorationIdentifier = "comingSoon"
@@ -161,11 +170,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: favourites
         let favourites = ListBooksViewController()
         favourites.setup(title: "Favourites", booksProvider: favouritesService.booksObservable,
-                         onDisplaying: { _ in }) { (book: Book) in
-            let detailsViewController = DetailsViewController()
-            detailsViewController.bind(model: book, webservice: webServiceRef, favouriteService: favouritesServiceRef)
-            favourites.navigationController?.pushViewController(detailsViewController, animated: true)
-        }
+                         onDisplaying: { _ in },
+                         onSelected: { (book: Book) in
+                             showBookDetails(book, favourites.navigationController)
+                         })
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         let favouritesWrap = UINavigationController(rootViewController: favourites)
         favouritesWrap.restorationIdentifier = "favourites"

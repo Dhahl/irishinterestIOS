@@ -12,6 +12,7 @@ protocol WebService {
     func authors(byLetter: String) -> Observable<[Author]>
     func authorsCount() -> Observable<Int>
     func authorsAtoZCount() -> Observable<[CountByLetter]>
+    func authorDetails(authorId: Int) -> Observable<AuthorDetails>
     
     func categories() -> Observable<[Category]>
     
@@ -44,6 +45,17 @@ struct Author: Decodable {
     let lastname: String
     var fullName: String {
         "\(lastname), \(firstname)"
+    }
+}
+
+struct AuthorDetails: Decodable {
+    let dob: Date?
+    let profile: String?
+    let image: String?
+    let altlink: String?
+    
+    static func empty() -> AuthorDetails {
+        AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil)
     }
 }
 
