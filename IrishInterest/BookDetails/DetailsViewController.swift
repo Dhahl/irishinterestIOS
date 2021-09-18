@@ -163,27 +163,29 @@ final class DetailsViewController: UIViewController {
     private func addActionButtons(details: BookDetails, stack: VStack) {
         // Action buttons content view as a row
         let actionsView = UIView()
-        UI.fit(actionsView, to: contentView, left: Const.border, right: 0, height: Const.border * 3)
-        stack.add(actionsView, constant: Const.border)
+        UI.fit(actionsView, to: contentView, left: Const.border, right: 0, height: Const.socialSize)
+        stack.add(actionsView)
+        
+        let topMargin: CGFloat = 4.0
         
         //FACEBOOK
         let facebookButton = ActionButton.createSquaredImage(name: "facebook", size: Const.socialSize)
-        UI.fit(facebookButton, to: actionsView, left: 0, top: 0, width: Const.socialSize, height: Const.socialSize)
+        UI.fit(facebookButton, to: actionsView, left: 0, top: topMargin, width: Const.socialSize, height: Const.socialSize)
         facebookButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openFacebook)))
         
         //TWITTER
         let twitterButton = ActionButton.createSquaredImage(name: "twitter", size: Const.socialSize)
-        UI.fit(twitterButton, to: actionsView, left: Const.socialSize, width: Const.socialSize, height: Const.socialSize)
+        UI.fit(twitterButton, to: actionsView, left: Const.socialSize, top: topMargin, width: Const.socialSize, height: Const.socialSize)
         twitterButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openTwitter)))
         
         //INSTAGRAM
         let instagramButton = ActionButton.createSquaredImage(name: "instagram", size: Const.socialSize)
-        UI.fit(instagramButton, to: actionsView, left: 2 * Const.socialSize, width: Const.socialSize, height: Const.socialSize)
+        UI.fit(instagramButton, to: actionsView, left: 2 * Const.socialSize, top: topMargin, width: Const.socialSize, height: Const.socialSize)
         instagramButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openInstagram)))
         
         //YOUTUBE
         let youtubeButton = ActionButton.createSquaredImage(name: "youtube", size: Const.socialSize)
-        UI.fit(youtubeButton, to: actionsView, left: 3 * Const.socialSize, width: Const.socialSize, height: Const.socialSize)
+        UI.fit(youtubeButton, to: actionsView, left: 3 * Const.socialSize, top: topMargin, width: Const.socialSize, height: Const.socialSize)
         youtubeButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openYoutube)))
         
         // BUY AT AMAZON

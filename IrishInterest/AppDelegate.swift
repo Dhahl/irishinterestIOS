@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 try? self?.favouritesStore.write(favBooks)
             }.disposed(by: disposeBag)
         
-        // tabs:
+        // MARK: tabs
         tabsController.restorationIdentifier = "tabsController"
         let webServiceRef = webService
         
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let searchWrap = UINavigationController(rootViewController: search)
         searchWrap.restorationIdentifier = "search"
         
-        
+        // MARK: authors A-Z
         let authorsAtoZ = AuthorsAtoZViewController()
         authorsAtoZ.setup(webService: webService) { (letter: String) in
             let authorsByLetter = AuthorsByLetterViewController()
@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let authorsWrap = UINavigationController(rootViewController: authorsAtoZ)
         authorsWrap.restorationIdentifier = "authors"
         
-        
+        // MARK: categories
         let categories = CategoriesViewController()
         categories.setup(webService: webService) { (categoryId: Int, categoryTitle: String) in
             let categoryListService = WebServicePaging(serviceCall: { page in webServiceRef.books(byCategoryId: categoryId, page:page) })
@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let categoriesWrap = UINavigationController(rootViewController: categories)
         categoriesWrap.restorationIdentifier = "categories"
         
-        
+        // MARK: latest books
         let latestBookService = WebServicePaging(serviceCall: webService.booksLatest(page:))
         let latest = ListBooksViewController()
         latest.setup(title: "Latest books", booksProvider: latestBookService.items,
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let latestWrap = UINavigationController(rootViewController: latest)
         latestWrap.restorationIdentifier = "latest"
         
-        
+        // MARK: published books
         let publishedBookService = WebServicePaging(serviceCall: webService.booksPublished(page:))
         let published = ListBooksViewController()
         published.setup(title: "Published books", booksProvider: publishedBookService.items,
@@ -133,6 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let publishedWrap = UINavigationController(rootViewController: published)
         publishedWrap.restorationIdentifier = "published"
 
+//        // MARK: top searches
 //        let topSearches = ListBooksViewController()
 //        topSearches.setup(title: "Top searches", booksProvider: .just([]),
 //                          onDisplaying: { index in print("Top searches: \(index)")}) { (book: Book) in
@@ -144,6 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let topSearchesWrap = UINavigationController(rootViewController: topSearches)
 //        topSearches.restorationIdentifier = "topSearches"
         
+        // MARK: comming soon
         let commingSoonService = WebServicePaging(serviceCall: webService.booksComingSoon(page:))
         let comingSoon = ListBooksViewController()
         comingSoon.setup(title: "Coming soon", booksProvider: commingSoonService.items,
@@ -156,6 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
         comingSoonWrap.restorationIdentifier = "comingSoon"
         
+        // MARK: favourites
         let favourites = ListBooksViewController()
         favourites.setup(title: "Favourites", booksProvider: favouritesService.booksObservable,
                          onDisplaying: { _ in }) { (book: Book) in
@@ -167,6 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let favouritesWrap = UINavigationController(rootViewController: favourites)
         favouritesWrap.restorationIdentifier = "favourites"
         
+        // MARK: about
         let about = TextContentUIViewController()
         about.setup(title: "About", contents: [
             TextContent(title: "Terms & Conditions", description: webService.termsAndConditions()),
@@ -177,6 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let aboutWrap = UINavigationController(rootViewController: about)
         aboutWrap.restorationIdentifier = "about"
         
+        // MARK: tabs
         let tabs = [latestWrap, searchWrap, authorsWrap, categoriesWrap, publishedWrap, comingSoonWrap, favouritesWrap, aboutWrap]
         if let order = store.read() {
             tabsController.viewControllers = tabs.sorted(by: { (a: UIViewController, b: UIViewController) in
