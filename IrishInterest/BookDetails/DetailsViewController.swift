@@ -21,6 +21,7 @@ final class DetailsViewController: UIViewController {
     private var webservice: WebService?
     private var favouriteService: FavouriteService?
     private var bookDetails: BookDetails?
+    private var authorDetails: AuthorDetails?
     private var onAuthorSelected: ((Int) -> Void)?
     
     private enum Const {
@@ -114,7 +115,7 @@ final class DetailsViewController: UIViewController {
                     .doLoading(with: Loader(view: contentView))
                     .subscribe(onNext: { [weak self] (details: AuthorDetails) in
                         guard let strongSelf = self else { return }
-                        Self.bind(authorDetails: details, to: strongSelf.authorLabel)
+                        strongSelf.bind(authorDetails: details, to: strongSelf.authorLabel)
                     })
                     .disposed(by: disposeBag)
             }
@@ -122,9 +123,11 @@ final class DetailsViewController: UIViewController {
         }
     }
     
-    private static func bind(authorDetails: AuthorDetails, to authorLabel: UILabel) {
+    private func bind(authorDetails: AuthorDetails, to authorLabel: UILabel) {
+        self.authorDetails = authorDetails // !important
+        authorLabel.textColor = Brand.colorPrimary
         authorLabel.isUserInteractionEnabled = true
-        authorLabel.tintColor = Brand.colorPrimary
+        authorLabel.text = authorDetails.author
         authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
     }
     
@@ -132,6 +135,7 @@ final class DetailsViewController: UIViewController {
     @objc func onAuthorTapped() {
         if let authorId = book?.authorid, authorId != 0 {
             onAuthorSelected?(authorId)
+            showAuthorProfile()
         }
     }
     
@@ -176,6 +180,15 @@ final class DetailsViewController: UIViewController {
         }
     }
     
+    // MARK: author profile pop-up
+    func showAuthorProfile() {
+        guard let authorDetails = self.authorDetails else { return }
+        let popUp = AuthorCoverPopUp()
+        popUp.display(detailsView: AuthorDetailsView(with: self.view.frame, and: authorDetails, imageLoader: ImageLoader()))
+        navigationController?.present(popUp, animated: true, completion: nil)
+    }
+    
+    // MARK: image pop-up
     private func bindImageTaps() {
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer( UITapGestureRecognizer.init(target: self,
@@ -188,6 +201,7 @@ final class DetailsViewController: UIViewController {
         present(popUp, animated: true, completion: nil)
     }
     
+    // MARK: social buttons
     private func addActionButtons(details: BookDetails, stack: VStack) {
         // Action buttons content view as a row
         let actionsView = UIView()
@@ -221,7 +235,7 @@ final class DetailsViewController: UIViewController {
            vendor.lowercased().contains("amazon"),
            let _ = URL(string: details.vendorurl ?? "") {
             let amazonButton = ActionButton.create(title: "Buy at Amazon")
-            UI.fit(amazonButton, to: actionsView, right: Const.border, width: Const.border * 10, height: Const.border * 3)
+            UI.fit(amazonButton, to: actionsView, right: Const.border, top: 0, width: Const.border * 10, height: Const.border * 3)
             amazonButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAmazon)))
         }
     }

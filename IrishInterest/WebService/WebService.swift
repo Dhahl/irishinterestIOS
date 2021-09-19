@@ -49,13 +49,24 @@ struct Author: Decodable {
 }
 
 struct AuthorDetails: Decodable {
-    let dob: Date?
+    let dob: String?
     let profile: String?
     let image: String?
     let altlink: String?
+    let firstname: String?
+    let lastname: String?
+    
+    var author: String {
+        [firstname, lastname].compactMap { $0 }.joined(separator: " ")
+    }
+    
+    var imageURL: URL? {
+        guard let image = self.image, !image.isEmpty else { return nil }
+        return URL(string: "https://irishinterest.ie/upload/\(image)")
+    }
     
     static func empty() -> AuthorDetails {
-        AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil)
+        AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil, firstname: nil, lastname: nil)
     }
 }
 
