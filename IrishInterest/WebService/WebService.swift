@@ -140,6 +140,14 @@ struct BookDetails: Decodable {
         BookDetails(authorid: -1, categoryid: 0, ebook: 0, firstname: "", genre: "", hardback: 0, id: -1, isbn: nil, isbn13: "", language: "", lastname: "", pages: 0, paperback: 0, publisher: "", synopsis: "", title: "", vendor: nil, vendorurl: nil, published: nil)
     }
     
+    var textToShare: String {
+        author + " - " + title
+    }
+    
+    var linkToShare: URL {
+        URL(string: "https://www.irishinterest.ie/book/?id=\(id)")!
+    }
+    
     var twitterURL: URL {
         URL(string: "https://twitter.com/intent/tweet?url=irishinterest.ie/book/?id=\(id)")!
     }

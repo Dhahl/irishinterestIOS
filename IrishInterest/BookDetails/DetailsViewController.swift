@@ -148,6 +148,7 @@ final class DetailsViewController: UIViewController {
     private func bindDetails(details: BookDetails, stack: VStack) {
         self.bookDetails = details // !important
         addActionButtons(details: details, stack: stack)
+        addShareButton()
         
         //Publisher info:
         if !details.publisher.isEmpty {
@@ -240,7 +241,41 @@ final class DetailsViewController: UIViewController {
         }
     }
     
-    @objc func openAmazon() {
+    private func addShareButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action,
+                                                            target: self,
+                                                            action: #selector(share(_:)))
+    }
+    
+    @objc private func share(_ sender: UIBarButtonItem) {
+        guard let bookDetails = bookDetails else {
+            return
+        }
+        let itemsToShare: [Any]
+        if let image = imageView.image {
+            itemsToShare = [bookDetails.textToShare, bookDetails.linkToShare, image]
+        } else {
+            itemsToShare = [bookDetails.textToShare, bookDetails.linkToShare]
+        }
+        let activityViewController = UIActivityViewController(activityItems: itemsToShare,
+                                                              applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [
+            .addToReadingList,
+            .airDrop,
+            .assignToContact,
+            .print,
+            .saveToCameraRoll,
+            .openInIBooks,
+        ]
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if activityViewController.responds(to: #selector(getter: UIViewController.popoverPresentationController)) {
+                activityViewController.popoverPresentationController?.barButtonItem = sender
+            }
+        }
+        present(activityViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func openAmazon() {
         if let url = URL(string: bookDetails?.vendorurl ?? "") {
             UIApplication.shared.open(url)
         }
