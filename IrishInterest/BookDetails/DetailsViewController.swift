@@ -251,13 +251,21 @@ final class DetailsViewController: UIViewController {
         guard let bookDetails = bookDetails else {
             return
         }
-        let activityViewController = UIActivityViewController(activityItems: [bookDetails.textToShare, bookDetails.linkToShare],
+        let itemsToShare: [Any]
+        if let image = imageView.image {
+            itemsToShare = [bookDetails.textToShare, bookDetails.linkToShare, image]
+        } else {
+            itemsToShare = [bookDetails.textToShare, bookDetails.linkToShare]
+        }
+        let activityViewController = UIActivityViewController(activityItems: itemsToShare,
                                                               applicationActivities: nil)
         activityViewController.excludedActivityTypes = [
+            .addToReadingList,
             .airDrop,
+            .assignToContact,
             .print,
             .saveToCameraRoll,
-            .addToReadingList
+            .openInIBooks,
         ]
         if UIDevice.current.userInterfaceIdiom == .pad {
             if activityViewController.responds(to: #selector(getter: UIViewController.popoverPresentationController)) {
