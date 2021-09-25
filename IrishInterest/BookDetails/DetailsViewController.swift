@@ -107,36 +107,25 @@ final class DetailsViewController: UIViewController {
                     strongSelf.bindDetails(details: details, stack: stack)
                 })
                 .disposed(by: disposeBag)
-            
-            // AUTHOR DETAILS
-            if book.authorid != 0 {
-                webservice?.authorDetails(authorId: book.authorid)
-                    .observe(on: MainScheduler.instance)
-                    .doLoading(with: Loader(view: contentView))
-                    .subscribe(onNext: { [weak self] (details: AuthorDetails) in
-                        guard let strongSelf = self else { return }
-                        strongSelf.bind(authorDetails: details, to: strongSelf.authorLabel)
-                    })
-                    .disposed(by: disposeBag)
-            }
-
         }
     }
     
     private func bind(authorDetails: AuthorDetails, to authorLabel: UILabel) {
         self.authorDetails = authorDetails // !important
-        authorLabel.textColor = Brand.colorPrimary
-        authorLabel.isUserInteractionEnabled = true
+        if authorDetails.isWorthToShow {
+            authorLabel.textColor = Brand.colorPrimary
+            authorLabel.isUserInteractionEnabled = true
+            authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
+        }
         authorLabel.text = authorDetails.author
-        authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
     }
     
     
     @objc func onAuthorTapped() {
         if let authorId = book?.authorid, authorId != 0 {
             onAuthorSelected?(authorId)
-            showAuthorProfile()
         }
+        showAuthorProfile()
     }
     
     @objc func toggleFavouriteBook() {
@@ -149,6 +138,18 @@ final class DetailsViewController: UIViewController {
         self.bookDetails = details // !important
         addActionButtons(details: details, stack: stack)
         addShareButton()
+        
+        // AUTHOR DETAILS
+        if details.authorid != 0 {
+            webservice?.authorDetails(authorId: details.authorid)
+                .observe(on: MainScheduler.instance)
+                .doLoading(with: Loader(view: contentView))
+                .subscribe(onNext: { [weak self] (details: AuthorDetails) in
+                    guard let strongSelf = self else { return }
+                    strongSelf.bind(authorDetails: details, to: strongSelf.authorLabel)
+                })
+                .disposed(by: disposeBag)
+        }
         
         //Publisher info:
         if !details.publisher.isEmpty {

@@ -65,6 +65,14 @@ struct AuthorDetails: Decodable {
         return URL(string: "https://irishinterest.ie/upload/\(image)")
     }
     
+    
+    /// Checks if there's anything useful we can shown as author bio details
+    var isWorthToShow: Bool {
+        if imageURL != nil { return true }
+        if let profile = profile, !profile.isEmpty { return true }
+        return false
+    }
+    
     static func empty() -> AuthorDetails {
         AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil, firstname: nil, lastname: nil)
     }
