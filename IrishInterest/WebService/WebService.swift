@@ -13,6 +13,7 @@ protocol WebService {
     func authorsCount() -> Observable<Int>
     func authorsAtoZCount() -> Observable<[CountByLetter]>
     func authorDetails(authorId: Int) -> Observable<AuthorDetails>
+    func authors(byBookIds: [Int]) -> Observable<AuthorsOfBooks>
     
     func categories() -> Observable<[Category]>
     
@@ -38,6 +39,15 @@ struct CountByLetter: Decodable {
     let alpha: String
     let count: Int
 }
+
+struct AuthorsOfBooks: Decodable {
+    let authorsOfBooks: [String: Author]
+    
+    static func empty() -> AuthorsOfBooks {
+        AuthorsOfBooks(authorsOfBooks: [:])
+    }
+}
+
 
 struct Author: Decodable {
     let id: Int
