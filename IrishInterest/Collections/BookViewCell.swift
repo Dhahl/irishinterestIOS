@@ -64,6 +64,10 @@ final class BookViewCell: UICollectionViewCell {
         backgroundColor = .clear
     }
     
+    func setAuthors(_ authors: [Author]) {
+        authorLabel.text = authors.map { $0.displayName }.joined(separator: "; ")
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()

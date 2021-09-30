@@ -79,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let booksOfAuthor = ListBooksViewController()
                 booksOfAuthor.setup(title: "By: \(author.fullName)",
                                     booksProvider: booksOfAuthorService.items,
+                                    authorsProvider: webServiceRef.authors(ofBooks:),
                                     onDisplaying: booksOfAuthorService.onDisplayed(index:),
                                     onSelected: { (book: Book) in
                                         showBookDetails(book, booksOfAuthor.navigationController)
@@ -92,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let booksOfAuthor = ListBooksViewController()
             booksOfAuthor.setup(title: "By: \(author.fullName)",
                                 booksProvider: booksOfAuthorService.items,
+                                authorsProvider: webServiceRef.authors(ofBooks:),
                                 onDisplaying: booksOfAuthorService.onDisplayed(index:),
                                 onSelected: { (book: Book) in
                                     showBookDetails(book, booksOfAuthor.navigationController)
@@ -109,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let listBooks = ListBooksViewController()
             listBooks.setup(title: categoryTitle,
                             booksProvider: categoryListService.items,
+                            authorsProvider: webServiceRef.authors(ofBooks:),
                             onDisplaying: categoryListService.onDisplayed(index:),
                             onSelected: { (book: Book) in
                                 showBookDetails(book, listBooks.navigationController)
@@ -122,7 +125,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: latest books
         let latestBookService = WebServicePaging(serviceCall: webService.booksLatest(page:))
         let latest = ListBooksViewController()
-        latest.setup(title: "Latest books", booksProvider: latestBookService.items,
+        latest.setup(title: "Latest books",
+                     booksProvider: latestBookService.items,
+                     authorsProvider: webServiceRef.authors(ofBooks:),
                      onDisplaying: latestBookService.onDisplayed(index:),
                      onSelected: { (book: Book) in
                          showBookDetails(book, latest.navigationController)
@@ -134,7 +139,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: published books
         let publishedBookService = WebServicePaging(serviceCall: webService.booksPublished(page:))
         let published = ListBooksViewController()
-        published.setup(title: "Published books", booksProvider: publishedBookService.items,
+        published.setup(title: "Published books",
+                        booksProvider: publishedBookService.items,
+                        authorsProvider: webServiceRef.authors(ofBooks:),
                         onDisplaying: publishedBookService.onDisplayed(index:),
                         onSelected: { (book: Book) in
                             showBookDetails(book, published.navigationController)
@@ -158,7 +165,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: comming soon
         let commingSoonService = WebServicePaging(serviceCall: webService.booksComingSoon(page:))
         let comingSoon = ListBooksViewController()
-        comingSoon.setup(title: "Coming soon", booksProvider: commingSoonService.items,
+        comingSoon.setup(title: "Coming soon",
+                         booksProvider: commingSoonService.items,
+                         authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: commingSoonService.onDisplayed(index:),
                          onSelected: { (book: Book) in
                              showBookDetails(book, comingSoon.navigationController)
@@ -169,7 +178,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: favourites
         let favourites = ListBooksViewController()
-        favourites.setup(title: "Favourites", booksProvider: favouritesService.booksObservable,
+        favourites.setup(title: "Favourites",
+                         booksProvider: favouritesService.booksObservable,
+                         authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: { _ in },
                          onSelected: { (book: Book) in
                              showBookDetails(book, favourites.navigationController)
