@@ -15,7 +15,7 @@ final class ListBooksViewController: UIViewController {
     private var authorsModels : AuthorsOfBooks = [:]
     private var booksProvider: Observable<[Book]>?
     private var authorsProvider: ((Observable<[Book]>) -> Observable<AuthorsOfBooks>)?
-    private var onSelected: ((Book) -> Void)?
+    private var onSelected: ((Book, [Author]) -> Void)?
     private var onDisplaying: ((Int) -> Void)?
     private var navTitle: String?
     private var loader: Loader?
@@ -24,7 +24,7 @@ final class ListBooksViewController: UIViewController {
                booksProvider: Observable<[Book]>,
                authorsProvider: @escaping (Observable<[Book]>) -> Observable<AuthorsOfBooks>,
                onDisplaying: @escaping (Int) -> Void,
-               onSelected: @escaping (Book) -> Void) {
+               onSelected: @escaping (Book, [Author]) -> Void) {
         self.navTitle = title
         self.booksProvider = booksProvider
         self.authorsProvider = authorsProvider
@@ -71,7 +71,13 @@ final class ListBooksViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (indexPath: IndexPath) in
                 guard let book: Book = self?.models[indexPath.item] else { return }
-                self?.onSelected?(book)
+                let authors: [Author]
+                if let storedAuthors = self?.authorsModels[String(book.id)] {
+                    authors = storedAuthors
+                } else {
+                    authors = []
+                }
+                self?.onSelected?(book, authors)
             }
             .disposed(by: disposeBag)
         if let booksProvider = booksProvider {

@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     booksProvider: booksOfAuthorService.items,
                                     authorsProvider: webServiceRef.authors(ofBooks:),
                                     onDisplaying: booksOfAuthorService.onDisplayed(index:),
-                                    onSelected: { (book: Book) in
+                                    onSelected: { (book: Book, authors: [Author]) in
                                         showBookDetails(book, booksOfAuthor.navigationController)
                                     })
                 authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 booksProvider: booksOfAuthorService.items,
                                 authorsProvider: webServiceRef.authors(ofBooks:),
                                 onDisplaying: booksOfAuthorService.onDisplayed(index:),
-                                onSelected: { (book: Book) in
+                                onSelected: { (book: Book, authors: [Author]) in
                                     showBookDetails(book, booksOfAuthor.navigationController)
                                 })
             authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
@@ -113,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             booksProvider: categoryListService.items,
                             authorsProvider: webServiceRef.authors(ofBooks:),
                             onDisplaying: categoryListService.onDisplayed(index:),
-                            onSelected: { (book: Book) in
+                            onSelected: { (book: Book, authors: [Author]) in
                                 showBookDetails(book, listBooks.navigationController)
                             })
             categories.navigationController?.pushViewController(listBooks, animated: true)
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      booksProvider: latestBookService.items,
                      authorsProvider: webServiceRef.authors(ofBooks:),
                      onDisplaying: latestBookService.onDisplayed(index:),
-                     onSelected: { (book: Book) in
+                     onSelected: { (book: Book, authors: [Author]) in
                          showBookDetails(book, latest.navigationController)
                      })
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
@@ -143,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         booksProvider: publishedBookService.items,
                         authorsProvider: webServiceRef.authors(ofBooks:),
                         onDisplaying: publishedBookService.onDisplayed(index:),
-                        onSelected: { (book: Book) in
+                        onSelected: { (book: Book, authors: [Author]) in
                             showBookDetails(book, published.navigationController)
                         })
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
@@ -169,7 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                          booksProvider: commingSoonService.items,
                          authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: commingSoonService.onDisplayed(index:),
-                         onSelected: { (book: Book) in
+                         onSelected: { (book: Book, authors: [Author]) in
                              showBookDetails(book, comingSoon.navigationController)
                          })
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
@@ -182,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                          booksProvider: favouritesService.booksObservable,
                          authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: { _ in },
-                         onSelected: { (book: Book) in
+                         onSelected: { (book: Book, authors: [Author]) in
                              showBookDetails(book, favourites.navigationController)
                          })
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
