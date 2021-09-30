@@ -13,8 +13,10 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private var collectionView: UICollectionView!
     private let imageLoader = ImageLoader()
     private var models: [Int: Book] = [:]
+    private var authorsModels : AuthorsOfBooks = [:]
     private var webService: WebService!
-    private var onSelected: ((Book) -> Void)?
+    private var webServiceAuthors: WebServiceAuthors!
+    private var onSelected: ((Book, [Author]) -> Void)?
     private var navTitle: String?
     private var state: CurrentState = .empty
     private let warningLabel = UILabel()
@@ -34,9 +36,10 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     
     func setup(title: String,
                webService: WebService,
-               onSelected: @escaping (Book) -> Void) {
+               onSelected: @escaping (Book, [Author]) -> Void) {
         self.navTitle = title
         self.webService = webService
+        self.webServiceAuthors = WebServiceAuthors(webService: webService)
         self.onSelected = onSelected
     }
     
@@ -108,8 +111,8 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         update(.empty)
         
         showSearchBar(withPlaceholder: "Book titles")
-        searchTextObservable
-            .distinctUntilChanged()
+        
+        let booksObservable: Observable<[Book]> = searchTextObservable.distinctUntilChanged()
             .flatMap { [weak self] (searchValue: String?) -> Observable<[Book]> in
                 guard let strongSelf = self else { return .just([]) }
                 guard let value = searchValue else {
@@ -135,11 +138,22 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
                         }
                 }
             }
+        
+        let authorsObservable: Observable<AuthorsOfBooks> = booksObservable.flatMap {
+            [weak self] (books: [Book]) -> Observable<AuthorsOfBooks> in
+            guard let strongSelf = self else { return .just([:]) }
+            return strongSelf.webServiceAuthors.authors(byBookIds: books.map { $0.id })
+        }
+        
+        booksObservable
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
                 guard let strongSelf = self else { return }
                 strongSelf.models[index] = model
                 cell.update(book: model, imageLoader: strongSelf.imageLoader)
+                if let authors: [Author] = self?.authorsModels[String(model.id)] {
+                    cell.setAuthors(authors)
+                }
             }
             .disposed(by: disposeBag)
         
@@ -147,9 +161,36 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (indexPath: IndexPath) in
                 guard let book: Book = self?.models[indexPath.item] else { return }
-                self?.onSelected?(book)
+                let authors: [Author]
+                if let storedAuthors: [Author] = self?.authorsModels[String(book.id)] {
+                    authors = storedAuthors
+                } else {
+                    authors = []
+                }
+                self?.onSelected?(book, authors)
             }
             .disposed(by: disposeBag)
+        
+        authorsObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (authorsOfBooks: AuthorsOfBooks) in
+                guard let strongSelf = self else { return }
+                
+                // save the authors for later
+                strongSelf.authorsModels.merge(authorsOfBooks) { a, b in b }
+                
+                //find the cells if already exist, and update them
+                for (bookId, authors) in authorsOfBooks {
+                    let bookIdInt = Int(bookId)
+                    if let (index, _) = strongSelf.models.first(where: { (index: Int, book: Book) in
+                        bookIdInt == book.id
+                    }) {
+                        if let cell = strongSelf.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? BookViewCell {
+                            cell.setAuthors(authors)
+                        }
+                    }
+                }
+            }).disposed(by: disposeBag)
     }
     
     func setupTitle() {

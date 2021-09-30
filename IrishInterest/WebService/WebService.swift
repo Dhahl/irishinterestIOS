@@ -94,7 +94,7 @@ struct Category: Decodable {
     }
 }
 
-struct Book: Codable {
+struct Book: Codable, Equatable {
     let author: String?
     let authorid: Int
     let id: Int

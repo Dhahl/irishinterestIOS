@@ -87,7 +87,7 @@ final class ListBooksViewController: UIViewController {
                     guard let strongSelf = self else { return }
                     
                     // save the authors for later
-                    strongSelf.authorsModels.merge(authorsOfBooks) { a, b in b }
+                    strongSelf.authorsModels.merge(authorsOfBooks) { a, b in a }
                     
                     //find the cells if already exist, and update them
                     for (bookId, authors) in authorsOfBooks {

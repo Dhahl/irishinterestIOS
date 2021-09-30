@@ -49,7 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // MARK: bookDetails
-        let showBookDetails: (Book, UINavigationController?) -> Void = { (book: Book, navController: UINavigationController?) in
+        let showBookDetails: (Book, [Author], UINavigationController?) -> Void = {
+            (book: Book, authors: [Author], navController: UINavigationController?) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book,
                                        webservice: webServiceRef,
@@ -63,8 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabsController.restorationIdentifier = "tabsController"
         
         let search = SearchViewController()
-        search.setup(title: "Search", webService: webService) { (book: Book) in
-            showBookDetails(book, search.navigationController)
+        search.setup(title: "Search", webService: webService) { (book: Book, authors: [Author]) in
+            showBookDetails(book, authors, search.navigationController)
         }
         search.tabBarItem = BarItem.create(title: "Search", iconName: "magnifyingglass", selectedIconName: "magnifyingglass")
         let searchWrap = UINavigationController(rootViewController: search)
@@ -82,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     authorsProvider: webServiceRef.authors(ofBooks:),
                                     onDisplaying: booksOfAuthorService.onDisplayed(index:),
                                     onSelected: { (book: Book, authors: [Author]) in
-                                        showBookDetails(book, booksOfAuthor.navigationController)
+                                        showBookDetails(book, authors, booksOfAuthor.navigationController)
                                     })
                 authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
             }
@@ -96,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 authorsProvider: webServiceRef.authors(ofBooks:),
                                 onDisplaying: booksOfAuthorService.onDisplayed(index:),
                                 onSelected: { (book: Book, authors: [Author]) in
-                                    showBookDetails(book, booksOfAuthor.navigationController)
+                                    showBookDetails(book, authors, booksOfAuthor.navigationController)
                                 })
             authorsAtoZ.navigationController?.pushViewController(booksOfAuthor, animated: true)
         }
@@ -114,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             authorsProvider: webServiceRef.authors(ofBooks:),
                             onDisplaying: categoryListService.onDisplayed(index:),
                             onSelected: { (book: Book, authors: [Author]) in
-                                showBookDetails(book, listBooks.navigationController)
+                                showBookDetails(book, authors, listBooks.navigationController)
                             })
             categories.navigationController?.pushViewController(listBooks, animated: true)
         }
@@ -130,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      authorsProvider: webServiceRef.authors(ofBooks:),
                      onDisplaying: latestBookService.onDisplayed(index:),
                      onSelected: { (book: Book, authors: [Author]) in
-                         showBookDetails(book, latest.navigationController)
+                         showBookDetails(book, authors, latest.navigationController)
                      })
         latest.tabBarItem = BarItem.create(title: "Latest books", iconName: "book", selectedIconName: "book.fill")
         let latestWrap = UINavigationController(rootViewController: latest)
@@ -144,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         authorsProvider: webServiceRef.authors(ofBooks:),
                         onDisplaying: publishedBookService.onDisplayed(index:),
                         onSelected: { (book: Book, authors: [Author]) in
-                            showBookDetails(book, published.navigationController)
+                            showBookDetails(book, authors, published.navigationController)
                         })
         published.tabBarItem = BarItem.create(title: "Published books", iconName: "books.vertical", selectedIconName: "books.vertical.fill")
         let publishedWrap = UINavigationController(rootViewController: published)
@@ -170,7 +171,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                          authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: commingSoonService.onDisplayed(index:),
                          onSelected: { (book: Book, authors: [Author]) in
-                             showBookDetails(book, comingSoon.navigationController)
+                             showBookDetails(book, authors, comingSoon.navigationController)
                          })
         comingSoon.tabBarItem = BarItem.create(title: "Coming soon", iconName: "calendar", selectedIconName: "calendar")
         let comingSoonWrap = UINavigationController(rootViewController: comingSoon)
@@ -183,7 +184,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                          authorsProvider: webServiceRef.authors(ofBooks:),
                          onDisplaying: { _ in },
                          onSelected: { (book: Book, authors: [Author]) in
-                             showBookDetails(book, favourites.navigationController)
+                             showBookDetails(book, authors, favourites.navigationController)
                          })
         favourites.tabBarItem = UITabBarItem.init(tabBarSystemItem: .favorites, tag: 0)
         let favouritesWrap = UINavigationController(rootViewController: favourites)
