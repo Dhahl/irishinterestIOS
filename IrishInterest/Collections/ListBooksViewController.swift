@@ -41,7 +41,7 @@ final class ListBooksViewController: UIViewController {
         
         layout.minimumLineSpacing = CellConst.border
         layout.minimumInteritemSpacing = CellConst.border / 2
-
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,18 +95,18 @@ final class ListBooksViewController: UIViewController {
                     guard let strongSelf = self else { return }
                     
                     // save the authors for later
-                    self?.dispatchQueue.sync {
-                        strongSelf.authorsModels.merge(authorsOfBooks) { a, b in a }                        
-                    }
-                    
-                    //find the cells if already exist, and update them
-                    for (bookId, authors) in authorsOfBooks {
-                        let bookIdInt = Int(bookId)
-                        if let (index, _) = strongSelf.models.first(where: { (index: Int, book: Book) in
-                            bookIdInt == book.id
-                        }) {
-                            if let cell = strongSelf.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? BookViewCell {
-                                cell.setAuthors(authors)
+                    strongSelf.dispatchQueue.sync {
+                        strongSelf.authorsModels.merge(authorsOfBooks) { a, b in a }
+                        
+                        //find the cells if already exist, and update them
+                        for (bookId, authors) in authorsOfBooks {
+                            let bookIdInt = Int(bookId)
+                            if let (index, _) = strongSelf.models.first(where: { (index: Int, book: Book) in
+                                bookIdInt == book.id
+                            }) {
+                                if let cell = strongSelf.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? BookViewCell {
+                                    cell.setAuthors(authors)
+                                }
                             }
                         }
                     }
