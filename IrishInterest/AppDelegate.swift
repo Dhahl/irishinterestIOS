@@ -53,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             (book: Book, authors: [Author], navController: UINavigationController?) in
             let detailsViewController = DetailsViewController()
             detailsViewController.bind(model: book,
+                                       authors: authors,
                                        webservice: webServiceRef,
                                        favouriteService: favouritesServiceRef,
                                        onAuthorSelected: { (auth: Int) in showAuthorDetails(auth, navController) })

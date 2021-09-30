@@ -18,6 +18,7 @@ final class DetailsViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private var book: Book?
+    private var authors: [Author] = []
     private var webservice: WebService?
     private var favouriteService: FavouriteService?
     private var bookDetails: BookDetails?
@@ -32,8 +33,13 @@ final class DetailsViewController: UIViewController {
         static let imageRatio: CGFloat = 1.5
     }
     
-    func bind(model: Book, webservice: WebService, favouriteService: FavouriteService, onAuthorSelected: ((Int) -> Void)?) {
+    func bind(model: Book,
+              authors: [Author],
+              webservice: WebService,
+              favouriteService: FavouriteService,
+              onAuthorSelected: ((Int) -> Void)?) {
         self.book = model
+        self.authors = authors
         self.webservice = webservice
         self.favouriteService = favouriteService
         self.onAuthorSelected = onAuthorSelected
@@ -90,7 +96,8 @@ final class DetailsViewController: UIViewController {
         stack.add(titleLabel, constant: Const.border)
         
         // AUTHOR
-        UI.format(.subheadline, label: authorLabel, text: book?.author ?? "", nrOfLines: 1)
+        let authorsText = authors.compactMap { $0.displayName }.joined(separator: "; ")
+        UI.format(.subheadline, label: authorLabel, text: authorsText, nrOfLines: 1)
         authorLabel.textColor = .secondaryLabel
         authorLabel.adjustsFontSizeToFitWidth = false
         authorLabel.textAlignment = .center
@@ -117,7 +124,6 @@ final class DetailsViewController: UIViewController {
             authorLabel.isUserInteractionEnabled = true
             authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
         }
-        authorLabel.text = authorDetails.author
     }
     
     
