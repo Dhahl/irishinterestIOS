@@ -19,6 +19,7 @@ final class ListBooksViewController: UIViewController {
     private var onDisplaying: ((Int) -> Void)?
     private var navTitle: String?
     private var loader: Loader?
+    private let dispatchQueue = DispatchQueue(label: "listOfAuthorsQueue")
     
     func setup(title: String,
                booksProvider: Observable<[Book]>,
@@ -58,11 +59,15 @@ final class ListBooksViewController: UIViewController {
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
                 guard let strongSelf = self else { return }
-                strongSelf.models[index] = model
+                self?.dispatchQueue.sync {
+                    strongSelf.models[index] = model
+                }
                 cell.update(book: model, imageLoader: strongSelf.imageLoader)
                 // set the authors if already known:
                 if let authors: [Author] = strongSelf.authorsModels[String(model.id)] {
-                    cell.setAuthors(authors)
+                    self?.dispatchQueue.sync {
+                        cell.setAuthors(authors)
+                    }
                 }
                 strongSelf.onDisplaying?(index)
             }
@@ -71,14 +76,16 @@ final class ListBooksViewController: UIViewController {
         collectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (indexPath: IndexPath) in
-                guard let book: Book = self?.models[indexPath.item] else { return }
-                let authors: [Author]
-                if let storedAuthors = self?.authorsModels[String(book.id)] {
-                    authors = storedAuthors
-                } else {
-                    authors = []
+                self?.dispatchQueue.sync {
+                    guard let book: Book = self?.models[indexPath.item] else { return }
+                    let authors: [Author]
+                    if let storedAuthors = self?.authorsModels[String(book.id)] {
+                        authors = storedAuthors
+                    } else {
+                        authors = []
+                    }
+                    self?.onSelected?(book, authors)
                 }
-                self?.onSelected?(book, authors)
             }
             .disposed(by: disposeBag)
         if let booksProvider = booksProvider {
@@ -88,7 +95,9 @@ final class ListBooksViewController: UIViewController {
                     guard let strongSelf = self else { return }
                     
                     // save the authors for later
-                    strongSelf.authorsModels.merge(authorsOfBooks) { a, b in a }
+                    self?.dispatchQueue.sync {
+                        strongSelf.authorsModels.merge(authorsOfBooks) { a, b in a }                        
+                    }
                     
                     //find the cells if already exist, and update them
                     for (bookId, authors) in authorsOfBooks {
