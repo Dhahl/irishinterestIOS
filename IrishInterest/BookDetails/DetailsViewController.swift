@@ -11,7 +11,7 @@ final class DetailsViewController: UIViewController {
     
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
-    private let authorLabel = UILabel()
+    private var authorLabels: [UILabel] = []
     private let descriptionLabel = UILabel()
     private let imageLoader = ImageLoader()
     private let favouriteImageView = UIImageView(image: UIImage(systemName: "star"))
@@ -22,7 +22,7 @@ final class DetailsViewController: UIViewController {
     private var webservice: WebService?
     private var favouriteService: FavouriteService?
     private var bookDetails: BookDetails?
-    private var authorDetails: AuthorDetails?
+    private var authorDetails: [Int: AuthorDetails] = [:]
     private var onAuthorSelected: ((Int) -> Void)?
     
     private enum Const {
@@ -95,14 +95,26 @@ final class DetailsViewController: UIViewController {
         UI.fit(titleLabel, to: contentView, left: Const.border, right: Const.border)
         stack.add(titleLabel, constant: Const.border)
         
-        // AUTHOR
-        let authorsText = authors.compactMap { $0.displayName }.joined(separator: "; ")
-        UI.format(.subheadline, label: authorLabel, text: authorsText, nrOfLines: 1)
-        authorLabel.textColor = .secondaryLabel
-        authorLabel.adjustsFontSizeToFitWidth = false
-        authorLabel.textAlignment = .center
-        UI.fit(authorLabel, to: contentView, left: Const.border, right: Const.border)
-        stack.add(authorLabel)
+        // AUTHORS
+        resetAuthorLabels()
+        for author in authors {
+            let authorLabel = UILabel()
+            UI.format(.subheadline, label: authorLabel, text: author.displayName, nrOfLines: 1)
+            authorLabel.textColor = .secondaryLabel
+            authorLabel.adjustsFontSizeToFitWidth = false
+            authorLabel.textAlignment = .center
+            UI.fit(authorLabel, to: contentView, left: Const.border, right: Const.border)
+            stack.add(authorLabel)
+            if author.id != 0 {
+                webservice?.authorDetails(authorId: author.id)
+                    .observe(on: MainScheduler.instance)
+                    .doLoading(with: Loader(view: contentView))
+                    .subscribe(onNext: { [weak self] (details: AuthorDetails) in
+                        self?.bind(authorDetails: details, authorId: author.id, to: authorLabel)
+                    })
+                    .disposed(by: disposeBag)
+            }
+        }
         
         // DETAILS
         if let book = book {
@@ -117,21 +129,29 @@ final class DetailsViewController: UIViewController {
         }
     }
     
-    private func bind(authorDetails: AuthorDetails, to authorLabel: UILabel) {
-        self.authorDetails = authorDetails // !important
+    private func bind(authorDetails: AuthorDetails, authorId: Int, to authorLabel: UILabel) {
+        self.authorDetails[authorId] = authorDetails // !important
         if authorDetails.isWorthToShow {
             authorLabel.textColor = Brand.colorPrimary
             authorLabel.isUserInteractionEnabled = true
-            authorLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAuthorTapped)))
+            let recognizer = AuthorDetailTapRecognizer(target: self, action: #selector(onAuthorTapped))
+            recognizer.authorId = authorId
+            authorLabel.addGestureRecognizer(recognizer)
         }
     }
     
-    
-    @objc func onAuthorTapped() {
-        if let authorId = book?.authorid, authorId != 0 {
-            onAuthorSelected?(authorId)
+    private func resetAuthorLabels() {
+        for label in authorLabels {
+            label.removeFromSuperview()
         }
-        showAuthorProfile()
+        authorLabels = []
+    }
+    
+    @objc func onAuthorTapped(recognizer: AuthorDetailTapRecognizer) {
+        if recognizer.authorId != 0 {
+            onAuthorSelected?(recognizer.authorId)
+        }
+        showAuthorProfile(recognizer.authorId)
     }
     
     @objc func toggleFavouriteBook() {
@@ -144,18 +164,6 @@ final class DetailsViewController: UIViewController {
         self.bookDetails = details // !important
         addActionButtons(details: details, stack: stack)
         addShareButton()
-        
-        // AUTHOR DETAILS
-        if details.authorid != 0 {
-            webservice?.authorDetails(authorId: details.authorid)
-                .observe(on: MainScheduler.instance)
-                .doLoading(with: Loader(view: contentView))
-                .subscribe(onNext: { [weak self] (details: AuthorDetails) in
-                    guard let strongSelf = self else { return }
-                    strongSelf.bind(authorDetails: details, to: strongSelf.authorLabel)
-                })
-                .disposed(by: disposeBag)
-        }
         
         //Publisher info:
         if !details.publisher.isEmpty {
@@ -189,8 +197,8 @@ final class DetailsViewController: UIViewController {
     }
     
     // MARK: author profile pop-up
-    func showAuthorProfile() {
-        guard let authorDetails = self.authorDetails else { return }
+    func showAuthorProfile(_ authorId: Int) {
+        guard let authorDetails = self.authorDetails[authorId] else { return }
         let popUp = AuthorCoverPopUp()
         popUp.display(detailsView: AuthorDetailsView(with: self.view.frame, and: authorDetails, imageLoader: ImageLoader()))
         navigationController?.present(popUp, animated: true, completion: nil)

@@ -111,7 +111,8 @@ struct WebServiceRemote: WebService {
     }
     
     func authors(byBookIds: [Int]) -> Observable<AuthorsOfBooks> {
-        let paramIds: String = byBookIds.map{ String($0) }.joined(separator: ",")
+        let uniqueIds = Set(byBookIds)
+        let paramIds: String = uniqueIds.sorted().map{ String($0) }.joined(separator: ",")
         let params: String = "?value=authors&type=byBookIds&apiKey=testApiKey&ids=\(paramIds)"
         let request: URLRequest = URLRequest(url: Const.url(params: params))
         return session.rx.data(request: request).compactMap { (data: Data) -> AuthorsOfBooks in

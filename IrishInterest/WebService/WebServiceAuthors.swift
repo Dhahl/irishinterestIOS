@@ -7,6 +7,7 @@ final class WebServiceAuthors {
     
     private var webService: WebService
     private var authorsOfBooks: AuthorsOfBooks = [:]
+    private let dispatchQueue = DispatchQueue(label: "authorsDictQueue")
     
     init(webService: WebService) {
         self.webService = webService
@@ -18,7 +19,9 @@ final class WebServiceAuthors {
         var remainingIds: [Int] = []
         for id in byBookIds {
             if let authors:[Author] = authorsOfBooks[String(id)] {
-                knowAuthors.merge([String(id): authors]) { a, b in a }
+                dispatchQueue.sync {
+                    knowAuthors.merge([String(id): authors]) { a, b in a }
+                }
             } else {
                 remainingIds.append(id)
             }
@@ -31,7 +34,9 @@ final class WebServiceAuthors {
         return Observable.merge(.just(knowAuthors),
                                 webService.authors(byBookIds: remainingIds)
                                     .do(onNext: { [weak self] (recievedAuthors: [String : [Author]]) in
-            self?.authorsOfBooks.merge(recievedAuthors) { a, b in b }
+            self?.dispatchQueue.sync {
+                self?.authorsOfBooks.merge(recievedAuthors) { a, b in b }
+            }
         })
         )
     }

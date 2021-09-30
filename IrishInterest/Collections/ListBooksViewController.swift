@@ -53,6 +53,7 @@ final class ListBooksViewController: UIViewController {
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         booksProvider?
+            .observe(on: MainScheduler.instance)
             .doLoading(with: Loader(view: collectionView))
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in

@@ -19,6 +19,7 @@
 		984937DB26F75A26004C8335 /* AuthorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984937DA26F75A26004C8335 /* AuthorDetailsView.swift */; };
 		984937DD26F77D37004C8335 /* HStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984937DC26F77D37004C8335 /* HStack.swift */; };
 		98608CF92705C18B00FA5D30 /* WebServiceAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98608CF82705C18B00FA5D30 /* WebServiceAuthors.swift */; };
+		98608CFB27064C1800FA5D30 /* AuthorDetailTapRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98608CFA27064C1800FA5D30 /* AuthorDetailTapRecognizer.swift */; };
 		986D43FA269E3B0100732225 /* BookViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986D43F9269E3B0100732225 /* BookViewCell.swift */; };
 		986D43FC26A0DD2500732225 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986D43FB26A0DD2500732225 /* ImageLoader.swift */; };
 		986D43FE26A0EB5100732225 /* CellConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986D43FD26A0EB5100732225 /* CellConst.swift */; };
@@ -79,6 +80,7 @@
 		984937DA26F75A26004C8335 /* AuthorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDetailsView.swift; sourceTree = "<group>"; };
 		984937DC26F77D37004C8335 /* HStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStack.swift; sourceTree = "<group>"; };
 		98608CF82705C18B00FA5D30 /* WebServiceAuthors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceAuthors.swift; sourceTree = "<group>"; };
+		98608CFA27064C1800FA5D30 /* AuthorDetailTapRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDetailTapRecognizer.swift; sourceTree = "<group>"; };
 		986D43F9269E3B0100732225 /* BookViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewCell.swift; sourceTree = "<group>"; };
 		986D43FB26A0DD2500732225 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		986D43FD26A0EB5100732225 /* CellConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellConst.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				98E8A4F726A8A90700F5D983 /* DetailsViewController.swift */,
 				98E8A4FC26AB64C300F5D983 /* TitleLabel.swift */,
 				98E8A4FE26AB6DE700F5D983 /* BookCoverPopUp.swift */,
+				98608CFA27064C1800FA5D30 /* AuthorDetailTapRecognizer.swift */,
 			);
 			path = BookDetails;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				98052C1A2691C88800F3FB45 /* Loading.swift in Sources */,
 				986D43FC26A0DD2500732225 /* ImageLoader.swift in Sources */,
 				984937DD26F77D37004C8335 /* HStack.swift in Sources */,
+				98608CFB27064C1800FA5D30 /* AuthorDetailTapRecognizer.swift in Sources */,
 				98BCFEFF2687E3FB00555587 /* SearchViewController.swift in Sources */,
 				98A67393267E8964001F643E /* AuthorsAtoZViewController.swift in Sources */,
 				984937D826F7590E004C8335 /* AuthorCoverPopUp.swift in Sources */,
@@ -631,7 +635,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2PB2PL5ATQ;
 				INFOPLIST_FILE = IrishInterest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -654,7 +658,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2PB2PL5ATQ;
 				INFOPLIST_FILE = IrishInterest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
