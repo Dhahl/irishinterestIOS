@@ -251,7 +251,7 @@ final class DetailsViewController: UIViewController {
            vendor.lowercased().contains("amazon"),
            let _ = URL(string: details.vendorurl ?? "") {
             let amazonButton = ActionButton.create(title: "Buy at Amazon")
-            UI.fit(amazonButton, to: actionsView, right: Const.border, top: 0, width: Const.border * 10, height: Const.border * 3)
+            UI.fit(amazonButton, to: actionsView, right: Const.border, top: topMargin, width: Const.border * 10, height: Const.socialSize)
             amazonButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAmazon)))
         }
     }
