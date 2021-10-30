@@ -164,7 +164,7 @@ struct BookDetails: Decodable {
     }
     
     var twitterURL: URL {
-        URL(string: "https://twitter.com/intent/tweet?url=irishinterest.ie/book/?id=\(id)")!
+        URL(string: "https://twitter.com/Irish1nterest?ref_src=twsrc%5Etfw%7Ctwcamp%5Eembeddedtimeline%7Ctwterm%5Eprofile%3AIrish1nterest%7Ctwgr%5EeyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X3NwYWNlX2NhcmQiOnsiYnVja2V0Ijoib2ZmIiwidmVyc2lvbiI6bnVsbH19&ref_url=https%3A%2F%2Firishinterest.ie%2F%23searchresults")!
     }
     
     var facebookURL: URL {
