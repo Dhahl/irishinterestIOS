@@ -24,6 +24,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     
     private enum Const {
         static let minChar: Int = 4
+        static let searchPlaceHolder = "Book titles"
         static let noResults = "No search results."
         static let searchInstructions = "Search instantly among 50 000 titles contained in the Irish Interest database."
         
@@ -103,7 +104,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         // INITIAL STATE
         update(.empty)
         
-        showSearchBar(withPlaceholder: "Book titles")
+        showSearchBar(withPlaceholder: Const.searchPlaceHolder)
         
         searchEndsObservable
             .subscribe({ [weak self] _ in
