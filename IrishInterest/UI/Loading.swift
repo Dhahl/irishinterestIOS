@@ -40,6 +40,8 @@ public protocol Loading {
 extension ObservableType {
     public func doLoading(with loading: Loading) -> Observable<Element> {
             self.do(onNext: { [loading] _ in loading.stop() },
-                onSubscribe: { [loading] in loading.start() })
+                    onError: { [loading] _ in loading.stop() },
+                    onSubscribe: { [loading] in loading.start() }
+            )
     }
 }
