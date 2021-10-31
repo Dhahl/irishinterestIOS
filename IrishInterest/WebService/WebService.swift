@@ -160,7 +160,8 @@ struct BookDetails: Decodable {
     }
     
     var linkToShare: URL {
-        URL(string: "https://www.irishinterest.ie/book/?id=\(id)")!
+        let titleEncoded = title.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+        return URL(string: "https://www.irishinterest.ie/book/?id=\(id)&t=\(titleEncoded)")!
     }
     
     var twitterURL: URL {
