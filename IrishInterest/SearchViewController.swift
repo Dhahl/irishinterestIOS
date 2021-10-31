@@ -27,6 +27,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private enum Const {
         static let minChar: Int = 4
         static let noResults = "No search results."
+        static let searchInstructions = "Search instantly among 50 000 titles contained in the Irish Interest database."
         
         static func searchWarning(count: Int) -> String {
             let left = Const.minChar - count
@@ -100,8 +101,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
         // INSTRUCTIONS
-        let instructionsText = "Search instantly among 50 000 titles contained in the Irish Interest database."
-        UI.format(.title3, label: instructionsLabel, text: instructionsText, nrOfLines: 0)
+        UI.format(.title3, label: instructionsLabel, text: Const.searchInstructions, nrOfLines: 0)
         instructionsLabel.textColor = .secondaryLabel
         view.addSubview(instructionsLabel)
         UI.fit(instructionsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
