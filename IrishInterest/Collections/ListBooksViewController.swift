@@ -53,7 +53,7 @@ final class ListBooksViewController: UIViewController {
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         loader = Loader(view: collectionView)
-        loader.start() //start with initial loading state
+        loader.start() // start with initial loading state
         
         booksProvider?
             .observe(on: MainScheduler.instance)
