@@ -21,6 +21,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private var state: CurrentState = .empty
     private let warningLabel = UILabel()
     private let noResultsLabel = UILabel()
+    private let instructionsLabel = UILabel()
     private var dissmissByTap: UITapGestureRecognizer?
     
     private enum Const {
@@ -48,16 +49,19 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         switch state {
         case .empty:
             noResultsLabel.isHidden = true
+            instructionsLabel.isHidden = false
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
             }
         case .noResults:
             noResultsLabel.isHidden = false
+            instructionsLabel.isHidden = true
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
             }
         case .listSearchResults:
             warningLabel.isHidden = true
+            instructionsLabel.isHidden = true
             noResultsLabel.isHidden = true
             if let gesture = dissmissByTap {
                 view.removeGestureRecognizer(gesture)
@@ -65,6 +69,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         case .warningSearchTermTooShort(let count):
             warningLabel.isHidden = false
             noResultsLabel.isHidden = true
+            instructionsLabel.isHidden = true
             warningLabel.text = Const.searchWarning(count: count)
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
@@ -94,14 +99,21 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
+        // INSTRUCTIONS
+        let instructionsText = "Search instantly among 50 000 titles contained in the Irish Interest database."
+        UI.format(.title3, label: instructionsLabel, text: instructionsText, nrOfLines: 0)
+        instructionsLabel.textColor = .secondaryLabel
+        view.addSubview(instructionsLabel)
+        UI.fit(instructionsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
+        
         // SEARCH WARNING
-        UI.format(.subheadline, label: warningLabel, text: "", nrOfLines: 1)
+        UI.format(.title3, label: warningLabel, text: "", nrOfLines: 1)
         warningLabel.textColor = .secondaryLabel
         view.addSubview(warningLabel)
         UI.fit(warningLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
         
         // NO RESULTS LABEL
-        UI.format(.subheadline, label: noResultsLabel, text: Const.noResults, nrOfLines: 1)
+        UI.format(.title3, label: noResultsLabel, text: Const.noResults, nrOfLines: 1)
         noResultsLabel.textColor = .secondaryLabel
         view.addSubview(noResultsLabel)
         UI.fit(noResultsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
@@ -111,6 +123,12 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         update(.empty)
         
         showSearchBar(withPlaceholder: "Book titles")
+        
+        searchEndsObservable
+            .subscribe({ [weak self] _ in
+                self?.dissmissKeyboard()
+            })
+            .disposed(by: disposeBag)
         
         let booksObservable: Observable<[Book]> = searchTextObservable.distinctUntilChanged()
             .flatMap { [weak self] (searchValue: String?) -> Observable<[Book]> in

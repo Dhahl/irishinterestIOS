@@ -16,6 +16,11 @@ extension SearchResultsObservable {
             .debounce( RxTimeInterval.milliseconds(150), scheduler: MainScheduler.instance)
     }
     
+    var searchEndsObservable: Observable<Void> {
+        searchBar.rx.searchButtonClicked
+            .subscribe(on: MainScheduler.instance)
+    }
+    
     func showSearchBar(withPlaceholder placeholder: String) {
         searchBar.placeholder = placeholder
         navigationItem.titleView = searchBar
