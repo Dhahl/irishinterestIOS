@@ -19,9 +19,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     private var onSelected: ((Book, [Author]) -> Void)?
     private var navTitle: String?
     private var state: CurrentState = .empty
-    private let warningLabel = UILabel()
-    private let noResultsLabel = UILabel()
-    private let instructionsLabel = UILabel()
+    private let textLabel = UILabel()
     private var dissmissByTap: UITapGestureRecognizer?
     
     private enum Const {
@@ -49,29 +47,25 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         state = newState
         switch state {
         case .empty:
-            noResultsLabel.isHidden = true
-            instructionsLabel.isHidden = false
+            textLabel.text = Const.searchInstructions
+            textLabel.isHidden = false
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
             }
         case .noResults:
-            noResultsLabel.isHidden = false
-            instructionsLabel.isHidden = true
+            textLabel.text = Const.noResults
+            textLabel.isHidden = false
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
             }
         case .listSearchResults:
-            warningLabel.isHidden = true
-            instructionsLabel.isHidden = true
-            noResultsLabel.isHidden = true
+            textLabel.isHidden = true
             if let gesture = dissmissByTap {
                 view.removeGestureRecognizer(gesture)
             }
         case .warningSearchTermTooShort(let count):
-            warningLabel.isHidden = false
-            noResultsLabel.isHidden = true
-            instructionsLabel.isHidden = true
-            warningLabel.text = Const.searchWarning(count: count)
+            textLabel.text = Const.searchWarning(count: count)
+            textLabel.isHidden = false
             if let gesture = dissmissByTap {
                 view.addGestureRecognizer(gesture)
             }
@@ -100,24 +94,11 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
-        // INSTRUCTIONS
-        UI.format(.title3, label: instructionsLabel, text: Const.searchInstructions, nrOfLines: 0)
-        instructionsLabel.textColor = .secondaryLabel
-        view.addSubview(instructionsLabel)
-        UI.fit(instructionsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
-        
-        // SEARCH WARNING
-        UI.format(.title3, label: warningLabel, text: "", nrOfLines: 1)
-        warningLabel.textColor = .secondaryLabel
-        view.addSubview(warningLabel)
-        UI.fit(warningLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
-        
-        // NO RESULTS LABEL
-        UI.format(.title3, label: noResultsLabel, text: Const.noResults, nrOfLines: 1)
-        noResultsLabel.textColor = .secondaryLabel
-        view.addSubview(noResultsLabel)
-        UI.fit(noResultsLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
-        noResultsLabel.isHidden = true
+        // TEXT LABEL
+        UI.format(.title3, label: textLabel, text: Const.searchInstructions, nrOfLines: 0)
+        textLabel.textColor = .secondaryLabel
+        view.addSubview(textLabel)
+        UI.fit(textLabel, to: view.safeAreaLayoutGuide, left: 24, right: 24, top: 16)
         
         // INITIAL STATE
         update(.empty)
