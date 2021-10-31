@@ -18,7 +18,7 @@ final class ListBooksViewController: UIViewController {
     private var onSelected: ((Book, [Author]) -> Void)?
     private var onDisplaying: ((Int) -> Void)?
     private var navTitle: String?
-    private var loader: Loader?
+    private var loader: Loader!
     private let dispatchQueue = DispatchQueue(label: "listOfAuthorsQueue")
     
     func setup(title: String,
@@ -52,10 +52,12 @@ final class ListBooksViewController: UIViewController {
         
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
+        loader = Loader(view: collectionView)
+        loader.start() //start with initial loading state
         
         booksProvider?
             .observe(on: MainScheduler.instance)
-            .doLoading(with: Loader(view: collectionView))
+            .doLoading(with: loader)
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
                 (index: Int, model: Book, cell: BookViewCell) in
                 guard let strongSelf = self else { return }
