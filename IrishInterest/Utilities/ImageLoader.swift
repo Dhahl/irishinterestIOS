@@ -6,7 +6,8 @@ import RxSwift
 
 struct ImageLoader {
     
-    let fallbackImage: UIImage = UIImage(named: "logo_g2_cut")!.image(alpha: 0.03, blendMode: .screen)!
+//    let fallbackImage: UIImage = UIImage(named: "logo_g2_cut")!.image(alpha: 0.03, blendMode: .screen)!
+    let fallbackImage: UIImage = UIImage(named: "placeholder")!
     let scheduler: SerialDispatchQueueScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "imageLoader")
     
     func load(url: URL?) -> Observable<UIImage?> {
