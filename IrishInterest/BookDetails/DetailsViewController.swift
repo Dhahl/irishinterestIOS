@@ -250,9 +250,18 @@ final class DetailsViewController: UIViewController {
         if let vendor = details.vendor,
            vendor.lowercased().contains("amazon"),
            let _ = URL(string: details.vendorurl ?? "") {
-            let amazonButton = ActionButton.create(title: "Buy at Amazon")
-            UI.fit(amazonButton, to: actionsView, right: Const.border, top: topMargin, width: Const.border * 10, height: Const.socialSize)
-            amazonButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAmazon)))
+            let btnWidth = Const.socialSize / 55 * 222 // proportional to the image's original ratio
+            let btnHeight = Const.socialSize
+            let amazonImgButton = ActionButton.createWithImage(name: "buyAtAmazon",
+                                                               width: btnWidth,
+                                                               height: btnHeight)
+            UI.fit(amazonImgButton, to: actionsView,
+                   right: Const.border,
+                   top: topMargin,
+                   width: btnWidth,
+                   height: btnHeight)
+            amazonImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                        action: #selector(openAmazon)))
         }
     }
     
