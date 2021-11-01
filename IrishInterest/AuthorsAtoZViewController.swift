@@ -102,6 +102,8 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
         view.addSubview(searchCollectionView)
         UI.fit(searchCollectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
+        setMiniLogoAsNavItem()
+        
         // SEARCH WARNING
         UI.format(.subheadline, label: warningLabel, text: "", nrOfLines: 1)
         warningLabel.textColor = .secondaryLabel
@@ -189,6 +191,15 @@ final class AuthorsAtoZViewController: UIViewController, SearchResultsObservable
                 self?.onSelectedFirstLetter?(model.alpha)
             }
             .disposed(by: disposeBag)
+    }
+    
+    func setMiniLogoAsNavItem() {
+        let logoImage = UIImage(named: "logo_g2_cut")!.image(alpha: 0.382)!
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        let buttonItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.rightBarButtonItem = buttonItem
+        logoImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
     }
 }
 

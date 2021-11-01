@@ -49,6 +49,7 @@ final class TextContentUIViewController: UIViewController {
         contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor).isActive = true
 
+        setLogoAsNavItem()
         
         let vStack = VStack(parent: contentView, lastView: nil)
         
@@ -99,5 +100,14 @@ final class TextContentUIViewController: UIViewController {
         if let navTitle = navTitle {
             navigationItem.title = navTitle
         }
+    }
+    
+    func setLogoAsNavItem() {
+        let logoImage = UIImage(named: "logo")
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        let rightButtonItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.rightBarButtonItem = rightButtonItem
+        logoImageView.widthAnchor.constraint(equalToConstant: 90).isActive = true
     }
 }

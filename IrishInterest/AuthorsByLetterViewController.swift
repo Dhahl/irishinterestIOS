@@ -45,6 +45,8 @@ final class AuthorsByLetterViewController: UIViewController, SearchResultsObserv
         view.addSubview(collectionView)
         UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
         
+        setMiniLogoAsNavItem()
+        
         if let firstLetter = firstLetter {
             showSearchBar(withPlaceholder: "Authors starting with \(firstLetter)")
         }
@@ -80,5 +82,14 @@ final class AuthorsByLetterViewController: UIViewController, SearchResultsObserv
         super.viewDidDisappear(animated)
         // reset search entry on switching tabs
         searchBar.text = ""
+    }
+    
+    func setMiniLogoAsNavItem() {
+        let logoImage = UIImage(named: "logo_g2_cut")!.image(alpha: 0.382)!
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        let buttonItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.rightBarButtonItem = buttonItem
+        logoImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
     }
 }

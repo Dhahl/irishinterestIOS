@@ -106,6 +106,8 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         
         showSearchBar(withPlaceholder: Const.searchPlaceHolder)
         
+        setMiniLogoAsNavItem()
+        
         searchEndsObservable
             .subscribe({ [weak self] _ in
                 self?.dissmissKeyboard()
@@ -201,6 +203,15 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
     
     @objc func dissmissKeyboard() {
         searchBar.endEditing(true)
+    }
+    
+    func setMiniLogoAsNavItem() {
+        let logoImage = UIImage(named: "logo_g2_cut")!.image(alpha: 0.382)!
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        let buttonItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.rightBarButtonItem = buttonItem
+        logoImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
     }
 }
 

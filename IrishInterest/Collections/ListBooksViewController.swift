@@ -51,8 +51,12 @@ final class ListBooksViewController: UIViewController {
         setupTitle()
         
         view.addSubview(collectionView)
-        UI.fit(collectionView, to: view, left: 0, right: 0, bottom: 0, top: 0)
-        loader = Loader(view: collectionView)
+        
+        setLogoAsNavItem()
+        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        UI.fit(collectionView, to: view.safeAreaLayoutGuide, left: 0, right: 0, bottom: 0, top: 0)
+        loader = Loader(view: view)
         loader.start() // start with initial loading state
         
         booksProvider?
@@ -120,5 +124,14 @@ final class ListBooksViewController: UIViewController {
         if let navTitle = navTitle {
             navigationItem.title = navTitle
         }
+    }
+    
+    func setLogoAsNavItem() {
+        let logoImage = UIImage(named: "logo")
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        let rightButtonItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.rightBarButtonItem = rightButtonItem
+        logoImageView.widthAnchor.constraint(equalToConstant: 90).isActive = true
     }
 }

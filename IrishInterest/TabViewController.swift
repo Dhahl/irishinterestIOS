@@ -29,8 +29,6 @@ extension SearchResultsObservable {
 
 final class TabViewController: UITabBarController {
     
-    let logoImageView = UIImageView(image: UIImage(named: "logo"))
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
