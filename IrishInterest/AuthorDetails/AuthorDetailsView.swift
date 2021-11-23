@@ -28,7 +28,6 @@ final class AuthorDetailsView: UIView {
         self.details = details
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        
 
         // TITLE - name
         addSubview(title)
@@ -55,7 +54,6 @@ final class AuthorDetailsView: UIView {
         // TEXT
         stack.add(label, constant: 2*Const.border)
         UI.fit(label, to: self.safeAreaLayoutGuide, left: Const.border, right: Const.border)
-//        label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 2*Const.border).isActive = true
         UI.format(.body, label: label, text: details.profile ?? "", nrOfLines: 0)
         label.textColor = .label
         
@@ -94,5 +92,4 @@ final class AuthorDetailsView: UIView {
         if let url = details.altlink { UIApplication.shared.open(url) }
     }
     
-
 }
