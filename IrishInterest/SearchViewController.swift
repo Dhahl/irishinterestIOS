@@ -26,7 +26,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         static let minChar: Int = 4
         static let searchPlaceHolder = "Book titles"
         static let noResults = "No search results."
-        static let searchInstructions = "Search instantly among 50 000 titles contained in the Irish Interest database."
+        static let searchInstructions = "The Irish Interest database contains over 50 000 books.\n\nSearch instantly among titles, author names, place names, subject matter, or topic."
         
         static func searchWarning(count: Int) -> String {
             let left = Const.minChar - count
