@@ -14,8 +14,10 @@ final class AuthorDetailsView: UIView {
     
     private let details: AuthorDetails
     private let imageView: UIImageView = UIImageView()
-    private let title: UILabel = UILabel()
-    private let label: UILabel = UILabel()
+    private let title = UILabel()
+    private let label = UILabel()
+    private let urlLabel = UILabel()
+    private let wikiLabel = UILabel()
     private let disposeBag = DisposeBag()
     
     var lastView: UIView {
@@ -48,12 +50,30 @@ final class AuthorDetailsView: UIView {
             .bind(to: imageView.rx.image)
             .disposed(by: disposeBag)
         
+        let stack = VStack(parent: self, lastView: imageView)
+        
         // TEXT
-        addSubview(label)
+        stack.add(label, constant: 2*Const.border)
         UI.fit(label, to: self.safeAreaLayoutGuide, left: Const.border, right: Const.border)
-        label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 2*Const.border).isActive = true
+//        label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 2*Const.border).isActive = true
         UI.format(.body, label: label, text: details.profile ?? "", nrOfLines: 0)
         label.textColor = .label
+        
+        // AUTHORS WEBSITE
+        if let url = details.url {
+            stack.add(urlLabel, constant: 2*Const.border)
+            UI.fit(urlLabel, to: self.safeAreaLayoutGuide, left: Const.border, right: Const.border)
+            UI.format(.body, label: urlLabel, text: url.absoluteString, nrOfLines: 0)
+            urlLabel.textColor = Brand.colorPrimary
+        }
+        
+        // WIKIPEDIA LINK
+        if let wikiURL = details.altlink {
+            stack.add(wikiLabel, constant: Const.border)
+            UI.fit(wikiLabel, to: safeAreaLayoutGuide, left: Const.border, right: Const.border)
+            UI.format(.body, label: wikiLabel, text: wikiURL.absoluteString, nrOfLines: 0)
+            wikiLabel.textColor = Brand.colorPrimary
+        }
     }
     
     required init?(coder: NSCoder) {

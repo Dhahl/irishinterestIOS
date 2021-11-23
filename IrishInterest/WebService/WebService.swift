@@ -59,9 +59,10 @@ struct AuthorDetails: Decodable {
     let dob: String?
     let profile: String?
     let image: String?
-    let altlink: String?
+    let altlink: URL?   // eg. wikipedia link
     let firstname: String?
     let lastname: String?
+    let url: URL? // eg. author's own website link
     
     var author: String {
         [firstname, lastname].compactMap { $0 }.joined(separator: " ")
@@ -72,7 +73,6 @@ struct AuthorDetails: Decodable {
         return URL(string: "https://irishinterest.ie/upload/\(image)")
     }
     
-    
     /// Checks if there's anything useful we can shown as author bio details
     var isWorthToShow: Bool {
         if imageURL != nil { return true }
@@ -81,7 +81,7 @@ struct AuthorDetails: Decodable {
     }
     
     static func empty() -> AuthorDetails {
-        AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil, firstname: nil, lastname: nil)
+        AuthorDetails(dob: nil, profile: nil, image: nil, altlink: nil, firstname: nil, lastname: nil, url: nil)
     }
 }
 
