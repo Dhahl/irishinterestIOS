@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        // MARK: tabs
+        // MARK: search
         tabsController.restorationIdentifier = "tabsController"
         
         let search = SearchViewController()
