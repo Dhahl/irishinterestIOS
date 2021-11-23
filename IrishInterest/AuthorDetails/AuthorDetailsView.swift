@@ -65,6 +65,9 @@ final class AuthorDetailsView: UIView {
             UI.fit(urlLabel, to: self.safeAreaLayoutGuide, left: Const.border, right: Const.border)
             UI.format(.body, label: urlLabel, text: url.absoluteString, nrOfLines: 0)
             urlLabel.textColor = Brand.colorPrimary
+            urlLabel.isUserInteractionEnabled = true
+            urlLabel.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                 action: #selector(openAuthorUrl)))
         }
         
         // WIKIPEDIA LINK
@@ -73,11 +76,23 @@ final class AuthorDetailsView: UIView {
             UI.fit(wikiLabel, to: safeAreaLayoutGuide, left: Const.border, right: Const.border)
             UI.format(.body, label: wikiLabel, text: wikiURL.absoluteString, nrOfLines: 0)
             wikiLabel.textColor = Brand.colorPrimary
+            wikiLabel.isUserInteractionEnabled = true
+            wikiLabel.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                  action: #selector(openWikiUrl)))
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc func openAuthorUrl() {
+        if let url = details.url { UIApplication.shared.open(url) }
+    }
+    
+    @objc func openWikiUrl() {
+        if let url = details.altlink { UIApplication.shared.open(url) }
+    }
+    
 
 }
