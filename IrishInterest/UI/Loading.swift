@@ -41,7 +41,8 @@ extension ObservableType {
     public func doLoading(with loading: Loading) -> Observable<Element> {
             self.do(onNext: { [loading] _ in loading.stop() },
                     onError: { [loading] _ in loading.stop() },
-                    onSubscribe: { [loading] in loading.start() }
+                    onSubscribe: { [loading] in loading.start() },
+                    onDispose: { [loading] in loading.stop() }
             )
     }
 }

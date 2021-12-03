@@ -81,7 +81,7 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
         
         layout.minimumLineSpacing = CellConst.border
         layout.minimumInteritemSpacing = CellConst.border / 2
-
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,8 +114,9 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
             })
             .disposed(by: disposeBag)
         
-        let booksObservable: Observable<[Book]> = searchTextObservable.distinctUntilChanged()
-            .flatMap { [weak self] (searchValue: String?) -> Observable<[Book]> in
+        let booksObservable: Observable<[Book]> = searchTextObservable
+            .distinctUntilChanged()
+            .flatMapLatest { [weak self] (searchValue: String?) -> Observable<[Book]> in
                 guard let strongSelf = self else { return .just([]) }
                 guard let value = searchValue else {
                     strongSelf.update(.empty)
@@ -141,11 +142,11 @@ final class SearchViewController: UIViewController, SearchResultsObservable {
                 }
             }
         
-        let authorsObservable: Observable<AuthorsOfBooks> = booksObservable.flatMap {
-            [weak self] (books: [Book]) -> Observable<AuthorsOfBooks> in
-            guard let strongSelf = self else { return .just([:]) }
-            return strongSelf.webServiceAuthors.authors(byBookIds: books.map { $0.id })
-        }
+        let authorsObservable: Observable<AuthorsOfBooks> = booksObservable
+            .flatMapLatest { [weak self] (books: [Book]) -> Observable<AuthorsOfBooks> in
+                guard let strongSelf = self else { return .just([:]) }
+                return strongSelf.webServiceAuthors.authors(byBookIds: books.map { $0.id })
+            }
         
         booksObservable
             .bind(to: collectionView.rx.items(cellIdentifier: "BookViewCell")) { [weak self]
